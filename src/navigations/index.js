@@ -3,7 +3,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import Search from "./Search";
 
 const Navigation = () => {
-  return <NavigationContainer></NavigationContainer>;
+  return (
+    <NavigationContainer>
+      <Search />
+    </NavigationContainer>
+  );
 };
 
 export default Navigation;
