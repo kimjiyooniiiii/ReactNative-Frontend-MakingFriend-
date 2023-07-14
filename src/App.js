@@ -3,31 +3,18 @@ import { ThemeProvider } from "styled-components";
 import { theme } from "./theme";
 import { StatusBar } from "react-native";
 import Navigation from "./navigations";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Meal } from "./screens/search";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const App = () => {
   return (
-    <SafeAreaProvider>
+    //  기존에 사용한 useSafeAreaInsets는 화면 회전시 성능이 저하된다고 하여 더 안전한 것으로 대체함
+    <SafeAreaView style={{ flex: 1 }}>
       <ThemeProvider theme={theme}>
         <StatusBar></StatusBar>
-        <Meal />
         <Navigation />
       </ThemeProvider>
-    </SafeAreaProvider>
+    </SafeAreaView>
   );
 };
-
-// const App = () => {
-//   return (
-//     <SafeAreaProvider>
-//       <ThemeProvider theme={theme}>
-//         <StatusBar>
-//           <Meal />
-//         </StatusBar>
-//       </ThemeProvider>
-//     </SafeAreaProvider>
-//   );
-// };
 
 export default App;
