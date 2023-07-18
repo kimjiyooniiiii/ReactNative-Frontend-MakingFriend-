@@ -1,7 +1,8 @@
 import styled, { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
 import React, { useState } from "react";
-import { clickButton } from "../../../assets/search";
+import { ImageBackground } from "react-native";
+import { clickButton, inputBoxImage } from "../../../assets/search";
 
 const Container = styled.View`
   flex-direction: row;
@@ -9,11 +10,18 @@ const Container = styled.View`
   margin: 2px;
 `;
 
+const ImageContainer = styled.View`
+  width: 250px;
+  height: 35px;
+  border-width: 2px;
+  border-color: darkgrey;
+  border-radius: 10px;
+  overflow: hidden;
+`;
+
 const TextInput = styled.TextInput`
   flex: 1;
-  background-color: ${({ theme }) => theme.box_color};
   padding: 10px;
-  height: 40px;
   border-radius: 10px;
 `;
 
@@ -40,7 +48,17 @@ const InputBox = () => {
   return (
     <ThemeProvider theme={theme}>
       <Container>
-        <TextInput value={keyword} onChangeText={handleTextChange} />
+        <ImageContainer>
+          <ImageBackground
+            source={inputBoxImage}
+            style={{
+              flex: 1,
+              resizeMode: "contain",
+            }}
+          >
+            <TextInput value={keyword} onChangeText={handleTextChange} />
+          </ImageBackground>
+        </ImageContainer>
         <SubmitButton onPress={handle}>
           <ButtonImage source={clickButton} />
         </SubmitButton>

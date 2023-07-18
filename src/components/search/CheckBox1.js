@@ -3,36 +3,48 @@ import React, { useState } from "react";
 import { TouchableOpacity, ImageBackground, Text } from "react-native";
 import styled from "styled-components/native";
 
+const Container = styled.View`
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 8px;
+`;
+
 const Button = styled(TouchableOpacity)`
-  width: 100px;
-  height: 40px;
+  width: 70px;
+  height: 30px;
 `;
 
 const ButtonText = styled(Text)`
   color: black;
   text-align: center;
-  font-size: 16px;
+  font-size: 13px;
 `;
 
-const CheckBox = () => {
+const CheckBox = ({ text }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handlePress = () => {
-    setIsChecked(true);
-    console.log("Button Pressed");
+    setIsChecked(!isChecked);
   };
 
   const buttonImage = isChecked ? unCheck : okCheck;
 
   return (
-    <Button onPress={handlePress}>
-      <ImageBackground
-        source={buttonImage}
-        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-      >
-        <ButtonText>버튼</ButtonText>
-      </ImageBackground>
-    </Button>
+    <Container>
+      <Button onPress={handlePress}>
+        <ImageBackground
+          source={buttonImage}
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            //alignItems: "center",
+            resizeMode: "contain",
+          }}
+        >
+          <ButtonText>{text}</ButtonText>
+        </ImageBackground>
+      </Button>
+    </Container>
   );
 };
 
