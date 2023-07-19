@@ -20,11 +20,12 @@ const ButtonText = styled(Text)`
   font-size: 13px;
 `;
 
-const CheckBox = ({ text }) => {
+const CheckButton = ({ text, onPress }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handlePress = () => {
     setIsChecked(!isChecked);
+    onPress();
   };
 
   const buttonImage = isChecked ? unCheck : okCheck;
@@ -48,4 +49,4 @@ const CheckBox = ({ text }) => {
   );
 };
 
-export default CheckBox;
+export default CheckButton;

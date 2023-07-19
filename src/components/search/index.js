@@ -1,7 +1,7 @@
 import Title from "./Title";
 import InputBox from "./InputBox";
-import CheckBox from "./CheckBox1";
+import CheckButton from "./CheckButton";
 import OptionName from "./OptionName";
 import Line from "./Line";
 
-export { Title, InputBox, CheckBox, OptionName, Line };
+export { Title, InputBox, CheckButton, OptionName, Line };
