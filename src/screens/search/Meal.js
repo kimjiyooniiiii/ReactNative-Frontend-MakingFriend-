@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled, { ThemeProvider } from "styled-components/native";
 import {
   Title,
@@ -9,6 +9,7 @@ import {
 } from "../../components/search";
 import { theme } from "./theme";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { DateTimePick } from "../../components";
 
 const Container = styled.View`
   justify-content: flex-start;
@@ -22,6 +23,12 @@ const CheckContainer = styled.View`
   align-items: flex-start;
   flex-wrap: wrap;
   padding-bottom: 10px;
+`;
+
+const TimeContainer = styled.View`
+  flex: 1;
+  align-items: flex-start;
+  margin: 5px;
 `;
 
 const Meal = () => {
@@ -60,16 +67,33 @@ const Meal = () => {
     });
   };
 
-  console.log("학식 : " + schoolFoodStates);
-  console.log("외식 : " + outFoodStates);
-  console.log("메뉴 : " + menuStates);
+  const handleInputBoxPress = () => {
+    const selectedSchoolFood = schoolFoodStates
+      .map((state, index) => ({ checked: state, index }))
+      .filter((item) => item.checked)
+      .map((item) => item.index);
+
+    const selectedOutFood = outFoodStates
+      .map((state, index) => ({ checked: state, index }))
+      .filter((item) => item.checked)
+      .map((item) => item.index);
+
+    const selectedMenu = menuStates
+      .map((state, index) => ({ checked: state, index }))
+      .filter((item) => item.checked)
+      .map((item) => item.index);
+
+    console.log("Selected School Food:", selectedSchoolFood);
+    console.log("Selected Out Food:", selectedOutFood);
+    console.log("Selected Menu:", selectedMenu);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ThemeProvider theme={theme}>
         <Container>
           <Title title="밥 먹을 두리" />
-          <InputBox />
+          <InputBox onPress={handleInputBoxPress} />
 
           <OptionName text={"학식"} />
           <Line />
@@ -125,6 +149,12 @@ const Meal = () => {
             <CheckButton text="중식" onPress={() => handleMenuButton(4)} />
             <CheckButton text="기타" onPress={() => handleMenuButton(5)} />
           </CheckContainer>
+
+          <TimeContainer>
+            <OptionName text={"시간설정"} />
+            <Line />
+            <DateTimePick />
+          </TimeContainer>
         </Container>
       </ThemeProvider>
     </SafeAreaView>

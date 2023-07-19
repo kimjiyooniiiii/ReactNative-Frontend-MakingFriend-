@@ -34,7 +34,7 @@ const ButtonImage = styled.Image`
   height: 50px;
 `;
 
-const InputBox = () => {
+const InputBox = ({ onPress }) => {
   const [keyword, setKeyword] = useState("");
 
   const handleTextChange = (input) => {
@@ -43,6 +43,7 @@ const InputBox = () => {
 
   const handle = () => {
     console.log("입력한 값:", keyword);
+    onPress();
   };
 
   return (
