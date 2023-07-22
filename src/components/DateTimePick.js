@@ -50,7 +50,6 @@ const DateTimePick = () => {
     setShowTimePicker(Platform.OS === "ios");
     setDate(currentTime);
   };
-  console.log(date);
 
   const showDatepicker = () => {
     setShowDatePicker(true);
