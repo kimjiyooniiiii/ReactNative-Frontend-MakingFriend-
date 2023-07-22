@@ -1,4 +1,5 @@
-import Button from "./Button";
-// import Input from "./Input";
+import BigButton from "./BigButton";
+import Input from "./Input";
+import SmallButton from "./SmallButton";
 
-export { Button };
+export { BigButton, SmallButton, Input };

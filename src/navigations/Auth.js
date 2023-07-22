@@ -8,7 +8,11 @@ const Auth = () => {
   // console.log("navigations/Auth.js 접근");
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };

@@ -3,14 +3,18 @@ import styled from "styled-components/native";
 import PropTypes from "prop-types";
 
 const Container = styled.View`
-  background-color: ${({ theme }) => theme.background};
+  background-color: ${({ theme }) => theme.smallbutton};
+  justify-content: center;
+  border-radius: 4px;
 `;
+
+// opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 
 const Title = styled.Text`
-  font-size: 24px;
+  font-size: 16px;
 `;
 
-const Button = ({ title }) => {
+const SmallButton = ({ title }) => {
   return (
     <Container>
       <Title>{title}</Title>
@@ -18,7 +22,7 @@ const Button = ({ title }) => {
   );
 };
 
-Button.propTypes = {
+SmallButton.propTypes = {
   title: PropTypes.string.isRequired,
   // onPress: PropTypes.func.isRequired,
   // containerStyle: PropTypes.object,
@@ -26,4 +30,4 @@ Button.propTypes = {
   // //   isFilled: PropTypes.bool,
   // disabled: PropTypes.bool,
 };
-export default Button;
+export default SmallButton;
