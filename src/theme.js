@@ -6,12 +6,18 @@ const Colors = {
 };
 
 export const theme = {
+  // background
   background: Colors.white,
+  backgroundSkyblue: Colors.skyblue,
+
+  // text
   text: Colors.black,
 
   // label
   label: Colors.black,
-  labelLight: Colors.grey,
+  labelGrey: Colors.grey,
+  labelLight: Colors.white,
+  labelSkyblue: Colors.skyblue,
 
   //button
   button: Colors.skyblue,
