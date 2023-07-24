@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { useState, forwardRef, useEffect } from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
 
@@ -21,21 +21,33 @@ const Container = styled.View`
 `;
 
 const Label = styled.Text`
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 6px;
+  font-size: 18px;
+  font-weight: 60;
   color: ${({ theme }) => theme.label};
 `;
 
 const Input = forwardRef(
-  ({ onSubmitEditing, returnKeyType, placeholder }, ref) => {
+  (
+    {
+      onSubmitEditing,
+      returnKeyType,
+      placeholder,
+      label,
+      numericOnly,
+      maxLength,
+    },
+    ref,
+  ) => {
     return (
       <Container>
+        <Label>{label}</Label>
         <StyledInput
           onSubmitEditing={onSubmitEditing}
           ref={ref}
           placeholder={placeholder}
           returnKeyType={returnKeyType}
+          maxLength={maxLength}
+          keyboardType={numericOnly ? "numeric" : "default"}
         />
       </Container>
     );
@@ -45,6 +57,7 @@ const Input = forwardRef(
 Input.propTypes = {
   onSubmitEditing: PropTypes.func,
   returnKeyType: PropTypes.oneOf(["done", "next"]),
+  numericOnly: PropTypes.bool,
 };
 
 export default Input;

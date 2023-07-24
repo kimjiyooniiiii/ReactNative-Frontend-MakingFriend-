@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
+import { TouchableOpacity } from "react-native";
 
 const Container = styled.View`
   background-color: ${({ theme }) => theme.bigbutton};
   width: 100%;
   margin: 10px 0;
-  padding: 10px;
+  padding: 20px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -20,13 +21,16 @@ const Container = styled.View`
 
 const Title = styled.Text`
   font-size: 20px;
+  font-weight: bold;
   color: ${({ theme }) => theme.white};
 `;
 
-const BigButton = ({ title }) => {
+const BigButton = ({ title, onPress }) => {
   return (
     <Container>
-      <Title>{title}</Title>
+      <TouchableOpacity onPress={onPress}>
+        <Title>{title}</Title>
+      </TouchableOpacity>
     </Container>
   );
 };

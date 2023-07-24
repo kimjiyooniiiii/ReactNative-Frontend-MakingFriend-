@@ -33,32 +33,38 @@ const Separator = styled.Text`
   color: ${({ theme }) => theme.border};
   font-size: 15px;
 `;
-const Login = () => {
+const Login = ({ navigation }) => {
   const refPassword = useRef(null);
-  console.log("login screen");
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Container>
-        <LogoImage
-          source={require("../../../assets/images/logo.jpg")}
-          resizeMode={"contain"}
+    <Container>
+      <LogoImage
+        source={require("../../../assets/images/logo.jpg")}
+        resizeMode={"contain"}
+      />
+      <Input
+        placeholder="학번"
+        onSubmitEditing={() => refPassword.current.focus()}
+        returnKeyType="next"
+      />
+      <Input ref={refPassword} placeholder="비밀번호" returnKeyType="done" />
+      <BigButton title="로그인" onPress={() => console.log("로그인 클릭")} />
+      <IdPwRegisterContainer>
+        <SmallButton
+          title="아이디 찾기"
+          onPress={() => console.log("아이디 찾기 클릭")}
         />
-        <Input
-          placeholder="학번"
-          onSubmitEditing={() => refPassword.current.focus()}
-          returnKeyType="next"
+        <Separator>|</Separator>
+        <SmallButton
+          title="비밀번호 찾기"
+          onPress={() => console.log("비밀번호 찾기 클릭")}
         />
-        <Input ref={refPassword} placeholder="비밀번호" returnKeyType="done" />
-        <BigButton title="로그인" />
-        <IdPwRegisterContainer>
-          <SmallButton title="아이디 찾기" />
-          <Separator>|</Separator>
-          <SmallButton title="비밀번호 찾기" />
-          <Separator>|</Separator>
-          <SmallButton title="회원가입" />
-        </IdPwRegisterContainer>
-      </Container>
-    </SafeAreaView>
+        <Separator>|</Separator>
+        <SmallButton
+          title="회원가입"
+          onPress={() => navigation.navigate("Signup")}
+        />
+      </IdPwRegisterContainer>
+    </Container>
   );
   // return console.log("screens/Login.js 접속");
 };

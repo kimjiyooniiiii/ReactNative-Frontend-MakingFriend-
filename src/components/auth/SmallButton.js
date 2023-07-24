@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
+// import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 
 const Container = styled.View`
   background-color: ${({ theme }) => theme.smallbutton};
@@ -14,10 +16,12 @@ const Title = styled.Text`
   font-size: 16px;
 `;
 
-const SmallButton = ({ title }) => {
+const SmallButton = ({ title, onPress }) => {
   return (
     <Container>
-      <Title>{title}</Title>
+      <TouchableOpacity onPress={onPress}>
+        <Title>{title}</Title>
+      </TouchableOpacity>
     </Container>
   );
 };

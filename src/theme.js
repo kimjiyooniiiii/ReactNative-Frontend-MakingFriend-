@@ -1,16 +1,20 @@
 const Colors = {
   white: "#ffffff",
   black: "#111111",
-  skyblue: "#9AD9EA", //87ceeb
+  skyblue: "#6B9FEA", //87ceeb
   grey: "#808080",
 };
 
 export const theme = {
   background: Colors.white,
   text: Colors.black,
+
+  // label
   label: Colors.black,
+  labelLight: Colors.grey,
 
   //button
+  button: Colors.skyblue,
   bigbutton: Colors.skyblue,
   smallbutton: Colors.white,
 
@@ -20,4 +24,7 @@ export const theme = {
   //border
   border: Colors.grey,
   hideborder: Colors.white,
+
+  //image
+  imageBackground: Colors.grey,
 };
