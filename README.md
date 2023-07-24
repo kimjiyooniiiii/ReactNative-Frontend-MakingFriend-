@@ -24,7 +24,8 @@
 - 작업자들의 패키지 버전 통일을 위해 " yarn.lock " 파일 생성해놓음 (초기 세팅된 패키지 버전들 기록되어 있음)
   
 - git에서 clone 후, " yarn install " 명령으로 한번에 패키지 다운받기 (해당 디렉토리로 이동후 명령어 실행)
-- 프로젝트 중간에 pull 했을 때, 다른 작업자가 새로운 패키지를 설치했을 수 있으므로 이때는 "yarn install"이 아닌 "yarn ci"를 통해 패키지 설치하기!
+- 프로젝트 중간에 pull 했을 때, 다른 작업자가 새로운 패키지를 설치했을 수 있으므로 이때는 "yarn install"이 아닌 "yarn install --immutable --immutable-cache --check-cache
+"를 통해 패키지 설치하기!
   ( -> yarn.lock 파일에 있는 버전으로 통일되어 설치됨)
 - 코드 구성과 맞춤법의 통일을 위하여 "ESLint, Prettier" 파일을 생성해놓음 -> 회의를 통해 규칙 정할 예정
 - 각자 VSCode에서 "ESLint, Prettier extension" 설치하기
