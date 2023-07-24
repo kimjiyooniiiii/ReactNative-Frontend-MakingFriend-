@@ -10,7 +10,7 @@ const StyledInput = styled.TextInput`
   font-size: 16px;
   border: none;
   border-width: 0 0 1px;
-  border-color: ${({ theme }) => theme.border};
+  border-color: ${({ theme }) => theme.labelGrey};
 `;
 // border-outline: none;
 
