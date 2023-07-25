@@ -1,7 +1,7 @@
-import { okCheck, unCheck } from "../../../assets/search";
 import React, { useState } from "react";
-import { TouchableOpacity, ImageBackground, Text } from "react-native";
-import styled from "styled-components/native";
+import { TouchableOpacity, Text } from "react-native";
+import styled, { ThemeProvider } from "styled-components/native";
+import { theme } from "./theme";
 
 const Container = styled.View`
   padding-left: 2px;
@@ -10,14 +10,20 @@ const Container = styled.View`
 `;
 
 const Button = styled(TouchableOpacity)`
+  background-color: ${({ theme, isChecked }) =>
+    isChecked ? theme.checkedColor : theme.uncheckedColor};
   width: 70px;
   height: 30px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ButtonText = styled(Text)`
   color: black;
   text-align: center;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: bold;
 `;
 
 const CheckButton = ({ text, onPress }) => {
@@ -28,24 +34,14 @@ const CheckButton = ({ text, onPress }) => {
     onPress();
   };
 
-  const buttonImage = isChecked ? unCheck : okCheck;
-
   return (
-    <Container>
-      <Button onPress={handlePress}>
-        <ImageBackground
-          source={buttonImage}
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            //alignItems: "center",
-            resizeMode: "contain",
-          }}
-        >
+    <ThemeProvider theme={theme}>
+      <Container>
+        <Button isChecked={isChecked} onPress={handlePress}>
           <ButtonText>{text}</ButtonText>
-        </ImageBackground>
-      </Button>
-    </Container>
+        </Button>
+      </Container>
+    </ThemeProvider>
   );
 };
 

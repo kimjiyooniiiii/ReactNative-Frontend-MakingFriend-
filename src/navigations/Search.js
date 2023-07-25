@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Meal } from "../screens/search/index";
+import { Meal, MealResult } from "../screens/search/index";
 
 const Stack = createStackNavigator();
 
@@ -10,6 +10,12 @@ const Search = () => {
       <Stack.Screen
         name="Meal"
         component={Meal}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="MealResult"
+        component={MealResult}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

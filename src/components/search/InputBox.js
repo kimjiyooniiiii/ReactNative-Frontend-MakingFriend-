@@ -1,8 +1,7 @@
 import styled, { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
 import React, { useState } from "react";
-import { ImageBackground } from "react-native";
-import { clickButton, inputBoxImage } from "../../../assets/search";
+import { clickButton } from "../../../assets/search";
 
 const Container = styled.View`
   flex-direction: row;
@@ -11,7 +10,7 @@ const Container = styled.View`
 `;
 
 const ImageContainer = styled.View`
-  width: 250px;
+  width: 300px;
   height: 35px;
   border-width: 2px;
   border-color: darkgrey;
@@ -20,8 +19,11 @@ const ImageContainer = styled.View`
 `;
 
 const TextInput = styled.TextInput`
+  background-color: ${({ theme }) => theme.box_color};
   flex: 1;
-  padding: 10px;
+  height: 35px;
+  width: 500px;
+  padding: 0 0 0 10px;
   border-radius: 10px;
 `;
 
@@ -30,8 +32,8 @@ const SubmitButton = styled.TouchableOpacity`
 `;
 
 const ButtonImage = styled.Image`
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
 `;
 
 const InputBox = ({ onPress }) => {
@@ -42,23 +44,14 @@ const InputBox = ({ onPress }) => {
   };
 
   const handle = () => {
-    console.log("입력한 값:", keyword);
-    onPress();
+    onPress(keyword);
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Container>
         <ImageContainer>
-          <ImageBackground
-            source={inputBoxImage}
-            style={{
-              flex: 1,
-              resizeMode: "contain",
-            }}
-          >
-            <TextInput value={keyword} onChangeText={handleTextChange} />
-          </ImageBackground>
+          <TextInput value={keyword} onChangeText={handleTextChange} />
         </ImageContainer>
         <SubmitButton onPress={handle}>
           <ButtonImage source={clickButton} />
