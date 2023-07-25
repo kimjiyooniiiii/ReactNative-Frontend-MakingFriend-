@@ -135,7 +135,6 @@ const Signup = () => {
             placeholder="2000-12-26"
             onSubmitEditing={() => refGender.current.focus()}
             returnKeyType="next"
-            numericOnly={true}
             maxLength={10}
           />
 
@@ -160,7 +159,6 @@ const Signup = () => {
             label="전화번호"
             placeholder="010-0000-0000"
             returnKeyType="done"
-            numericOnly={true}
           />
           <BigButton
             title="회원가입"
