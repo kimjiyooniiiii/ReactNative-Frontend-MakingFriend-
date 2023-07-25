@@ -4,8 +4,9 @@ import { theme } from "./theme";
 import { InputBox, SubmitButton } from "../../components/room";
 import SelectDropdown from "react-native-select-dropdown";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { View, Text } from "react-native";
+import { Image, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { createRoom } from "../../../assets/room";
 
 const Container = styled.View`
   background-color: ${({ theme }) => theme.background};
@@ -13,16 +14,17 @@ const Container = styled.View`
 `;
 
 const TitleContainer = styled.View`
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 20px 10px 30px 10px;
+  padding: 20px 10px 30px 0;
 `;
 
 const Title = styled.Text`
   font-weight: bold;
   color: ${({ theme }) => theme.text};
   font-size: 25px;
-  padding: 0 0 40px 0;
+  padding: 0 0 0 0;
 `;
 
 const SubTitle = styled.Text`
@@ -72,6 +74,10 @@ const CreateRoom = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
         <TitleContainer>
+          <Image
+            source={createRoom}
+            style={{ width: 80, height: 80, resizeMode: "contain" }}
+          />
           <Title>방 만들기</Title>
         </TitleContainer>
         <InputContainer>

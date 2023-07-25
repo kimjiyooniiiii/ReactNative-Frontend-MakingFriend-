@@ -16,4 +16,7 @@ export const theme = {
   //CheckBox
   checkedColor: Colors.skyblue,
   uncheckedColor: Colors.steelBlue,
+
+  //DateTime
+  dateTimeColor: Colors.skyblue,
 };

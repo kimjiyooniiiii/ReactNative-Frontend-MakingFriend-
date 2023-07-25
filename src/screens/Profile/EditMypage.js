@@ -1,9 +1,11 @@
 import React, { useState, useRef } from "react";
 // import { Image, Dimensions } from "react-native";
 import { Dimensions } from "react-native";
-import { BigButton, RadioButton, Input, Image } from "../../components/auth";
+import { BigButton, RadioButton, Image } from "../../components/auth";
+import { UserInfoTextInput } from "../../components/profile";
 import styled from "styled-components/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import user1 from "./data/user1.json";
 
 const Container = styled.View`
   flex: 1;
@@ -54,12 +56,13 @@ const GenderContainer = styled.View`
 const DEFAULT_PHOTO =
   "https://firebasestorage.googleapis.com/v0/b/rn-chat-15e2f.appspot.com/o/img.png?alt=media&token=7677bf2d-0a84-4a2f-835b-eacfbca64e4a";
 
-const Signup = () => {
+const EditMypage = () => {
   const width = Dimensions.get("window").width;
   const [photo, setPhoto] = useState(DEFAULT_PHOTO);
   // const [photo, setPhoto] = useState(logo);
 
-  const [selectedGender, setSelectedGender] = useState("male");
+  const userGender = user1.gender == "M" ? "male" : "female";
+  const [selectedGender, setSelectedGender] = useState(userGender);
 
   const handleGenderSelection = (gender) => {
     setSelectedGender(gender);
@@ -79,61 +82,56 @@ const Signup = () => {
       <Container>
         <List width={width}>
           <CenteredView>
-            {/* <LogoImage
-              source={require("../../../assets/images/logo.jpg")}
-              resizeMode={"contain"}
-            /> */}
             <Image showButton={true} url={photo} onChangePhoto={setPhoto} />
           </CenteredView>
-          <Input
+          <UserInfoTextInput
             label="이름"
             placeholder="홍길동"
             onSubmitEditing={() => refNickName.current.focus()}
+            value={user1.userName}
             returnKeyType="next"
           />
-          <Input
+          <UserInfoTextInput
             ref={refNickName}
             label="닉네임"
             placeholder="두리"
             onSubmitEditing={() => refUserId.current.focus()}
+            value={user1.nickName}
             returnKeyType="next"
           />
-          <Input
+          <UserInfoTextInput
             ref={refUserId}
             label="아이디(학번)"
             placeholder="202312345"
             onSubmitEditing={() => refPassword.current.focus()}
             returnKeyType="next"
+            value={user1.userId}
             numericOnly={true}
             maxLength={9}
           />
-          <Input
-            ref={refPassword}
-            label="비밀번호"
-            placeholder="영문 포함 8자 이상"
-            onSubmitEditing={() => refMajor.current.focus()}
-            returnKeyType="next"
-          />
-          <Input
+          <UserInfoTextInput
             ref={refMajor}
             label="학과"
             placeholder="컴퓨터공학과"
             onSubmitEditing={() => refEmail.current.focus()}
+            value={user1.major}
             returnKeyType="next"
           />
-          <Input
+          <UserInfoTextInput
             ref={refEmail}
             label="이메일"
             placeholder="example@naver.com"
             onSubmitEditing={() => refBirthday.current.focus()}
+            value={user1.email}
             returnKeyType="next"
           />
 
-          <Input
+          <UserInfoTextInput
             ref={refBirthday}
             label="생일"
             placeholder="2000-12-26"
             onSubmitEditing={() => refGender.current.focus()}
+            value={user1.birthday}
             returnKeyType="next"
             maxLength={10}
           />
@@ -154,20 +152,18 @@ const Signup = () => {
             </GenderContainer>
           </ElementContainer>
 
-          <Input
+          <UserInfoTextInput
             ref={refPhoneNumber}
             label="전화번호"
             placeholder="010-0000-0000"
             returnKeyType="done"
+            value={user1.phoneNumber}
           />
-          <BigButton
-            title="회원가입"
-            onPress={() => console.log("회원가입 클릭")}
-          />
+          <BigButton title="저장" onPress={() => console.log("저장 클릭")} />
         </List>
       </Container>
     </KeyboardAwareScrollView>
   );
 };
 
-export default Signup;
+export default EditMypage;

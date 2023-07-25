@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useEffect } from "react";
+import React, { forwardRef } from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
 
@@ -8,9 +8,6 @@ const Container = styled.View`
   margin: 10px 0;
 `;
 
-//   background-color: ${({ theme, editable }) =>
-//     editable ? theme.inputBackground : theme.inputDisabled};
-//   color: ${({ theme }) => theme.text || "black"};
 const StyledInput = styled.TextInput`
   padding: 20px 10px;
   font-size: 16px;
@@ -18,15 +15,13 @@ const StyledInput = styled.TextInput`
   border-width: 0 0 1px;
   border-color: ${({ theme }) => theme.labelGrey};
 `;
-// border-outline: none;
 
 const Label = styled.Text`
   font-size: 18px;
   font-weight: 60;
   color: ${({ theme }) => theme.label};
 `;
-
-const Input = forwardRef(
+const UserInfoTextInput = forwardRef(
   (
     {
       onSubmitEditing,
@@ -35,6 +30,7 @@ const Input = forwardRef(
       label,
       numericOnly,
       maxLength,
+      value,
     },
     ref,
   ) => {
@@ -48,16 +44,18 @@ const Input = forwardRef(
           returnKeyType={returnKeyType}
           maxLength={maxLength}
           keyboardType={numericOnly ? "numeric" : "default"}
-        />
+        >
+          {value}
+        </StyledInput>
       </Container>
     );
   },
 );
 
-Input.propTypes = {
+UserInfoTextInput.propTypes = {
   onSubmitEditing: PropTypes.func,
   returnKeyType: PropTypes.oneOf(["done", "next"]),
   numericOnly: PropTypes.bool,
 };
 
-export default Input;
+export default UserInfoTextInput;

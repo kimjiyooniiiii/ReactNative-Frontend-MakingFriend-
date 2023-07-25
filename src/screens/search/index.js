@@ -1,4 +1,4 @@
-import Meal from "./Meal";
+import MealSelect from "./MealSelect";
 import MealResult from "./MealResult";
 
-export { Meal, MealResult };
+export { MealSelect, MealResult };

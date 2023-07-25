@@ -5,11 +5,11 @@ import {
   InputBox,
   CheckButton,
   OptionName,
+  DateTimePick,
   Line,
 } from "../../components/search";
 import { theme } from "./theme";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { DateTimePick } from "../../components";
 import { useNavigation } from "@react-navigation/native";
 
 const Container = styled.View`
@@ -33,7 +33,7 @@ const TimeContainer = styled.View`
 `;
 
 // ---------------------------------------------------------------
-const Meal = () => {
+const MealSelect = () => {
   const navigation = useNavigation();
 
   const [schoolFoodStates, setSchoolFoodStates] = useState(
@@ -282,4 +282,4 @@ const Meal = () => {
   );
 };
 
-export default Meal;
+export default MealSelect;
