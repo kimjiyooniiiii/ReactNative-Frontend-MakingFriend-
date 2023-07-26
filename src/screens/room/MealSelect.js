@@ -7,7 +7,7 @@ import {
   OptionName,
   DateTimePick,
   Line,
-} from "../../components/search";
+} from "../../components/room2";
 import { theme } from "./theme";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -193,7 +193,8 @@ const MealSelect = () => {
 
     // ---------------------------------------------------------------
     // 백엔드랑 통신코드
-    const url = `http://172.30.1.66:8088/board/searchByKeyword?${queryString}`;
+    const url = `http://172.30.1.22:8088/room/searchByKeyword?${queryString}`;
+    const dataArray = [];
 
     fetch(url)
       .then((response) => {
@@ -207,7 +208,8 @@ const MealSelect = () => {
         // 성공
         //console.log(JSON.stringify(data));
 
-        const dataArray = Object.values(data);
+        dataArray.push(...Object.values(data));
+        console.log(JSON.stringify(data));
         navigation.navigate("MealResult", { data: dataArray });
       })
       .catch((error) => {

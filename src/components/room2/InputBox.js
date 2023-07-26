@@ -1,7 +1,6 @@
 import styled, { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
 import React, { useState } from "react";
-import { clickButton } from "../../../assets/search";
 
 const Container = styled.View`
   flex-direction: row;
@@ -54,7 +53,11 @@ const InputBox = ({ onPress }) => {
           <TextInput value={keyword} onChangeText={handleTextChange} />
         </ImageContainer>
         <SubmitButton onPress={handle}>
-          <ButtonImage source={clickButton} />
+          <ButtonImage
+            source={{
+              uri: "https://firebasestorage.googleapis.com/v0/b/rudoori.appspot.com/o/search%2FclickButton.png?alt=media",
+            }}
+          />
         </SubmitButton>
       </Container>
     </ThemeProvider>

@@ -13,15 +13,20 @@ const TextInput = styled.TextInput`
   border-radius: 10px;
 `;
 
-const InputBox = ({ height, width, placeholder }) => {
+const InputBox = ({ height, width, placeholder, onKeywordChange }) => {
   const [keyword, setKeyword] = useState("");
+
+  const handleKeywordChange = (value) => {
+    setKeyword(value);
+    onKeywordChange(value);
+  };
 
   return (
     <ThemeProvider theme={theme}>
       <Container>
         <TextInput
           value={keyword}
-          onChangeText={setKeyword}
+          onChangeText={handleKeywordChange}
           height={height}
           width={width}
           placeholder={placeholder}
