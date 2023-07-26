@@ -5,6 +5,7 @@ import { theme } from "./theme";
 import { useRoute } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native";
 
 const Container = styled.View`
   background-color: ${({ theme }) => theme.background};
@@ -62,9 +63,15 @@ const PostContent = styled.Text`
 `;
 
 const MealResult = () => {
-  const navigation = useNavigation();
+  const mealResultNavigation = useNavigation();
+  const roomDetailsNavigation = useNavigation();
   const route = useRoute();
   const dataArray = route.params?.data;
+
+  // 방 내용 상세보기
+  const roomDetails = (data) => {
+    roomDetailsNavigation.navigate("EnterRoom", { data: data });
+  };
 
   //다른 모임 방 다시 검색
   const searchAnotherRoom = (keyword) => {
@@ -98,7 +105,7 @@ const MealResult = () => {
 
         dataArray.push(...Object.values(data));
         console.log(JSON.stringify(data));
-        navigation.navigate("MealResult", { data: dataArray });
+        mealResultNavigation.navigate("MealResult", { data: dataArray });
       })
       .catch((error) => {
         console.error(error);
@@ -117,18 +124,20 @@ const MealResult = () => {
           </InputBoxContainer>
 
           {dataArray.map((data, index) => (
-            <PreviewContainer key={index}>
-              <FirstLineContainer>
-                <PostTitle>{data.roomName}</PostTitle>
-                <Date>{data.createdDt}</Date>
-              </FirstLineContainer>
+            <TouchableOpacity key={index} onPress={() => roomDetails(data)}>
+              <PreviewContainer>
+                <FirstLineContainer>
+                  <PostTitle>{data.roomName}</PostTitle>
+                  <Date>{data.createdDt}</Date>
+                </FirstLineContainer>
 
-              <PostContent>
-                {data.introduce.length > 20
-                  ? `${data.introduce.slice(0, 20)}...`
-                  : data.introduce}
-              </PostContent>
-            </PreviewContainer>
+                <PostContent>
+                  {data.introduce.length > 20
+                    ? `${data.introduce.slice(0, 20)}...`
+                    : data.introduce}
+                </PostContent>
+              </PreviewContainer>
+            </TouchableOpacity>
           ))}
         </Container>
       </KeyboardAwareScrollView>

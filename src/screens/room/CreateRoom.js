@@ -4,7 +4,7 @@ import { theme } from "./theme";
 import { InputBox, SubmitButton } from "../../components/room";
 import SelectDropdown from "react-native-select-dropdown";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { Image, View, Text, Button } from "react-native";
+import { Image, View, Text, Button, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import MealSelect from "./MealSelect";
@@ -121,6 +121,8 @@ const CreateRoom = () => {
       .catch((error) => {
         console.error("POST 요청 실패:");
       });
+
+    alert("방 생성 완료!");
   };
 
   const navigation = useNavigation();

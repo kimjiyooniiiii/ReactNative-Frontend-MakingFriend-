@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { CreateRoom, MealSelect, MealResult } from "../screens/room";
+import { CreateRoom, MealSelect, MealResult, EnterRoom } from "../screens/room";
 
 const Stack = createStackNavigator();
 
@@ -21,6 +21,12 @@ const Room = () => {
       <Stack.Screen
         name="MealResult"
         component={MealResult}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="EnterRoom"
+        component={EnterRoom}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
