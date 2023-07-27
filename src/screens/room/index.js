@@ -1,6 +1,20 @@
+import RoomsMain from "./RoomsMain";
 import CreateRoom from "./CreateRoom";
-import MealResult from "./MealResult";
-import MealSelect from "./MealSelect";
 import EnterRoom from "./EnterRoom";
 
-export { CreateRoom, MealSelect, MealResult, EnterRoom };
+import MealResult from "./MealResult";
+import MealSelect from "./MealSelect";
+import StudySelect from "./StudySelect";
+import ExerciseSelect from "./ExerciseSelect";
+import ForeignerSelect from "./ForeignerSelect";
+
+export {
+  StudySelect,
+  CreateRoom,
+  MealSelect,
+  MealResult,
+  EnterRoom,
+  RoomsMain,
+  ExerciseSelect,
+  ForeignerSelect,
+};

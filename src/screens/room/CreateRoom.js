@@ -86,7 +86,7 @@ const CreateRoom = () => {
 
   // 입력된 방 정보들 json 변환
   const postToBackend = () => {
-    const apiUrl = `http://172.30.1.22:8088/room/create`;
+    const apiUrl = `http://172.30.1.7:8088/room/create`;
 
     // 입력값이 하나라도 없으면 알림
     if (!roomName || !membersSelect || !introduce || !categorySelect) {

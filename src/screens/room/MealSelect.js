@@ -193,7 +193,7 @@ const MealSelect = () => {
 
     // ---------------------------------------------------------------
     // 백엔드랑 통신코드
-    const url = `http://172.30.1.22:8088/room/searchByKeyword?${queryString}`;
+    const url = `http://172.30.1.7:8088/room/searchMeal?${queryString}`;
     const dataArray = [];
 
     fetch(url)
@@ -274,9 +274,9 @@ const MealSelect = () => {
           </CheckContainer>
 
           <TimeContainer>
-            <OptionName text={"시간설정"} />
+            {/* <OptionName text={"시간설정"} />
             <Line />
-            <DateTimePick />
+            <DateTimePick /> */}
           </TimeContainer>
         </Container>
       </ThemeProvider>

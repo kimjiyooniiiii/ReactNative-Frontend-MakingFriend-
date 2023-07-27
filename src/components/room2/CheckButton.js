@@ -7,14 +7,15 @@ const Container = styled.View`
   padding-left: 2px;
   padding-right: 2px;
   padding-top: 8px;
+  margin: 2px 2px 2px 2px;
 `;
 
 const Button = styled(TouchableOpacity)`
   background-color: ${({ theme, isChecked }) =>
     isChecked ? theme.checkedColor : theme.uncheckedColor};
-  width: 70px;
-  height: 30px;
-  border-radius: 10px;
+  width: 100px;
+  height: 50px;
+  border-radius: 30px;
   align-items: center;
   justify-content: center;
 `;
@@ -22,7 +23,7 @@ const Button = styled(TouchableOpacity)`
 const ButtonText = styled(Text)`
   color: black;
   text-align: center;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: bold;
 `;
 

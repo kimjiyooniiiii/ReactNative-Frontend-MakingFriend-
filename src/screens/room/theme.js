@@ -5,6 +5,7 @@ const Colors = {
   skyblue1: "#E3F2FD",
   grey1: "#808080",
   skyblue3: "#B4D8E7",
+  skyblue4: "#DCEBFF",
 };
 
 export const theme = {
@@ -17,4 +18,7 @@ export const theme = {
   grey: Colors.grey1,
   introduceBackground: Colors.skyblue2,
   buttonBackground: Colors.skyblue3,
+
+  //RoomMain
+  menuBackground: Colors.skyblue4,
 };

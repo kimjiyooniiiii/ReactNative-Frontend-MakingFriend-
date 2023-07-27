@@ -62,8 +62,8 @@ const PostContent = styled.Text`
   padding-left: 8px;
 `;
 
-const MealResult = () => {
-  const mealResultNavigation = useNavigation();
+const StudyResult = () => {
+  const studyResultNavigation = useNavigation();
   const roomDetailsNavigation = useNavigation();
   const route = useRoute();
   const dataArray = route.params?.data;
@@ -89,7 +89,7 @@ const MealResult = () => {
 
     // ---------------------------------------------------------------
     // 백엔드랑 통신코드
-    const url = `http://172.30.1.7:8088/room/searchMeal?${queryString}`;
+    const url = `http://172.30.1.45:8088/room/searchByKeyword?${queryString}`;
     const dataArray = [];
 
     fetch(url)
@@ -105,7 +105,7 @@ const MealResult = () => {
 
         dataArray.push(...Object.values(data));
         console.log(JSON.stringify(data));
-        mealResultNavigation.navigate("MealResult", { data: dataArray });
+        studyResultNavigation.navigate("StudyResult", { data: dataArray });
       })
       .catch((error) => {
         console.error(error);
@@ -117,7 +117,7 @@ const MealResult = () => {
       <KeyboardAwareScrollView style={{ backgroundColor: "white" }}>
         <Container>
           <TitleContainer>
-            <Title title="밥 먹을 두리" />
+            <Title title="스터디 할 두리" />
           </TitleContainer>
           <InputBoxContainer>
             <InputBox onPress={searchAnotherRoom} />
@@ -145,4 +145,4 @@ const MealResult = () => {
   );
 };
 
-export default MealResult;
+export default StudyResult;
