@@ -1,4 +1,5 @@
 import React from "react";
+import "react-native-gesture-handler";
 import styled, { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
 import { StatusBar, SafeAreaView } from "react-native";
