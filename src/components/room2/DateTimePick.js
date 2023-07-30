@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Platform, ImageBackground } from "react-native";
+import { Platform } from "react-native";
 import styled, { ThemeProvider } from "styled-components/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { timeBackground } from "../../assets/search";
+import { theme } from "./theme";
 
 const Container = styled.View`
   justify-content: center;
@@ -10,6 +10,7 @@ const Container = styled.View`
 `;
 
 const SubContainer = styled.View`
+  background-color: ${({ theme }) => theme.dateTimeColor};
   align-items: center;
   flex-direction: row;
   padding-bottom: 10px;
@@ -60,65 +61,49 @@ const DateTimePick = () => {
   };
 
   return (
-    <Container>
-      <SubContainer>
-        <CustomButton onPress={showDatepicker}>
-          <ImageBackground
-            source={timeBackground}
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              resizeMode: "contain",
-            }}
-          >
+    <ThemeProvider theme={theme}>
+      <Container>
+        <SubContainer>
+          <CustomButton onPress={showDatepicker}>
             <ButtonText style={{ textAlign: "center" }}>날짜 선택</ButtonText>
-          </ImageBackground>
-        </CustomButton>
-        <DateText>
-          {date.getFullYear()}년 {date.getMonth() + 1}월 {date.getDate()}일
-        </DateText>
-      </SubContainer>
+          </CustomButton>
+          <DateText>
+            {date.getFullYear()}년 {date.getMonth() + 1}월 {date.getDate()}일
+          </DateText>
+        </SubContainer>
 
-      <SubContainer>
-        <CustomButton onPress={showTimepicker}>
-          <ImageBackground
-            source={timeBackground}
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              resizeMode: "contain",
-            }}
-          >
+        <SubContainer>
+          <CustomButton onPress={showTimepicker}>
             <ButtonText style={{ textAlign: "center" }}>시간 선택</ButtonText>
-          </ImageBackground>
-        </CustomButton>
-        <DateText>
-          {date.getHours()}시 {date.getMinutes()}분
-        </DateText>
-      </SubContainer>
+          </CustomButton>
+          <DateText>
+            {date.getHours()}시 {date.getMinutes()}분
+          </DateText>
+        </SubContainer>
 
-      {showDatePicker && (
-        <DateTimePicker
-          testID="datePicker"
-          value={date}
-          mode="date"
-          is24Hour={true}
-          display="default"
-          onChange={handleDateChange}
-        />
-      )}
+        {showDatePicker && (
+          <DateTimePicker
+            testID="datePicker"
+            value={date}
+            mode="date"
+            is24Hour={true}
+            display="default"
+            onChange={handleDateChange}
+          />
+        )}
 
-      {showTimePicker && (
-        <DateTimePicker
-          testID="timePicker"
-          value={date}
-          mode="time"
-          is24Hour={true}
-          display="default"
-          onChange={handleTimeChange}
-        />
-      )}
-    </Container>
+        {showTimePicker && (
+          <DateTimePicker
+            testID="timePicker"
+            value={date}
+            mode="time"
+            is24Hour={true}
+            display="default"
+            onChange={handleTimeChange}
+          />
+        )}
+      </Container>
+    </ThemeProvider>
   );
 };
 

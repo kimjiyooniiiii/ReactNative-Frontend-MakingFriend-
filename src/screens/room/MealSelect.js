@@ -5,11 +5,12 @@ import {
   InputBox,
   CheckButton,
   OptionName,
+  DateTimePick,
   Line,
-} from "../../components/search";
+} from "../../components/room2";
 import { theme } from "./theme";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { DateTimePick } from "../../components";
+import { useNavigation } from "@react-navigation/native";
 
 const Container = styled.View`
   justify-content: flex-start;
@@ -31,7 +32,10 @@ const TimeContainer = styled.View`
   margin: 5px;
 `;
 
-const Meal = () => {
+// ---------------------------------------------------------------
+const MealSelect = () => {
+  const navigation = useNavigation();
+
   const [schoolFoodStates, setSchoolFoodStates] = useState(
     Array(6).fill(false),
   );
@@ -68,7 +72,7 @@ const Meal = () => {
   };
 
   // 검색 버튼 누르면
-  const handleInputBoxPress = () => {
+  const handleInputBoxPress = (keyword) => {
     // 선택한 인덱스만 필터링
     const selectedSchoolFood = schoolFoodStates
       .map((state, index) => ({ checked: state, index }))
@@ -119,20 +123,30 @@ const Meal = () => {
 
     const menuResult = selectedMenu.map((id) => menuMap[id]);
 
+    // ---------------------------------------------------------------
     // Backend로 보낼 객체 생성
     const sendData = {};
+    const filterArray = [];
     let count = 1;
+
+    if (keyword != "") {
+      sendData["param" + count] = keyword;
+      filterArray.push(keyword);
+      count++;
+    }
 
     for (let i = 0; i < schoolFoodResult.length; i++) {
       if (schoolFoodResult[i] === "전체") {
         const keys = Object.keys(schoolFoodMap);
         for (let j = 1; j < keys.length; j++) {
           sendData["param" + count] = schoolFoodMap[keys[j]];
+          filterArray.push(schoolFoodMap[keys[j]]);
           count++;
         }
         break;
       } else {
         sendData["param" + count] = schoolFoodResult[i];
+        filterArray.push(schoolFoodResult[i]);
         count++;
       }
     }
@@ -142,11 +156,13 @@ const Meal = () => {
         const keys = Object.keys(outFoodMap);
         for (let j = 1; j < keys.length; j++) {
           sendData["param" + count] = outFoodMap[keys[j]];
+          filterArray.push(outFoodMap[keys[j]]);
           count++;
         }
         break;
       } else {
         sendData["param" + count] = outFoodResult[i];
+        filterArray.push(outFoodResult[i]);
         count++;
       }
     }
@@ -156,16 +172,18 @@ const Meal = () => {
         const keys = Object.keys(menuMap);
         for (let j = 1; j < keys.length; j++) {
           sendData["param" + count] = menuMap[keys[j]];
+          filterArray.push(menuMap[keys[j]]);
           count++;
         }
         break;
       } else {
         sendData["param" + count] = menuResult[i];
+        filterArray.push(menuResult[i]);
         count++;
       }
     }
-    console.log(sendData);
 
+    // url에 포함할 파라미터 작성
     const queryString = Object.keys(sendData)
       .map(
         (key) =>
@@ -173,18 +191,26 @@ const Meal = () => {
       )
       .join("&");
 
-    //const url = `http://192.168.123.113/board/searchByKeyword?${queryString}`;
-    const url = `http://192.168.123.125:8088/auth/aa`;
+    // ---------------------------------------------------------------
+    // 백엔드랑 통신코드
+    const url = `http://172.30.1.7:8088/room/searchMeal?${queryString}`;
+    const dataArray = [];
 
     fetch(url)
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.status);
         }
+        // JSON 데이터를 파싱하여 다음 then 블록으로 전달
         return response.json();
       })
       .then((data) => {
-        console.log("성공 : " + JSON.stringify(data));
+        // 성공
+        //console.log(JSON.stringify(data));
+
+        dataArray.push(...Object.values(data));
+        console.log(JSON.stringify(data));
+        navigation.navigate("MealResult", { data: dataArray });
       })
       .catch((error) => {
         console.error(error);
@@ -196,7 +222,7 @@ const Meal = () => {
       <ThemeProvider theme={theme}>
         <Container>
           <Title title="밥 먹을 두리" />
-          <InputBox onPress={handleInputBoxPress} />
+          <InputBox onPress={(keyword) => handleInputBoxPress(keyword)} />
 
           <OptionName text={"학식"} />
           <Line />
@@ -248,9 +274,9 @@ const Meal = () => {
           </CheckContainer>
 
           <TimeContainer>
-            <OptionName text={"시간설정"} />
+            {/* <OptionName text={"시간설정"} />
             <Line />
-            <DateTimePick />
+            <DateTimePick /> */}
           </TimeContainer>
         </Container>
       </ThemeProvider>
@@ -258,4 +284,4 @@ const Meal = () => {
   );
 };
 
-export default Meal;
+export default MealSelect;

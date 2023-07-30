@@ -5,7 +5,6 @@ import { theme } from "./theme";
 const Container = styled.View`
   padding-top: 16px;
   padding-left: 2px;
-  background-color: ${({ theme }) => theme.title_background};
 `;
 
 const Style = styled.Text`

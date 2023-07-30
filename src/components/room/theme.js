@@ -1,7 +1,10 @@
 const Colors = {
   white: "#ffffff",
   black: "#111111",
-  skyblue: "#CEECF5",
+  Yellow: "#EAE9CF",
+  steelBlue: "#6B9FEA",
+  mint: "#A2E1DB",
+  mintBlue: "#55CBCD",
 };
 
 export const theme = {
@@ -10,8 +13,6 @@ export const theme = {
   title_text: Colors.black,
 
   //InputBox
-  box_color: Colors.skyblue,
-
-  //CheckBox
-  button: Colors.skyblue,
+  box_color: Colors.mint,
+  button_color: Colors.mintBlue,
 };
