@@ -7,7 +7,7 @@ import Profile from "./Profile";
 const Navigation = () => {
   return (
     <NavigationContainer>
-      {/* <Auth /> */}
+      {/* <Auth />*/}
       <Room />
       {/* <Profile />*/}
     </NavigationContainer>
