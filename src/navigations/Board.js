@@ -7,13 +7,11 @@ const Stack = createStackNavigator();
 
 const Board = () => {
   return (
-    <NavigationContainer>
       <Stack.Navigator initialRouteName="MainGet">
         <Stack.Screen name="MainGet" component={MainGet} options={{ headerShown: false }} />
         <Stack.Screen name="Write" component={Write} options={{ headerShown: false }} />
         <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }} />
       </Stack.Navigator>
-    </NavigationContainer>
   );
 };
 
