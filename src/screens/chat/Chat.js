@@ -1,13 +1,16 @@
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import styled from "styled-components/native";
-import { Input } from "../../components/common";
+import { Button, Input } from "../../components/common";
 import { GiftedChat, Send } from "react-native-gifted-chat";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LOGO } from "@env";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { Title } from "../../components/room2";
 
 const Container = styled.View`
   flex: 1;
+  width: 100%;
   background-color: ${({ theme }) => theme.background};
 `;
 
@@ -63,7 +66,6 @@ const Chat = ({ route }) => {
   console.log("chat component : ", info);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
-
 
   return (
     <Container>
