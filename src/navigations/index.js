@@ -12,8 +12,8 @@ const Navigation = () => {
       {/* <Auth /> */}
       {/* <Room /> */}
       {/* <Profile /> */}
-      <Board/>
-      {/* <Main /> */}
+      {/* <Board/> */}
+      <Main />
     </NavigationContainer>
   );
 };
