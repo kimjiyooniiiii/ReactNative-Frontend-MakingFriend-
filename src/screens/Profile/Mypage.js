@@ -4,8 +4,8 @@ import user1 from "./data/user1.json";
 import { SafeAreaView, Platform } from "react-native";
 import { BigButton } from "../../components/profile";
 
-// import { UserImage, UserInfoText } from "../../components/profile";
-// import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { UserImage, UserInfoText } from "../../components/profile";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const Container = styled.View`
   flex: 1;
@@ -34,7 +34,7 @@ const DEFAULT_PHOTO =
   "https://firebasestorage.googleapis.com/v0/b/rn-chat-15e2f.appspot.com/o/img.png?alt=media&token=7677bf2d-0a84-4a2f-835b-eacfbca64e4a";
 
 const Mypage = ({ navigation }) => {
-  // const [photo, setPhoto] = useState(DEFAULT_PHOTO);
+  const [photo, setPhoto] = useState(DEFAULT_PHOTO);
 
   return (
     <KeyboardAwareScrollView>
