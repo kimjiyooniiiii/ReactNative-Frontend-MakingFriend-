@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ThemeContext } from "styled-components/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
-import { Main, ChatList, BoardList, Profile } from "../screens/main";
+import { Main, ChatList, BoardList } from "../screens/main";
+import Profile from "./Profile";
+import Room from "./Room";
 
 const Tab = createBottomTabNavigator(); //Tab 네비 생성
 
 const Home = ({ navigation, route }) => {
+  const theme = useContext(ThemeContext);
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Tab.Screen
         name="메인"
         component={Main}
@@ -19,7 +26,7 @@ const Home = ({ navigation, route }) => {
       />
       <Tab.Screen
         name="채팅"
-        component={ChatList}
+        component={Room}
         options={{
           tabBarIcon: () => <MaterialIcons name="chat-bubble" size={26} />,
         }}

@@ -37,4 +37,6 @@ export const theme = {
   //tab navigation
   tabBtnActive: Colors.skyblue,
   tabBtnInactive: Colors.grey,
+
+
 };
