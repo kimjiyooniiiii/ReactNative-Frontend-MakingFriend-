@@ -6,7 +6,7 @@ import styled from "styled-components/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { API_URL } from "@env";
-// import { UserContext } from "../../contexts";
+import { UserContext } from "../../contexts";
 const Container = styled.View`
   flex: 1;
   justify-content: center;
@@ -98,6 +98,7 @@ const Signup = ({ navigation }) => {
   const refGender = useRef(null);
   const refPhoneNumber = useRef(null);
 
+  const { setTokens } = useContext(UserContext);
   // const { accessTokenValue, refreshTokenValue } = useContext(UserContext);
   const _handleSignupButtonPress = () => {
     console.log(JSON.stringify(userInput));
@@ -109,26 +110,40 @@ const Signup = ({ navigation }) => {
       body: JSON.stringify(userInput),
     })
       .then((res) => {
-        console.log(res);
+        console.log(JSON.stringify(res));
         return res.json();
       })
       .then((res) => {
-        // console.log("AccessToken: " + res.accessToken);
-        // console.log("RefreshToken: " + res.accessToken);
+        console.log(res);
+        console.log("AccessToken: " + JSON.stringify(res.accessToken));
+        console.log("RefreshToken: " + JSON.stringify(res.refreshToken));
+        // console.log("db accessToken: " + res.data.accessToken);
+        // console.log("db refreshToken: " + res.data.refreshToken);
+
+        setTokens(res.accessToken, res.refreshToken); // 토큰 설정
+
+        // accessTokenValue.setAccessTokenValue(res.accessToken);
+        // refreshTokenValue.setRefreshTokenValue(res.refreshToken);
+
+        // console.log("AccessContext: " + accessTokenValue.accessToken);
+        // console.log("RefreshContext: " + refreshTokenValue.refreshToken);
+        // navigation.navigate("Main");
+        // navigation.navigate("Main", {
+        //   screen: "home",
+        // });
         navigation.navigate("Login");
       })
       .catch((error) => {
         console.error("Error during signup:", error);
-        // 에러 처리를 원하는 대로 진행하세요.
       });
   };
+
   const _handleUserInputChange = (fieldName, value) => {
     // console.log(fieldName + ": " + value);
     setUserInput({
       ...userInput,
       [fieldName]: value,
     });
-    // console.log(fieldName + ": " + value);
   };
 
   return (

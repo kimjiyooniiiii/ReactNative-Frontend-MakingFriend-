@@ -43,7 +43,8 @@ const Login = ({ navigation }) => {
     password: "",
   });
 
-  const { accessTokenValue, refreshTokenValue } = useContext(UserContext);
+  const { setTokens } = useContext(UserContext);
+  // const { accessTokenValue, refreshTokenValue } = useContext(UserContext);
   // console.log(refreshTokenValue);
   const _handleLoginButtonPress = () => {
     console.log(JSON.stringify(userInput));
@@ -55,15 +56,16 @@ const Login = ({ navigation }) => {
       body: JSON.stringify(userInput),
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         return res.json();
       })
       .then((res) => {
         // console.log("db accessToken: " + res.data.accessToken);
         // console.log("db refreshToken: " + res.data.refreshToken);
 
-        accessTokenValue.setAccessTokenValue(res.data.accessToken);
-        refreshTokenValue.setRefreshTokenValue(res.data.refreshToken);
+        // accessTokenValue.setAccessTokenValue(res.data.accessToken);
+        // refreshTokenValue.setRefreshTokenValue(res.data.refreshToken);
+        setTokens(res.data.accessToken, res.data.refreshToken);
 
         // console.log("AccessContext: " + accessTokenValue.accessToken);
         // console.log("RefreshContext: " + refreshTokenValue.refreshToken);
@@ -72,6 +74,9 @@ const Login = ({ navigation }) => {
         //   screen: "home",
         // });
         navigation.navigate("Main");
+      })
+      .catch((error) => {
+        console.error("Error during login:", error);
       });
   };
 
