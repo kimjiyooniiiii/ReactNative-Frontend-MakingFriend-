@@ -38,10 +38,12 @@ const DEFAULT_PHOTO =
 
 const Mypage = ({ navigation }) => {
   const [photo, setPhoto] = useState(DEFAULT_PHOTO);
-  const { accessTokenValue } = useContext(UserContext);
-  const { accessToken, setAccessTokenValue } = accessTokenValue;
+  // const { accessTokenValue } = useContext(UserContext);
+  // const { accessToken, setAccessTokenValue } = accessTokenValue;
+  const { user } = useContext(UserContext);
 
-  console.log("MyPageAccessContext: " + accessToken);
+  console.log("MyPageAccessContext: " + user.accessToken);
+  console.log("MyPageRefreshContext: " + user.refreshToken);
 
   // useEffect(() => {
   //   fetch(`${API_URL}/user`, {
