@@ -133,13 +133,13 @@ const Date = styled.Text`
 
 const EnterRoom = ({ navigation }) => {
   const route = useRoute();
-  
+
   const data = route.params?.data;
   const roomName = data?.roomName;
   const numbers = data?.numbers;
   const createdDt = data?.createdDt;
   const introduce = data?.introduce;
-  console.log({ data });
+  // console.log({ data });
   return (
     <ThemeProvider theme={theme}>
       <Container>

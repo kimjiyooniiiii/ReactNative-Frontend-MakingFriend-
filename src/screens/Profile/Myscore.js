@@ -12,9 +12,9 @@ const Container = styled.View`
 const Label = styled.Text`
   font-size: 18px;
   margin-bottom: 6px;
-  font-weight: bold;
   color: ${({ theme }) => theme.label};
 `;
+// font-weight: bold;
 
 const Myscore = () => {
   const [reviewList, setReviewList] = useState([]);

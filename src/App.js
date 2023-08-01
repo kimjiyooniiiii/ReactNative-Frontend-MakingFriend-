@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "react-native-gesture-handler";
 import styled, { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
 import { StatusBar, SafeAreaView } from "react-native";
 import Navigation from "./navigations";
+import { UserProvider } from "./contexts";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -11,6 +13,7 @@ const Container = styled.SafeAreaView`
   align-items: center;
   justify-content: flex-start;
 `;
+
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
@@ -22,8 +25,10 @@ const App = () => {
           backgroundColor: theme.background,
         }}
       >
-        <StatusBar />
-        <Navigation />
+        <UserProvider>
+          <StatusBar />
+          <Navigation />
+        </UserProvider>
       </SafeAreaView>
     </ThemeProvider>
   );

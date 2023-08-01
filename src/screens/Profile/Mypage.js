@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import styled from "styled-components/native";
 import user1 from "./data/user1.json";
 import { SafeAreaView, Platform } from "react-native";
@@ -6,6 +6,9 @@ import { BigButton } from "../../components/profile";
 
 import { UserImage, UserInfoText } from "../../components/profile";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
+import { UserContext } from "../../contexts";
+import { API_URL } from "@env";
 
 const Container = styled.View`
   flex: 1;
@@ -35,6 +38,27 @@ const DEFAULT_PHOTO =
 
 const Mypage = ({ navigation }) => {
   const [photo, setPhoto] = useState(DEFAULT_PHOTO);
+  const { accessTokenValue } = useContext(UserContext);
+  const { accessToken, setAccessTokenValue } = accessTokenValue;
+
+  console.log("MyPageAccessContext: " + accessToken);
+
+  // useEffect(() => {
+  //   fetch(`${API_URL}/user`, {
+  //     headers: {
+  //       Authorization: `Bearer ${accessTokenValue.accessToken}`,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       console.log("========res1==========");
+  //       console.log(res);
+  //       return res.json();
+  //     })
+  //     .then((res) => {
+  //       console.log("========res2==========");
+  //       console.log(res);
+  //     });
+  // }, [accessTokenValue.accessToken]);
 
   return (
     <KeyboardAwareScrollView>

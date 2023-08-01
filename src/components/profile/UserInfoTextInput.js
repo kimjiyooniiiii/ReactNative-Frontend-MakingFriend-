@@ -18,9 +18,9 @@ const StyledInput = styled.TextInput`
 
 const Label = styled.Text`
   font-size: 18px;
-  font-weight: 60;
   color: ${({ theme }) => theme.label};
 `;
+// font-weight: 60;
 const UserInfoTextInput = forwardRef(
   (
     {

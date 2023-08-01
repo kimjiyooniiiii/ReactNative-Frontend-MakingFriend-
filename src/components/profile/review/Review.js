@@ -15,9 +15,9 @@ const ItemTextContainer = styled.View`
 `;
 const ItemTitle = styled.Text`
   font-size: 20px;
-  font-weight: 600;
   color: ${({ theme }) => theme.listDescription};
 `;
+// font-weight: 600;
 const ItemDesc = styled.Text`
   font-size: 16px;
   margin-top: 5px;
