@@ -18,9 +18,10 @@ const UserProvider = ({ children }) => {
 
   const setUserId = async (userId) => {
     try {
-      // console.log("setUserId: " + userId);
-      await AsyncStorage.setItem("userId", userId);
-      setUser({ userId });
+      if (userId) {
+        await AsyncStorage.setItem("userId", userId);
+        setUser((prev) => ({ ...prev, userId: userId }));
+      }
     } catch (error) {
       console.error("Error setting userId:", error);
     }
@@ -31,28 +32,32 @@ const UserProvider = ({ children }) => {
       if (accessToken && refreshToken) {
         await AsyncStorage.setItem("accessToken", accessToken);
         await AsyncStorage.setItem("refreshToken", refreshToken);
-        setUser({ accessToken, refreshToken });
+        setUser((prev) => ({
+          ...prev,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+        }));
       }
     } catch (error) {
       console.error("Error setting tokens:", error);
     }
   };
 
-  useEffect(() => {
-    const fetchUserContext = async () => {
-      try {
-        const userId = await AsyncStorage.getItem("userId");
-        const accessToken = await AsyncStorage.getItem("accessToken");
-        const refreshToken = await AsyncStorage.getItem("refreshToken");
-        setUser({ userId, accessToken, refreshToken });
-        // console.log("useeFFECT:" + userId);
-      } catch (error) {
-        console.error("Error fetching fetchUserContext:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUserContext = async () => {
+  //     try {
+  //       const userId = await AsyncStorage.getItem("userId");
+  //       const accessToken = await AsyncStorage.getItem("accessToken");
+  //       const refreshToken = await AsyncStorage.getItem("refreshToken");
+  //       setUser({ userId, accessToken, refreshToken });
+  //       console.log("useeFFECT:" + userId);
+  //     } catch (error) {
+  //       console.error("Error fetching fetchUserContext:", error);
+  //     }
+  //   };
 
-    fetchUserContext();
-  }, []);
+  //   fetchUserContext();
+  // }, []);
 
   return (
     <UserContext.Provider value={{ user, setUserId, setTokens }}>

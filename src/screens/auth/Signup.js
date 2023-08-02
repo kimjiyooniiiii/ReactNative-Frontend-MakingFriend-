@@ -79,16 +79,6 @@ const Signup = ({ navigation }) => {
     phoneNumber: "",
   });
 
-  // const [
-  //   refNickName,
-  //   refUserId,
-  //   refMajor,
-  //   refPassword,
-  //   refEmail,
-  //   refBirthday,
-  //   refGender,
-  //   refPhoneNumber,
-  // ] = Array(8).fill(useRef(null));
   const refNickname = useRef(null);
   const refUserId = useRef(null);
   const refMajor = useRef(null);
@@ -99,7 +89,6 @@ const Signup = ({ navigation }) => {
   const refPhoneNumber = useRef(null);
 
   const { setUserId, setTokens } = useContext(UserContext);
-  // const { accessTokenValue, refreshTokenValue } = useContext(UserContext);
   const _handleSignupButtonPress = () => {
     console.log(JSON.stringify(userInput));
     fetch(`${API_URL}/auth/register`, {
@@ -110,33 +99,11 @@ const Signup = ({ navigation }) => {
       body: JSON.stringify(userInput),
     })
       .then((res) => {
-        // console.log(JSON.stringify(res));
         return res.json();
       })
       .then((res) => {
-        // console.log("db accessToken: " + res.data.accessToken);
-        // console.log("db refreshToken: " + res.data.refreshToken);
-
         setUserId(userInput.userId);
         setTokens(res.accessToken, res.refreshToken);
-        // console.log("Signup =============start=================");
-        // console.log(res);
-        // console.log(userInput);
-        // console.log("userInput.userId: " + userInput.userId);
-        // console.log("userId: " + JSON.stringify(userInput).userId);
-        // console.log("AccessToken: " + JSON.stringify(res.accessToken));
-        // console.log("RefreshToken: " + JSON.stringify(res.refreshToken));
-        // console.log("Signup =============end=================");
-
-        // accessTokenValue.setAccessTokenValue(res.accessToken);
-        // refreshTokenValue.setRefreshTokenValue(res.refreshToken);
-
-        // console.log("AccessContext: " + accessTokenValue.accessToken);
-        // console.log("RefreshContext: " + refreshTokenValue.refreshToken);
-        // navigation.navigate("Main");
-        // navigation.navigate("Main", {
-        //   screen: "home",
-        // });
         navigation.navigate("Login");
       })
       .catch((error) => {

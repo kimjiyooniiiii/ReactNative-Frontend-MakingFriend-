@@ -1,8 +1,9 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import styled from "styled-components/native";
-import user1 from "./data/user1.json";
+// import user1 from "./data/user1.json";
 import { SafeAreaView, Platform } from "react-native";
 import { BigButton } from "../../components/profile";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { UserImage, UserInfoText } from "../../components/profile";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -38,29 +39,29 @@ const DEFAULT_PHOTO =
 
 const Mypage = ({ navigation }) => {
   const [photo, setPhoto] = useState(DEFAULT_PHOTO);
-  // const { accessTokenValue } = useContext(UserContext);
-  // const { accessToken, setAccessTokenValue } = accessTokenValue;
+  // let user1 = null;
   const { user } = useContext(UserContext);
 
-  console.log("MyPageAccessContext: " + user.accessToken);
-  console.log("MyPageRefreshContext: " + user.refreshToken);
+  const [userInfo, setUserInfo] = useState({});
+  // console.log(user.userId);
 
-  // useEffect(() => {
-  //   fetch(`${API_URL}/user`, {
-  //     headers: {
-  //       Authorization: `Bearer ${accessTokenValue.accessToken}`,
-  //     },
-  //   })
-  //     .then((res) => {
-  //       console.log("========res1==========");
-  //       console.log(res);
-  //       return res.json();
-  //     })
-  //     .then((res) => {
-  //       console.log("========res2==========");
-  //       console.log(res);
-  //     });
-  // }, [accessTokenValue.accessToken]);
+  useEffect(() => {
+    fetch(`${API_URL}/user/info?userId=${user.userId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        console.log(JSON.stringify(res.data));
+        setUserInfo(res.data);
+        // user1 = JSON.stringify(res.data);
+        // console.log(user1);
+      });
+  }, [user.accessToken]);
 
   return (
     <KeyboardAwareScrollView>
@@ -68,12 +69,13 @@ const Mypage = ({ navigation }) => {
         <Container>
           <ProfileSectionContainer>
             <UserImage url={photo} />
-            <UserInfoText value={user1.nickName} isNickname={true} />
-            <UserInfoText value={user1.userName} isUsername={true} />
+            <UserInfoText value={userInfo.nickName} isNickname={true} />
+            <UserInfoText value={userInfo.userName} isUsername={true} />
             <ElementContainer>
               <BigButton
                 title="점수 보기"
-                onPress={() => navigation.navigate("Myscore")}
+                onPre
+                ss={() => navigation.navigate("Myscore")}
               />
               <BigButton
                 title="정보 수정"
@@ -81,12 +83,12 @@ const Mypage = ({ navigation }) => {
               />
             </ElementContainer>
           </ProfileSectionContainer>
-          <UserInfoText label="아이디(학번)" value={user1.userId} />
-          <UserInfoText label="학과" value={user1.major} />
-          <UserInfoText label="이메일" value={user1.email} />
-          <UserInfoText label="생일" value={user1.birthday} />
-          <UserInfoText label="성별" value={user1.gender} />
-          <UserInfoText label="전화번호" value={user1.phoneNumber} />
+          <UserInfoText label="아이디(학번)" value={userInfo.userId} />
+          <UserInfoText label="학과" value={userInfo.major} />
+          <UserInfoText label="이메일" value={userInfo.email} />
+          <UserInfoText label="생일" value={userInfo.birthday} />
+          <UserInfoText label="성별" value={userInfo.gender} />
+          <UserInfoText label="전화번호" value={userInfo.phoneNumber} />
         </Container>
       </SafeAreaView>
     </KeyboardAwareScrollView>

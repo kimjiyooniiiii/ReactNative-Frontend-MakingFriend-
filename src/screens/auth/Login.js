@@ -43,6 +43,7 @@ const Login = ({ navigation }) => {
     password: "",
   });
 
+  const user = useContext(UserContext);
   const { setUserId, setTokens } = useContext(UserContext);
   // const { accessTokenValue, refreshTokenValue } = useContext(UserContext);
   // console.log(refreshTokenValue);
@@ -56,35 +57,19 @@ const Login = ({ navigation }) => {
       body: JSON.stringify(userInput),
     })
       .then((res) => {
-        // console.log(res);
         return res.json();
       })
       .then((res) => {
-        // console.log("db accessToken: " + res.data.accessToken);
-        // console.log("db refreshToken: " + res.data.refreshToken);
-
-        // accessTokenValue.setAccessTokenValue(res.data.accessToken);
-        // refreshTokenValue.setRefreshTokenValue(res.data.refreshToken);
-
-        setUserId(userInput.userId);
         setTokens(res.data.accessToken, res.data.refreshToken);
+        setUserId(userInput.userId);
 
-        // console.log("Login =============start=================");
-        // console.log(res);
-        // console.log("userId: " + JSON.stringify(userInput).userId);
-        // console.log("AccessToken: " + JSON.stringify(res.accessToken));
-        // console.log("RefreshToken: " + JSON.stringify(res.refreshToken));
-        // console.log("Login =============end=================");
-        // console.log("AccessContext: " + accessTokenValue.accessToken);
-        // console.log("RefreshContext: " + refreshTokenValue.refreshToken);
-        // navigation.navigate("Main");
-        // navigation.navigate("Main", {
-        //   screen: "home",
-        // });
         navigation.navigate("Main");
       })
       .catch((error) => {
         console.error("Error during login:", error);
+      })
+      .finally(() => {
+        setUserId(userInput.userId);
       });
   };
 
