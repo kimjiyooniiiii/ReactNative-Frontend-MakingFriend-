@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { TouchableOpacity } from "react-native";
 
 const Container = styled.View`
-  margin: 20px;
+  margin: 10px 10px 20px 10px;
   background-color: ${({ theme }) => theme.white};
   padding: 5px 10px 5px 10px;
   justify-content: center;

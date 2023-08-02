@@ -27,11 +27,10 @@ const InfoText = styled.Text`
 
 const NicknameText = styled.Text`
   font-size: 20px;
-  font-weight: bold;
   text-align: center;
   color: ${({ theme }) => theme.label};
 `;
-
+// font-weight: bold;
 const UsernameText = styled.Text`
   font-size: 16px;
   text-align: center;
@@ -40,10 +39,10 @@ const UsernameText = styled.Text`
 
 const Label = styled.Text`
   font-size: 18px;
-  font-weight: 60;
   color: ${({ theme }) => theme.label};
   padding-top: 20px;
 `;
+// font-weight: 60;
 const UserInfoText = ({ label, value, isNickname, isUsername }) => {
   return (
     <Container>

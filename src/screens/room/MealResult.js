@@ -104,7 +104,7 @@ const MealResult = () => {
         // 성공
 
         dataArray.push(...Object.values(data));
-        console.log(JSON.stringify(data));
+        // console.log(JSON.stringify(data));
         mealResultNavigation.navigate("MealResult", { data: dataArray });
       })
       .catch((error) => {

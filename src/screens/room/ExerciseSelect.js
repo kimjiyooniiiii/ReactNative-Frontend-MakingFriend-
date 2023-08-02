@@ -78,7 +78,7 @@ const ExerciseSelect = () => {
       8: "등산",
       9: "복싱",
     };
-    
+
     const Map = {
       title: "밥먹을 두리",
       subTitle: {
@@ -176,7 +176,7 @@ const ExerciseSelect = () => {
         //console.log(JSON.stringify(data));
 
         dataArray.push(...Object.values(data));
-        console.log(JSON.stringify(data));
+        // console.log(JSON.stringify(data));
         navigation.navigate("MealResult", { data: dataArray });
       })
       .catch((error) => {

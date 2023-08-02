@@ -134,11 +134,13 @@ const Date = styled.Text`
 const EnterRoom = ({ navigation }) => {
   const route = useRoute();
 
+
   let data = route.params?.data;
   const roomName = data?.roomName;
   const numbers = data?.numbers;
   const createdDt = data?.createdDt;
   const introduce = data?.introduce;
+
 
   data.id = "537664cc-2748-4f3a-95b0-ed9f8a3af418";
 

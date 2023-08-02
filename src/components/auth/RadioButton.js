@@ -13,9 +13,9 @@ const Button = styled.TouchableOpacity`
   border-radius: 20px;
 `;
 
+// font-weight: bold;
 const RadioLabel = styled.Text`
   font-size: 16px;
-  font-weight: bold;
   color: ${({ theme, isSelected }) =>
     isSelected ? theme.background : theme.text};
 `;
