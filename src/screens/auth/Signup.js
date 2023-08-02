@@ -98,7 +98,7 @@ const Signup = ({ navigation }) => {
   const refGender = useRef(null);
   const refPhoneNumber = useRef(null);
 
-  const { setTokens } = useContext(UserContext);
+  const { setUserId, setTokens } = useContext(UserContext);
   // const { accessTokenValue, refreshTokenValue } = useContext(UserContext);
   const _handleSignupButtonPress = () => {
     console.log(JSON.stringify(userInput));
@@ -110,17 +110,23 @@ const Signup = ({ navigation }) => {
       body: JSON.stringify(userInput),
     })
       .then((res) => {
-        console.log(JSON.stringify(res));
+        // console.log(JSON.stringify(res));
         return res.json();
       })
       .then((res) => {
-        console.log(res);
-        console.log("AccessToken: " + JSON.stringify(res.accessToken));
-        console.log("RefreshToken: " + JSON.stringify(res.refreshToken));
         // console.log("db accessToken: " + res.data.accessToken);
         // console.log("db refreshToken: " + res.data.refreshToken);
 
-        setTokens(res.accessToken, res.refreshToken); // 토큰 설정
+        setUserId(userInput.userId);
+        setTokens(res.accessToken, res.refreshToken);
+        // console.log("Signup =============start=================");
+        // console.log(res);
+        // console.log(userInput);
+        // console.log("userInput.userId: " + userInput.userId);
+        // console.log("userId: " + JSON.stringify(userInput).userId);
+        // console.log("AccessToken: " + JSON.stringify(res.accessToken));
+        // console.log("RefreshToken: " + JSON.stringify(res.refreshToken));
+        // console.log("Signup =============end=================");
 
         // accessTokenValue.setAccessTokenValue(res.accessToken);
         // refreshTokenValue.setRefreshTokenValue(res.refreshToken);

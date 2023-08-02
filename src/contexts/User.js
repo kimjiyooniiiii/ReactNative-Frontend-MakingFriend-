@@ -2,41 +2,60 @@ import React, { useState, useEffect, createContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const UserContext = React.createContext({
-  user: { accessToken: "", refreshToken: "" },
+  user: { userId: "", accessToken: "", refreshToken: "" },
+  setUserId: () => {},
   setTokens: () => {},
   // setAccessToken: () => {},
   // setRefreshToken: () => {},
 });
 
 const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({ accessToken: "", refreshToken: "" });
+  const [user, setUser] = useState({
+    userId: "",
+    accessToken: "",
+    refreshToken: "",
+  });
+
+  const setUserId = async (userId) => {
+    try {
+      // console.log("setUserId: " + userId);
+      await AsyncStorage.setItem("userId", userId);
+      setUser({ userId });
+    } catch (error) {
+      console.error("Error setting userId:", error);
+    }
+  };
 
   const setTokens = async (accessToken, refreshToken) => {
     try {
-      await AsyncStorage.setItem("accessToken", accessToken);
-      await AsyncStorage.setItem("refreshToken", refreshToken);
-      setUser({ accessToken, refreshToken });
+      if (accessToken && refreshToken) {
+        await AsyncStorage.setItem("accessToken", accessToken);
+        await AsyncStorage.setItem("refreshToken", refreshToken);
+        setUser({ accessToken, refreshToken });
+      }
     } catch (error) {
       console.error("Error setting tokens:", error);
     }
   };
 
   useEffect(() => {
-    const fetchTokens = async () => {
+    const fetchUserContext = async () => {
       try {
+        const userId = await AsyncStorage.getItem("userId");
         const accessToken = await AsyncStorage.getItem("accessToken");
         const refreshToken = await AsyncStorage.getItem("refreshToken");
-        setUser({ accessToken, refreshToken });
+        setUser({ userId, accessToken, refreshToken });
+        // console.log("useeFFECT:" + userId);
       } catch (error) {
-        console.error("Error fetching tokens:", error);
+        console.error("Error fetching fetchUserContext:", error);
       }
     };
 
-    fetchTokens();
+    fetchUserContext();
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setTokens }}>
+    <UserContext.Provider value={{ user, setUserId, setTokens }}>
       {children}
     </UserContext.Provider>
   );
