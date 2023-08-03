@@ -90,7 +90,7 @@ const Signup = ({ navigation }) => {
 
   const { setUserIdAndNickname, setTokens } = useContext(UserContext);
   const _handleSignupButtonPress = () => {
-    console.log(JSON.stringify(userInput));
+    // console.log(JSON.stringify(userInput));
     fetch(`${API_URL}/auth/register`, {
       method: "POST",
       headers: {

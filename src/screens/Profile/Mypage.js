@@ -68,6 +68,29 @@ const Mypage = ({ navigation }) => {
       });
   };
 
+  const _handleLogoutButtonPress = () => {
+    // fetch(`${API_URL}/user/logout?userId=${user.userId}`, {
+    fetch(`${API_URL}/user/logout/${user.userId}`, {
+      // fetch(`http://172.20.10.7:8080/user/logout/${user.userId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        // setUserId(userInput.userId);-
+        if (res) {
+          navigation.navigate("Login");
+        }
+      })
+      .catch((error) => {
+        console.error("Error during logout:", error);
+      });
+  };
+
   return (
     <KeyboardAwareScrollView>
       <SafeAreaView>
@@ -85,6 +108,7 @@ const Mypage = ({ navigation }) => {
                 title="정보 수정"
                 onPress={() => navigation.navigate("EditMypage")}
               />
+              <BigButton title="로그아웃" onPress={_handleLogoutButtonPress} />
             </ElementContainer>
           </ProfileSectionContainer>
           <UserInfoText label="아이디(학번)" value={userInfo.userId} />

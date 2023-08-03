@@ -43,12 +43,13 @@ const Login = ({ navigation }) => {
     password: "",
   });
 
-  const user = useContext(UserContext);
   const { setUserIdAndNickname, setTokens } = useContext(UserContext);
   // const { accessTokenValue, refreshTokenValue } = useContext(UserContext);
   // console.log(refreshTokenValue);
+
   const _handleLoginButtonPress = () => {
     console.log(JSON.stringify(userInput));
+    // fetch(`${API_URL}/auth/login`, {
     fetch(`${API_URL}/auth/login`, {
       method: "POST",
       headers: {
