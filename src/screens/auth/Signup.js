@@ -88,7 +88,7 @@ const Signup = ({ navigation }) => {
   const refGender = useRef(null);
   const refPhoneNumber = useRef(null);
 
-  const { setUserId, setTokens } = useContext(UserContext);
+  const { setUserIdAndNickname, setTokens } = useContext(UserContext);
   const _handleSignupButtonPress = () => {
     console.log(JSON.stringify(userInput));
     fetch(`${API_URL}/auth/register`, {
@@ -102,7 +102,8 @@ const Signup = ({ navigation }) => {
         return res.json();
       })
       .then((res) => {
-        setUserId(userInput.userId);
+        // setUserId(userInput.userId);-
+        setUserIdAndNickname(userInput.userId, userInput.nickname);
         setTokens(res.accessToken, res.refreshToken);
         navigation.navigate("Login");
       })

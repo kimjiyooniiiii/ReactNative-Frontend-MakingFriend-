@@ -64,7 +64,7 @@ const EditMypage = ({ navigation }) => {
   // const [photo, setPhoto] = useState(logo);
 
   const [userInfo, setUserInfo] = useState({});
-  const { user } = useContext(UserContext);
+  const { user, setNickname } = useContext(UserContext);
 
   const userGender = userInfo.gender == "M" ? "M" : "F";
 
@@ -77,6 +77,7 @@ const EditMypage = ({ navigation }) => {
   }; // console.log(user.userId);
 
   const [userInput, setUserInput] = useState({});
+
   useEffect(() => {
     fetch(`${API_URL}/user/info/update?userId=${user.userId}`, {
       // fetch(`http://192.168.1.101:8080/user/info/update?userId=${user.userId}`, {
@@ -126,7 +127,8 @@ const EditMypage = ({ navigation }) => {
         return res.json();
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
+        setNickname(userInput.nickname);
         navigation.navigate("Mypage");
       })
       .catch((error) => {
@@ -135,7 +137,7 @@ const EditMypage = ({ navigation }) => {
   };
 
   const _handleUserInputChange = (fieldName, value) => {
-    console.log(fieldName + ": " + value);
+    // console.log(fieldName + ": " + value);
     setUserInput({
       ...userInput,
       [fieldName]: value,

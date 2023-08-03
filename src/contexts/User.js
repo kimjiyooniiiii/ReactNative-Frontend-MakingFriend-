@@ -2,28 +2,41 @@ import React, { useState, useEffect, createContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const UserContext = React.createContext({
-  user: { userId: "", accessToken: "", refreshToken: "" },
-  setUserId: () => {},
+  user: { userId: "", nickname: "", accessToken: "", refreshToken: "" },
+  setUserIdAndNickname: () => {},
+  setNickname: () => {},
   setTokens: () => {},
-  // setAccessToken: () => {},
-  // setRefreshToken: () => {},
 });
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
     userId: "",
+    nickname: "",
     accessToken: "",
     refreshToken: "",
   });
 
-  const setUserId = async (userId) => {
+  // 로그인 회원가입 시 필요
+  const setUserIdAndNickname = async (userId, nickname) => {
     try {
       if (userId) {
         await AsyncStorage.setItem("userId", userId);
-        setUser((prev) => ({ ...prev, userId: userId }));
+        await AsyncStorage.setItem("nickname", nickname);
+        setUser((prev) => ({ ...prev, userId: userId, nickname: nickname }));
       }
     } catch (error) {
-      console.error("Error setting userId:", error);
+      console.error("Error setting setUserIdAndNickname:", error);
+    }
+  };
+
+  // mypage에서 nickname 변경 시 필요
+  const setNickname = async (nickname) => {
+    try {
+      if (nickname) {
+        setUser((prev) => ({ ...prev, nickname: nickname }));
+      }
+    } catch (error) {
+      console.error("Error setting nickname:", error);
     }
   };
 
@@ -60,7 +73,9 @@ const UserProvider = ({ children }) => {
   // }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUserId, setTokens }}>
+    <UserContext.Provider
+      value={{ user, setUserIdAndNickname, setNickname, setTokens }}
+    >
       {children}
     </UserContext.Provider>
   );

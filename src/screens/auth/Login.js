@@ -44,7 +44,7 @@ const Login = ({ navigation }) => {
   });
 
   const user = useContext(UserContext);
-  const { setUserId, setTokens } = useContext(UserContext);
+  const { setUserIdAndNickname, setTokens } = useContext(UserContext);
   // const { accessTokenValue, refreshTokenValue } = useContext(UserContext);
   // console.log(refreshTokenValue);
   const _handleLoginButtonPress = () => {
@@ -61,16 +61,16 @@ const Login = ({ navigation }) => {
       })
       .then((res) => {
         setTokens(res.data.accessToken, res.data.refreshToken);
-        setUserId(userInput.userId);
+        setUserIdAndNickname(userInput.userId, res.data.nickname);
 
         navigation.navigate("Main");
       })
       .catch((error) => {
         console.error("Error during login:", error);
-      })
-      .finally(() => {
-        setUserId(userInput.userId);
       });
+    // .finally(() => {
+    //   setUserId(userInput.userId);
+    // });
   };
 
   const _handleUserInputChange = (fieldName, value) => {
