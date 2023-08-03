@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Auth from "./Auth";
 import Room from "./Room";
 import Profile from "./Profile";
-import Board from "./Board";
+import BoardList from "./BoardList";
 import Main from "./Main";
 
 const Navigation = () => {
@@ -30,7 +30,7 @@ const Navigation = () => {
 
       {/* <Room /> */}
       {/* <Profile /> */}
-      {/* <Board /> */}
+      {/* <BoardList /> */}
       {/* <Main /> */}
     </NavigationContainer>
   );
