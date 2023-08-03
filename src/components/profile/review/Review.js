@@ -27,11 +27,12 @@ const ItemContent = styled.Text`
   font-size: 12px;
 `;
 
-const Review = ({ review: { opponent_nickname, content } }) => {
+const Review = ({ review: { opponentNickname, content, opponentId } }) => {
   return (
     <ItemContainer>
       <ItemTextContainer>
-        <ItemDesc>{opponent_nickname}</ItemDesc>
+        <ItemDesc>{opponentNickname}</ItemDesc>
+        <ItemDesc>(학번: {opponentId})</ItemDesc>
         <ItemContent>{content}</ItemContent>
       </ItemTextContainer>
     </ItemContainer>
