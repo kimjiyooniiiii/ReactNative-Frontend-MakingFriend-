@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import styled from "styled-components/native";
-// import user1 from "./data/user1.json";
 import { SafeAreaView, Platform } from "react-native";
 import { BigButton } from "../../components/profile";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,6 +9,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 import { UserContext } from "../../contexts";
 import { API_URL } from "@env";
+import { useIsFocused } from "@react-navigation/native";
 
 const Container = styled.View`
   flex: 1;
@@ -43,9 +43,14 @@ const Mypage = ({ navigation }) => {
   const { user } = useContext(UserContext);
 
   const [userInfo, setUserInfo] = useState({});
-  // console.log(user.userId);
+  const isFocused = useIsFocused(); // useIsFocused 추가
 
+  // console.log(user.userId);
   useEffect(() => {
+    fetchUserInfo(); // 최초 렌더링 시 사용자 정보를 가져오는 함수 호출
+  }, [user.accessToken, isFocused]); // useEffect의 의존성 배열에 isFocused 추가
+
+  const fetchUserInfo = () => {
     fetch(`${API_URL}/user/info?userId=${user.userId}`, {
       method: "GET",
       headers: {
@@ -56,12 +61,12 @@ const Mypage = ({ navigation }) => {
         return res.json();
       })
       .then((res) => {
-        console.log(JSON.stringify(res.data));
+        // console.log(JSON.stringify(res.data));
         setUserInfo(res.data);
         // user1 = JSON.stringify(res.data);
         // console.log(user1);
       });
-  }, [user.accessToken]);
+  };
 
   return (
     <KeyboardAwareScrollView>
@@ -74,8 +79,7 @@ const Mypage = ({ navigation }) => {
             <ElementContainer>
               <BigButton
                 title="점수 보기"
-                onPre
-                ss={() => navigation.navigate("Myscore")}
+                onPress={() => navigation.navigate("Myscore")}
               />
               <BigButton
                 title="정보 수정"

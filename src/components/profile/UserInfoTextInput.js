@@ -31,6 +31,7 @@ const UserInfoTextInput = forwardRef(
       numericOnly,
       maxLength,
       value,
+      onChangeText,
     },
     ref,
   ) => {
@@ -44,6 +45,7 @@ const UserInfoTextInput = forwardRef(
           returnKeyType={returnKeyType}
           maxLength={maxLength}
           keyboardType={numericOnly ? "numeric" : "default"}
+          onChangeText={onChangeText}
         >
           {value}
         </StyledInput>

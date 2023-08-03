@@ -45,7 +45,7 @@ const ItemIcon = styled(MaterialIcons).attrs(({ theme }) => ({
 // 목록 불러오기
 export const Item = React.memo(
   ({ item: { id, roomName, introduce, createdDt, numbers }, onPress }) => {
-    console.log(roomName);
+    // console.log(roomName);
 
     return (
       <ItemContainer
@@ -68,7 +68,7 @@ export const getItems = async () => {
       method: "GET",
     });
     let items = await response.json();
-    console.log(JSON.stringify(items));
+    // console.log(JSON.stringify(items));
     return items;
   } catch (e) {
     console.log(e.message);
