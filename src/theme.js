@@ -33,4 +33,10 @@ export const theme = {
 
   //image
   imageBackground: Colors.grey,
+
+  //tab navigation
+  tabBtnActive: Colors.skyblue,
+  tabBtnInactive: Colors.grey,
+
+
 };

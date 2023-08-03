@@ -10,12 +10,28 @@ import {
   ExerciseSelect,
   ForeignerSelect,
 } from "../screens/room";
+import { ChatList, Chat } from "../screens/chat";
 
 const Stack = createStackNavigator();
 
 const Room = () => {
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="MealSelect"
+        component={MealSelect}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ChatList"
+        component={ChatList}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Chat2"
+        component={Chat}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="CreateRoom"
         component={CreateRoom}
@@ -25,12 +41,6 @@ const Room = () => {
       <Stack.Screen
         name="RoomsMain"
         component={RoomsMain}
-        options={{ headerShown: false }}
-      />
-
-      <Stack.Screen
-        name="MealSelect"
-        component={MealSelect}
         options={{ headerShown: false }}
       />
 

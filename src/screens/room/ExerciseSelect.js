@@ -78,6 +78,14 @@ const ExerciseSelect = () => {
       8: "등산",
       9: "복싱",
     };
+    
+    const Map = {
+      title: "밥먹을 두리",
+      subTitle: {
+        title: "학식",
+        buttons: ["전체", "후문"],
+      },
+    };
 
     const typeResult = selectedType.map((id) => typeMap[id]);
 

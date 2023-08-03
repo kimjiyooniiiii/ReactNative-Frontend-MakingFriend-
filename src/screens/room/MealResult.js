@@ -89,7 +89,8 @@ const MealResult = () => {
 
     // ---------------------------------------------------------------
     // 백엔드랑 통신코드
-    const url = `http://172.30.1.7:8088/room/searchMeal?${queryString}`;
+    //const url = `http://172.30.1.7:8088/room/searchMeal?${queryString}`;
+    const url = `http://121.187.22.37:8000/room/searchMeal?${queryString}`;
     const dataArray = [];
 
     fetch(url)
