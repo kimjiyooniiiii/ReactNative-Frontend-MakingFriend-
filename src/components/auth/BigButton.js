@@ -19,9 +19,9 @@ const Container = styled.View`
 
 // opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 
+// font-weight: bold;
 const Title = styled.Text`
   font-size: 20px;
-  font-weight: bold;
   color: ${({ theme }) => theme.white};
 `;
 

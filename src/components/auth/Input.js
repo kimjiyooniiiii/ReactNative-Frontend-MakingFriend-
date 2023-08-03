@@ -22,10 +22,9 @@ const StyledInput = styled.TextInput`
 
 const Label = styled.Text`
   font-size: 18px;
-  font-weight: 60;
   color: ${({ theme }) => theme.label};
 `;
-
+// font-weight: 60;
 const Input = forwardRef(
   (
     {
@@ -35,6 +34,7 @@ const Input = forwardRef(
       label,
       numericOnly,
       maxLength,
+      onChangeText,
     },
     ref,
   ) => {
@@ -48,6 +48,7 @@ const Input = forwardRef(
           returnKeyType={returnKeyType}
           maxLength={maxLength}
           keyboardType={numericOnly ? "numeric" : "default"}
+          onChangeText={onChangeText}
         />
       </Container>
     );

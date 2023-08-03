@@ -32,9 +32,9 @@ const List = styled.ScrollView`
   width: ${({ width }) => width - 40}px;
 `;
 
+// font-weight: bold;
 const Label = styled.Text`
   font-size: 18px;
-  font-weight: bold;
   margin-bottom: 6px;
   color: ${({ theme }) => theme.label};
 `;
