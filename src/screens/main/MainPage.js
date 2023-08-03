@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components/native";
-import { Button } from "../../components/common";
+import { Button, FloatButton } from "../../components/common";
 import { FlatList } from "react-native";
 import { ThemeContext } from "styled-components/native";
 import { getItems, Item } from "../../components/common/ChatList";
@@ -57,6 +57,7 @@ const Main = ({ navigation }) => {
           }}
           style={{ width: 80, height: 50, resizeMode: "contain" }}
         />
+
         <Button title="밥" onPress={() => {}} />
         <Button title="간식" onPress={() => {}} />
         <Button title="스터디" onPress={() => {}} />
@@ -71,7 +72,6 @@ const Main = ({ navigation }) => {
         <FlatList
           data={list}
           renderItem={({ item }) => (
-  
             <Item
               item={item}
               onPress={(params) =>
@@ -80,6 +80,7 @@ const Main = ({ navigation }) => {
             />
           )}
         />
+        <FloatButton route="CreateRoom" />
       </ChatList>
     </Container>
   );

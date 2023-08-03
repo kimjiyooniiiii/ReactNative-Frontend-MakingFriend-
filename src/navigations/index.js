@@ -12,13 +12,13 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Auth"
           component={Auth}
           // options={{
           //   headerShown: false,
           // }}
-        />
+        /> */}
         <Stack.Screen
           name="Main"
           component={Main}

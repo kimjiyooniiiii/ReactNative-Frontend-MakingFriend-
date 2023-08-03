@@ -3,4 +3,5 @@ import Button from "./Button";
 import Input from "./Input";
 import ErrorMessage from "./ErrorMessage";
 import Spinner from "./Spinner";
-export { Button, ErrorMessage, Spinner, Input };
+import FloatButton from "./FloatButton";
+export { Button, ErrorMessage, Spinner, Input, FloatButton };

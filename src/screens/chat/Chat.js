@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { View, Text, TextInput } from "react-native";
 import { GiftedChat, Send } from "react-native-gifted-chat";
 import { Alert } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LOGO, SOCKET_URL } from "@env";
 import styled from "styled-components/native";
+import { UserProvider } from "../../contexts/User";
 
 const SYSTEM = "SY";
 const TALK = "TA";
@@ -52,13 +53,6 @@ const Chat = ({ route }) => {
   const [messages, setMessages] = useState([]);
   const messageArray = useRef([]);
   const webSocketURL = `${SOCKET_URL}`;
-
-  const dataForHandshake = {
-    headers: {
-      ["_id"]: route.params.id,
-    },
-  };
-
   const ws = new WebSocket(webSocketURL, null, {
     headers: {
       _id: route.params.id,
