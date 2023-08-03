@@ -23,7 +23,7 @@ const Room = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Chat2"
+        name="Chat"
         component={Chat}
         options={{ headerShown: false }}
       />

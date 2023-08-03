@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled, { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
 import { InputBox, SubmitButton } from "../../components/room";
@@ -7,7 +7,10 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { Image, View, Text, Button, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import MealSelect from "./MealSelect";
+import { API_URL } from "@env";
+import { UserContext } from "../../contexts/User";
+import { Input } from "../../components/common";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const Container = styled.View`
   background-color: ${({ theme }) => theme.background};
@@ -55,6 +58,8 @@ const ButtonContainer = styled.View`
 `;
 
 const CreateRoom = () => {
+  const navigation = useNavigation();
+  const { user } = useContext(UserContext);
   const [roomName, setRoomName] = useState("");
 
   const handleRoomNameChange = (value) => {
@@ -77,6 +82,7 @@ const CreateRoom = () => {
 
   const [introduce, setIntroduce] = useState("");
   const handleIntroduceChange = (value) => {
+    console.log(value);
     setIntroduce(value);
   };
 
@@ -86,7 +92,7 @@ const CreateRoom = () => {
 
   // 입력된 방 정보들 json 변환
   const postToBackend = () => {
-    const apiUrl = `http://172.30.1.7:8088/room/create`;
+    const apiUrl = `${API_URL}/room/create`;
 
     // 입력값이 하나라도 없으면 알림
     if (!roomName || !membersSelect || !introduce || !categorySelect) {
@@ -95,9 +101,9 @@ const CreateRoom = () => {
     }
 
     const jsonObject = {
-      hostId: "201314335",
+      hostId: user.userId,
       roomName: roomName,
-      numbers: membersSelect,
+      maxParticipants: membersSelect,
       introduce: introduce,
       category: categorySelect,
     };
@@ -107,6 +113,7 @@ const CreateRoom = () => {
       method: "POST", // 메서드를 POST로 설정
       headers: {
         "Content-Type": "application/json", // 요청의 Content-Type을 JSON으로 설정
+        Authorization: `Bearer ${user.accessToken}`,
       },
       body: JSON.stringify(jsonObject), // 데이터 객체를 JSON 문자열로 변환하여 body에 설정
     })
@@ -114,114 +121,110 @@ const CreateRoom = () => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-      })
-      .then((data) => {
+
         console.log("POST 요청 성공:");
+        console.log(response);
+        navigation.navigate("EnterRoom", { data: response });
       })
       .catch((error) => {
         console.error("POST 요청 실패:");
       });
 
-    alert("방 생성 완료!");
-  };
-
-  const navigation = useNavigation();
-  const navi = () => {
-    navigation.navigate("MealSelect");
+    // alert("방 생성 완료!");
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
-        <TitleContainer>
-          <Image
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/rudoori.appspot.com/o/room%2FcreateRoom.png?alt=media",
-            }}
-            style={{ width: 80, height: 80, resizeMode: "contain" }}
-          />
-          <Title>방 만들기</Title>
-        </TitleContainer>
-        <InputContainer>
-          <SubTitle>방 이름 : </SubTitle>
-          <InputBox onKeywordChange={handleRoomNameChange} />
-        </InputContainer>
-        <InputContainer>
-          <SubTitle>인원 수 : </SubTitle>
-          <SelectDropdown
-            data={members}
-            onSelect={handleMembersSelect}
-            buttonStyle={{
-              backgroundColor: "#A2E1DB", // 버튼 배경색
-              borderRadius: 8, // 버튼 테두리의 둥근 정도
-              height: 35,
-              width: 250,
-            }}
-            renderCustomizedButtonChild={() => (
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text>{membersSelect}</Text>
+        <KeyboardAwareScrollView>
+          <TitleContainer>
+            <Image
+              source={{
+                uri: "https://firebasestorage.googleapis.com/v0/b/rudoori.appspot.com/o/room%2FcreateRoom.png?alt=media",
+              }}
+              style={{ width: 80, height: 80, resizeMode: "contain" }}
+            />
+            <Title>방 만들기</Title>
+          </TitleContainer>
+          <InputContainer>
+            <SubTitle>방 이름 : </SubTitle>
+            <InputBox onKeywordChange={handleRoomNameChange} />
+          </InputContainer>
+          <InputContainer>
+            <SubTitle>인원 수 : </SubTitle>
+            <SelectDropdown
+              data={members}
+              onSelect={handleMembersSelect}
+              buttonStyle={{
+                backgroundColor: "#A2E1DB", // 버튼 배경색
+                borderRadius: 8, // 버튼 테두리의 둥근 정도
+                height: 35,
+                width: 250,
+              }}
+              renderCustomizedButtonChild={() => (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text>{membersSelect}</Text>
+                  </View>
+                  <View
+                    style={{ flexDirection: "row", justifyContent: "flex-end" }}
+                  >
+                    <Icon name="caret-down" size={35} color="black" />
+                  </View>
                 </View>
-                <View
-                  style={{ flexDirection: "row", justifyContent: "flex-end" }}
-                >
-                  <Icon name="caret-down" size={35} color="black" />
+              )}
+            ></SelectDropdown>
+          </InputContainer>
+          <InputContainer>
+            <SubTitle>{"주    제  : "}</SubTitle>
+            <SelectDropdown
+              data={categorys}
+              onSelect={handleCategorySelect}
+              buttonStyle={{
+                backgroundColor: "#A2E1DB", // 버튼 배경색
+                borderRadius: 8, // 버튼 테두리의 둥근 정도
+                height: 35,
+                width: 250,
+              }}
+              renderCustomizedButtonChild={() => (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text>{categorySelect}</Text>
+                  </View>
+                  <View
+                    style={{ flexDirection: "row", justifyContent: "flex-end" }}
+                  >
+                    <Icon name="caret-down" size={35} color="black" />
+                  </View>
                 </View>
-              </View>
-            )}
-          ></SelectDropdown>
-        </InputContainer>
-        <InputContainer>
-          <SubTitle>{"주    제  : "}</SubTitle>
-          <SelectDropdown
-            data={categorys}
-            onSelect={handleCategorySelect}
-            buttonStyle={{
-              backgroundColor: "#A2E1DB", // 버튼 배경색
-              borderRadius: 8, // 버튼 테두리의 둥근 정도
-              height: 35,
-              width: 250,
-            }}
-            renderCustomizedButtonChild={() => (
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text>{categorySelect}</Text>
-                </View>
-                <View
-                  style={{ flexDirection: "row", justifyContent: "flex-end" }}
-                >
-                  <Icon name="caret-down" size={35} color="black" />
-                </View>
-              </View>
-            )}
-          ></SelectDropdown>
-        </InputContainer>
-        <ContentContainer>
-          <InputBox
-            height={300}
-            width={330}
-            placeholder="  방 소개를 해주세요"
-            onKeywordChange={handleIntroduceChange}
-          ></InputBox>
-        </ContentContainer>
-        <ButtonContainer>
-          <SubmitButton onPress={handleButtonPress} title="완료" />
-        </ButtonContainer>
-        <Button title="방 목록" onPress={navi}>
-          방 목록
-        </Button>
+              )}
+            ></SelectDropdown>
+          </InputContainer>
+          <ContentContainer>
+            <Input
+              height={300}
+              width={330}
+              placeholder="  방 소개를 해주세요"
+              onChangeText={handleIntroduceChange}
+              returnKeyType="done"
+            ></Input>
+          </ContentContainer>
+          <ButtonContainer>
+            <SubmitButton onPress={handleButtonPress} title="완료" />
+          </ButtonContainer>
+        </KeyboardAwareScrollView>
       </Container>
     </SafeAreaView>
   );
