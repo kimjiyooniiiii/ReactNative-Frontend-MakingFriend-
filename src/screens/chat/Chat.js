@@ -49,6 +49,10 @@ const Chat = ({ route }) => {
   const [messages, setMessages] = useState([]);
   const [page, setPage] = useState(1);
   const messageArray = useRef([]);
+
+  // 메시지 배열을 Memo 기능으로 관리
+  const memoizedMessages = useMemo(() => messages, [messages]);
+
   const webSocketURL = `${SOCKET_URL}`;
   const ws = new WebSocket(webSocketURL, null, {
     headers: {
@@ -80,7 +84,8 @@ const Chat = ({ route }) => {
       const parsedMessage = JSON.parse(data);
       // console.log("Received message:", parsedMessage);
       // 메시지를 messageArray에 추가
-      messageArray.current.unshift(parsedMessage);
+      // messageArray.current.unshift(parsedMessage);
+      addMessage(parsedMessage);
     };
 
     ws.onclose = () => {
@@ -97,6 +102,13 @@ const Chat = ({ route }) => {
     setMessages(messageArray.current);
     GiftedChat.append(messages);
   }, [messageArray.current]);
+
+  const addMessage = (newMessage) => {
+    setMessages((prevMessages) => GiftedChat.append(prevMessages, newMessage));
+  };
+  const addListMessage = (newMessage) => {
+    setMessages((prevMessages) => GiftedChat.append(newMessage, prevMessages));
+  };
 
   const createMessage = (text) => {
     const newMessage = {
@@ -168,19 +180,23 @@ const Chat = ({ route }) => {
       .then((data) => {
         console.log("getChatMessages 요청 성공:");
         console.log(data);
-
-        messageArray.current.push(...data.data);
+        addListMessage(data.data);
       })
       .catch((error) => {
         console.error("getChatMessages", error);
       });
   };
-
+  const uniqueMessages = messages.reduce((acc, curr) => {
+    if (!acc.find((msg) => msg._id === curr._id)) {
+      acc.push(curr);
+    }
+    return acc;
+  }, []);
   return (
     <Container>
       <GiftedChat
         placeholder="Enter a message ..."
-        messages={messages}
+        messages={uniqueMessages}
         user={{ _id: user.userId, name, avatar: photo }}
         onSend={handleMessage}
         renderSend={(props) => <SendButton {...props} />}
