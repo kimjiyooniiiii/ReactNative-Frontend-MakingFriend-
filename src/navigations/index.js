@@ -11,27 +11,20 @@ const Navigation = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      {/* <Room /> */}
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Auth"
-          component={Auth}
-          // options={{
-          //   headerShown: false,
-          // }}
-        />
-        <Stack.Screen
-          name="Main"
-          component={Main}
-          // options={{
-          //   headerShown: false,
-          // }}
-        />
-      </Stack.Navigator>
-
-      {/* <Profile /> */}
-      {/* <BoardList /> */}
-      {/* <Main /> */}
+      <Stack.Screen
+        name="Auth"
+        component={Auth}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Main"
+        component={Main}
+        options={{
+          headerShown: false,
+        }}
+      />
     </NavigationContainer>
   );
 };

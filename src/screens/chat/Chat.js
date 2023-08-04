@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import { View, Text, TextInput } from "react-native";
+import React, { useState, useEffect, useRef, useContext, useMemo } from "react";
 import { GiftedChat, Send } from "react-native-gifted-chat";
-import { Alert } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { LOGO, SOCKET_URL } from "@env";
+import { LOGO, SOCKET_URL, API_URL } from "@env";
 import styled from "styled-components/native";
+import { UserContext } from "../../contexts/User";
 
 const SYSTEM = "SY";
 const TALK = "TA";
@@ -39,38 +38,38 @@ const SendButton = (props) => {
 };
 
 //사용자 정보 불러오기?
-const getCurrentUser = () => {
-  return {
-    uid: "537664cc",
-    name: "steve",
-    photo: "",
-  };
-};
 
 const Chat = ({ route }) => {
-  const { uid, name, photo } = getCurrentUser();
+  console.log(route);
+  const name = "John Doe";
+  const roomId = route.params.info._id;
+  const totalPage = route.params.totalPage;
+  const photo = { LOGO };
+  const { user } = useContext(UserContext);
   const [messages, setMessages] = useState([]);
+  const [page, setPage] = useState(1);
   const messageArray = useRef([]);
+
+  // 메시지 배열을 Memo 기능으로 관리
+  const memoizedMessages = useMemo(() => messages, [messages]);
+
   const webSocketURL = `${SOCKET_URL}`;
-
-  const dataForHandshake = {
-    headers: {
-      ["_id"]: route.params.id,
-    },
-  };
-
   const ws = new WebSocket(webSocketURL, null, {
     headers: {
-      _id: route.params.id,
+      room: roomId,
+      user: user.userId,
     },
   });
+  useEffect(() => {
+    getChatMessages(page);
+  }, [page]);
 
   useEffect(() => {
     // WebSocket 연결
     ws.onopen = () => {
       console.log("WebSocket connected");
       // const connectMessage = `채팅창 입장`;
-      console.log(ws);
+      // console.log(ws);
     };
     ws.onerror = (error) => {
       console.error("WebSocket error", error);
@@ -83,9 +82,10 @@ const Chat = ({ route }) => {
       command = "message";
       // 메시지 파싱
       const parsedMessage = JSON.parse(data);
-      console.log("Received message:", parsedMessage);
+      // console.log("Received message:", parsedMessage);
       // 메시지를 messageArray에 추가
-      messageArray.current.unshift(parsedMessage);
+      // messageArray.current.unshift(parsedMessage);
+      addMessage(parsedMessage);
     };
 
     ws.onclose = () => {
@@ -103,15 +103,22 @@ const Chat = ({ route }) => {
     GiftedChat.append(messages);
   }, [messageArray.current]);
 
+  const addMessage = (newMessage) => {
+    setMessages((prevMessages) => GiftedChat.append(prevMessages, newMessage));
+  };
+  const addListMessage = (newMessage) => {
+    setMessages((prevMessages) => GiftedChat.append(newMessage, prevMessages));
+  };
+
   const createMessage = (text) => {
     const newMessage = {
       _id: `${Date.now()}`,
       text: text,
       createdAt: new Date(),
       user: {
-        _id: uid,
+        _id: user.userId,
         name: name,
-        avatar: "https://facebook.github.io/react/img/logo_og.png",
+        avatar: `${LOGO}`,
       },
     };
     return newMessage;
@@ -127,33 +134,78 @@ const Chat = ({ route }) => {
 
     console.log("send message", newMessage);
 
-    // const data = {
-    //   type: TALK,
-    //   message: newMessage,
-    //   roomId: route.params.id,
-    // };
     const payload = {
       type: TALK,
       message: newMessage,
-      roomId: route.params.id,
+      roomId: roomId,
     };
     console.log("send paylaod", payload);
 
     ws.send(JSON.stringify(payload));
   };
 
+  /**
+   * GiftedChat의 loadEarlier 이벤트 핸들러
+   * 이전 페이지의 채팅 메시지를 불러옴
+   */
+  const handleLoadEarlier = () => {
+    console.log(page);
+    if (page < totalPage) {
+      // 아직 불러올 페이지가 남아있는 경우에만 다음 페이지를 불러옴
+      let next = page + 1;
+      setPage(next);
+      console.log(page);
+      getChatMessages(page);
+    }
+  };
+
+  /**
+   * 채팅메시지 목록 불러오기
+   */
+  const getChatMessages = (page) => {
+    fetch(`${API_URL}/room/message/${route.params.info._id}/${page}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        // console.log("getChatMessages 요청 성공:");
+        console.log("first add :", data);
+        addListMessage(data.data);
+      })
+      .catch((error) => {
+        console.error("getChatMessages", error);
+      });
+  };
+  const uniqueMessages = messages.reduce((acc, curr) => {
+    if (!acc.find((msg) => msg._id === curr._id)) {
+      acc.push(curr);
+    }
+    return acc;
+  }, []);
   return (
     <Container>
       <GiftedChat
         placeholder="Enter a message ..."
-        messages={messages}
-        user={{ _id: uid, name, avatar: photo }}
+        messages={uniqueMessages}
+        user={{ _id: user.userId, name, avatar: photo }}
         onSend={handleMessage}
         renderSend={(props) => <SendButton {...props} />}
         scrollToBottom={true}
         renderUsernameOnMessage={true}
         alwaysShowSend={true}
         multiline={false}
+        onLoadEarlier={handleLoadEarlier}
+        loadEarlier={page < totalPage}
       />
     </Container>
   );
