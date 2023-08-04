@@ -8,7 +8,6 @@ import { UserProvider } from "./contexts";
 import store from "./redux/store";
 import { Provider } from "react-redux";
 
-
 const Container = styled.SafeAreaView`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
