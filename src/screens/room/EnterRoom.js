@@ -38,7 +38,6 @@ const EnterRoom = ({ navigation }) => {
    */
 
   const getTotalPage = () => {
-    console.log(route.params.data._id);
     fetch(`${API_URL}/room/pages/${route.params.data._id}`, {
       method: "GET", // 메서드를 POST로 설정
       headers: {

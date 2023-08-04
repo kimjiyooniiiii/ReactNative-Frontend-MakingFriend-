@@ -123,8 +123,13 @@ const CreateRoom = () => {
         }
 
         console.log("POST 요청 성공:");
-        console.log(response);
-        navigation.navigate("EnterRoom", { data: response });
+
+        return response.json();
+      })
+      .then((res) => {
+        console.log("resonse ", res);
+        console.log("resonse ", res.data);
+        navigation.navigate("EnterRoom", { data: res.data });
       })
       .catch((error) => {
         console.error("POST 요청 실패:");

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useMemo } from "react";
 import styled from "styled-components/native";
 import { FlatList } from "react-native";
 import { Item } from "../../components/common/ChatList";
@@ -31,6 +31,8 @@ const ChatList = ({ navigation }) => {
     };
     fetchItems();
   }, []);
+  // useMemo를 사용하여 list를 메모이제이션
+  const memoizedList = useMemo(() => list, [list]);
 
   return (
     <List>

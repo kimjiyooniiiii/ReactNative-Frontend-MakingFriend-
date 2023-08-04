@@ -179,7 +179,7 @@ const Chat = ({ route }) => {
       })
       .then((data) => {
         // console.log("getChatMessages 요청 성공:");
-        // console.log(data);
+        console.log("first add :", data);
         addListMessage(data.data);
       })
       .catch((error) => {
