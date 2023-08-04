@@ -61,6 +61,7 @@ const Mypage = ({ navigation }) => {
         return res.json();
       })
       .then((res) => {
+        // console.log(res.data);
         setUserInfo(res.data);
       });
   };

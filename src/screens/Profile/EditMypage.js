@@ -8,6 +8,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 // import user1 from "./data/user1.json";
 import { API_URL } from "@env";
 import { UserContext } from "../../contexts";
+import { useIsFocused } from "@react-navigation/native";
 
 const Container = styled.View`
   flex: 1;
@@ -66,19 +67,16 @@ const EditMypage = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState({});
   const { user, setNickname } = useContext(UserContext);
 
-  const userGender = userInfo.gender == "M" ? "M" : "F";
-
   // const userGender =
   //   userInfo.gender === "M" ? "male" : userInfo.gender === "F" ? "female" : "";
-  const [selectedGender, setSelectedGender] = useState(userGender);
-
-  const handleGenderSelection = (gender) => {
-    setSelectedGender(gender);
-  }; // console.log(user.userId);
-
+  const isFocused = useIsFocused();
   const [userInput, setUserInput] = useState({});
 
   useEffect(() => {
+    fetchUserInfo(); // 최초 렌더링 시 사용자 정보를 가져오는 함수 호출
+  }, [user.accessToken, isFocused]);
+
+  const fetchUserInfo = () => {
     fetch(`${API_URL}/user/info/update?userId=${user.userId}`, {
       // fetch(`http://192.168.1.101:8080/user/info/update?userId=${user.userId}`, {
       method: "GET",
@@ -94,26 +92,32 @@ const EditMypage = ({ navigation }) => {
         // user1 = JSON.stringify(res.data);
         // console.log(user1);
       });
-  }, [user.accessToken]);
+  };
 
+  const [selectedGender, setSelectedGender] = useState("M");
   useEffect(() => {
     // console.log(userInfo);
 
-    setUserInput((prevUserInput) => ({
-      ...prevUserInput,
-      nickName: userInfo.nickName || "",
-      userName: userInfo.userName || "",
-      major: userInfo.major || "",
-      email: userInfo.email || "",
-      birthday: userInfo.birthday || "",
-      gender: userInfo.gender || "",
-      phoneNumber: userInfo.phoneNumber || "",
-    }));
+    setUserInput(
+      (prevUserInput) => ({
+        ...prevUserInput,
+        nickName: userInfo.nickName || "",
+        userName: userInfo.userName || "",
+        major: userInfo.major || "",
+        userMail: userInfo.userMail || "",
+        birthday: userInfo.birthday || "",
+        gender: userInfo.gender || "",
+        phoneNumber: userInfo.phoneNumber || "",
+      }),
+      setSelectedGender(userInfo.gender),
+    );
   }, [userInfo]);
 
-  const _handleUpdateUserButtonPress = () => {
-    console.log(JSON.stringify(userInput));
+  const handleGenderSelection = (gender) => {
+    setSelectedGender(gender);
+  }; // console.log(user.userId);
 
+  const _handleUpdateUserButtonPress = () => {
     // fetch(`http://172.20.10.7:8080/user/info/update/${user.userId}`, {
     fetch(`${API_URL}/user/info/update/${user.userId}`, {
       method: "PATCH",
@@ -201,9 +205,9 @@ const EditMypage = ({ navigation }) => {
             label="이메일"
             placeholder="example@naver.com"
             onSubmitEditing={() => refBirthday.current.focus()}
-            value={userInput.email}
+            value={userInput.userMail}
             returnKeyType="next"
-            onChangeText={(value) => _handleUserInputChange("email", value)}
+            onChangeText={(value) => _handleUserInputChange("userMail", value)}
           />
 
           <UserInfoTextInput
