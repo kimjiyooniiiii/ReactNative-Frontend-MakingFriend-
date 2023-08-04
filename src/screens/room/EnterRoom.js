@@ -1,8 +1,99 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
 import { useRoute } from "@react-navigation/native";
 import { Image } from "react-native";
+import moment from "moment";
+import { UserContext } from "../../contexts";
+import { API_URL } from "@env";
+
+const EnterRoom = ({ navigation }) => {
+  const { user } = useContext(UserContext);
+  const route = useRoute();
+  console.log("enterroom route ", route);
+  const [totalPage, setTotalPage] = useState(null);
+
+  useEffect(() => {
+    getTotalPage();
+  }, []);
+
+  let data = { info: route.params?.data, totalPage: totalPage };
+  console.log("enterroom data ", data);
+  const roomName = data?.info.roomName;
+  const numbers = data?.info.maxParticipants;
+  const createdAt = data?.info.createdAt;
+  const introduce = data?.info.introduce;
+  console.log(createdAt);
+
+  const now = moment();
+  const date = moment(createdAt);
+
+  const formattedTime = now.isSame(date, "day")
+    ? date.format("HH:mm")
+    : date.format("YYYY년 MM월 DD일");
+
+  // console.log({ data });
+  /**
+   * 페이지 값 가져오기
+   */
+
+  const getTotalPage = () => {
+    fetch(`${API_URL}/room/pages/${route.params.data._id}`, {
+      method: "GET", // 메서드를 POST로 설정
+      headers: {
+        "Content-Type": "application/json", // 요청의 Content-Type을 JSON으로 설정
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        return response.json();
+      })
+      .then((res) => {
+        console.log("POST 요청 성공:");
+        console.log(res);
+        setTotalPage(res);
+      })
+      .catch((error) => {
+        console.error("POST 요청 실패:");
+      });
+  };
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Container>
+        <ImageComponent
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/rudoori.appspot.com/o/gom%2Fgom.png?alt=media",
+          }}
+        />
+        <TitleContainer>
+          <Title></Title>
+          <TitleName>{roomName}</TitleName>
+        </TitleContainer>
+        <IntroduceContainer>
+          <Introduce>우리 방을 소개합니다</Introduce>
+          <IntroduceContent>{introduce}</IntroduceContent>
+          <Numbers>정원 : {numbers}명</Numbers>
+          <Date>{{ formattedTime } ? `시작일 : ${formattedTime}` : ""}</Date>
+        </IntroduceContainer>
+        <ButtonContainer>
+          <EnterButton
+            title="입장"
+            onPress={() => {
+              navigation.navigate("Chat", data);
+            }}
+          >
+            <ButtonText>입장</ButtonText>
+          </EnterButton>
+        </ButtonContainer>
+      </Container>
+    </ThemeProvider>
+  );
+};
 
 const Container = styled.View`
   background-color: ${({ theme }) => theme.background};
@@ -105,6 +196,8 @@ const EnterButton = styled.TouchableOpacity`
   border-color: black;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  right: 20px;
 `;
 
 const ButtonText = styled.Text`
@@ -130,56 +223,5 @@ const Date = styled.Text`
   font-size: 15px;
   padding: 0 0 0 0;
 `;
-
-const EnterRoom = ({ navigation }) => {
-  const route = useRoute();
-
-
-  let data = route.params?.data;
-  const roomName = data?.roomName;
-  const numbers = data?.numbers;
-  const createdDt = data?.createdDt;
-  const introduce = data?.introduce;
-
-
-  data.id = "537664cc-2748-4f3a-95b0-ed9f8a3af418";
-
-  console.log({ data });
-  return (
-    <ThemeProvider theme={theme}>
-      <Container>
-        <ImageComponent
-          source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/rudoori.appspot.com/o/gom%2Fgom.png?alt=media",
-          }}
-        />
-        <TitleContainer>
-          <Title></Title>
-          <TitleName>{roomName}</TitleName>
-        </TitleContainer>
-        <IntroduceContainer>
-          <Introduce>우리 방을 소개합니다</Introduce>
-          <IntroduceContent>{introduce}</IntroduceContent>
-          <Numbers>정원 : {numbers}명</Numbers>
-        </IntroduceContainer>
-        <ButtonContainer>
-          <BackButton>
-            <ButtonText>뒤로가기</ButtonText>
-          </BackButton>
-          <EnterButton
-            onPress={() => {
-              navigation.navigate("Chat", data);
-            }}
-          >
-            <ButtonText>입장</ButtonText>
-          </EnterButton>
-        </ButtonContainer>
-        <DateContainer>
-          <Date>시작일 : {createdDt}</Date>
-        </DateContainer>
-      </Container>
-    </ThemeProvider>
-  );
-};
 
 export default EnterRoom;

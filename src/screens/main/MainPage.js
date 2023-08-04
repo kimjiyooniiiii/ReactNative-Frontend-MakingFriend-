@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components/native";
-import { Button } from "../../components/common";
+import { Button, FloatButton } from "../../components/common";
 import { FlatList } from "react-native";
 import { ThemeContext } from "styled-components/native";
 import { getItems, Item } from "../../components/common/ChatList";
@@ -92,6 +92,7 @@ const Main = ({ navigation }) => {
             />
           )}
         />
+        <FloatButton route="CreateRoom" />
       </ChatList>
     </Container>
   );

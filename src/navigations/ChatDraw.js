@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Chat, Side } from "../screens/chat";
 
 import styled from "styled-components/native";
@@ -36,6 +36,8 @@ const DrawerButton = styled.TouchableOpacity`
 `;
 
 const ChatDraw = ({ route }) => {
+  useEffect(() => {});
+  console.log("chatdraw : ", route);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Drawer가 처음에 닫혀있도록 상태 설정
   const drawerAnimation = useRef(new Animated.Value(0)).current; // 초기값도 0으로 설정
 

@@ -24,6 +24,7 @@ const Home = ({ navigation, route }) => {
         component={Main}
         options={{
           tabBarIcon: () => <MaterialIcons name="home" size={26} />,
+          unmountOnBlur: true, //탭을 클릭할 떄 마다 새로고침
         }}
       />
       <Tab.Screen
@@ -31,6 +32,7 @@ const Home = ({ navigation, route }) => {
         component={Room}
         options={{
           tabBarIcon: () => <MaterialIcons name="chat-bubble" size={26} />,
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
@@ -38,6 +40,7 @@ const Home = ({ navigation, route }) => {
         component={BoardList}
         options={{
           tabBarIcon: () => <MaterialIcons name="dashboard" size={26} />,
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
@@ -45,6 +48,7 @@ const Home = ({ navigation, route }) => {
         component={Profile}
         options={{
           tabBarIcon: () => <MaterialIcons name="person" size={26} />,
+          unmountOnBlur: true,
         }}
       />
     </Tab.Navigator>
