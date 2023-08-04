@@ -40,6 +40,7 @@ const Main = ({ navigation }) => {
     const fetchItems = async () => {
       try {
         const items = await getItems(); // getItems 함수를 실행하여 아이템들을 가져옴
+
         setList(items); // 가져온 아이템들을 list 배열 상태로 업데이트
       } catch (e) {
         console.log(e.message);
@@ -47,7 +48,7 @@ const Main = ({ navigation }) => {
     };
     fetchItems();
   }, []);
-
+  console.log("item", list);
   return (
     <Container>
       <Category>
@@ -57,32 +58,32 @@ const Main = ({ navigation }) => {
           }}
           style={{ width: 80, height: 50, resizeMode: "contain" }}
         />
-        <Button title="밥" onPress={() => navigation.navigate("MealSelect")} />
+        <Button title="밥" onPress={() => navigation.navigate("MealSearch")} />
         <Button
           title="스터디"
-          onPress={() => navigation.navigate("StudySelect")}
+          onPress={() => navigation.navigate("StudySearch")}
         />
         <Button
           title="배달"
-          onPress={() => navigation.navigate("DeliverySelect")}
+          onPress={() => navigation.navigate("DeliverySearch")}
         />
         <Button
           title="택시"
-          onPress={() => navigation.navigate("TaxiSelect")}
+          onPress={() => navigation.navigate("TaxiSearch")}
         />
         <Button
           title="외국인"
-          onPress={() => navigation.navigate("ForeignerSelect")}
+          onPress={() => navigation.navigate("ForeignerSearch")}
         />
         <Button
           title="운동"
-          onPress={() => navigation.navigate("ExcerciseSelect")}
+          onPress={() => navigation.navigate("ExerciseSearch")}
         />
       </Category>
 
       <ChatList>
         <FlatList
-          data={list}
+          data={list.data}
           renderItem={({ item }) => (
             <Item
               item={item}
