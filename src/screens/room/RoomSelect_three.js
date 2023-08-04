@@ -145,7 +145,7 @@ const RoomSelect_three = ({
       })
       .then((data) => {
         // 성공
-        //console.log(JSON.stringify(data));
+        console.log(JSON.stringify(data));
 
         dataArray.push(...Object.values(data));
         console.log(dataArray);
