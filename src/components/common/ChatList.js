@@ -77,8 +77,8 @@ export const getItems = async () => {
       method: "GET",
     });
     let items = await response.json();
-    console.log(JSON.stringify(items));
-    return items.data;
+    // console.log(JSON.stringify(items));
+    return items;
   } catch (e) {
     // console.log(e.message);
   }

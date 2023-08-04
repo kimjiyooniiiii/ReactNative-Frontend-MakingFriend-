@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import styled from "styled-components/native";
-// import user1 from "./data/user1.json";
 import { SafeAreaView, Platform } from "react-native";
 import { BigButton } from "../../components/profile";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,6 +9,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 import { UserContext } from "../../contexts";
 import { API_URL } from "@env";
+import { useIsFocused } from "@react-navigation/native";
 
 const Container = styled.View`
   flex: 1;
@@ -43,9 +43,14 @@ const Mypage = ({ navigation }) => {
   const { user } = useContext(UserContext);
 
   const [userInfo, setUserInfo] = useState({});
-  // console.log(user.userId);
+  const isFocused = useIsFocused();
 
+  // console.log(user.userId);
   useEffect(() => {
+    fetchUserInfo(); // 최초 렌더링 시 사용자 정보를 가져오는 함수 호출
+  }, [user.accessToken, isFocused]);
+
+  const fetchUserInfo = () => {
     fetch(`${API_URL}/user/info?userId=${user.userId}`, {
       method: "GET",
       headers: {
@@ -56,12 +61,30 @@ const Mypage = ({ navigation }) => {
         return res.json();
       })
       .then((res) => {
-        console.log(JSON.stringify(res.data));
+        // console.log(res.data);
         setUserInfo(res.data);
-        // user1 = JSON.stringify(res.data);
-        // console.log(user1);
       });
-  }, [user.accessToken]);
+  };
+
+  const _handleLogoutButtonPress = () => {
+    fetch(`${API_URL}/user/logout/${user.userId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        if (res) {
+          navigation.navigate("Login");
+        }
+      })
+      .catch((error) => {
+        console.error("Error during logout:", error);
+      });
+  };
 
   return (
     <KeyboardAwareScrollView>
@@ -74,18 +97,18 @@ const Mypage = ({ navigation }) => {
             <ElementContainer>
               <BigButton
                 title="점수 보기"
-                onPre
-                ss={() => navigation.navigate("Myscore")}
+                onPress={() => navigation.navigate("Myscore")}
               />
               <BigButton
                 title="정보 수정"
                 onPress={() => navigation.navigate("EditMypage")}
               />
+              <BigButton title="로그아웃" onPress={_handleLogoutButtonPress} />
             </ElementContainer>
           </ProfileSectionContainer>
           <UserInfoText label="아이디(학번)" value={userInfo.userId} />
           <UserInfoText label="학과" value={userInfo.major} />
-          <UserInfoText label="이메일" value={userInfo.email} />
+          <UserInfoText label="이메일" value={userInfo.userMail} />
           <UserInfoText label="생일" value={userInfo.birthday} />
           <UserInfoText label="성별" value={userInfo.gender} />
           <UserInfoText label="전화번호" value={userInfo.phoneNumber} />

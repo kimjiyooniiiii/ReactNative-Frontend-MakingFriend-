@@ -12,6 +12,7 @@ import { UserContext } from "../../contexts/User";
 import { Input } from "../../components/common";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+
 const Container = styled.View`
   background-color: ${({ theme }) => theme.background};
   flex: 1;
@@ -93,7 +94,6 @@ const CreateRoom = () => {
   // 입력된 방 정보들 json 변환
   const postToBackend = () => {
     const apiUrl = `${API_URL}/room/create`;
-
     // 입력값이 하나라도 없으면 알림
     if (!roomName || !membersSelect || !introduce || !categorySelect) {
       alert("전부 다 입력해주세요!");
@@ -109,7 +109,7 @@ const CreateRoom = () => {
     };
 
     // fetch 함수를 사용하여 POST 요청 보내기
-    fetch(apiUrl, {
+    fetch(`${API_URL}/room/create`, {
       method: "POST", // 메서드를 POST로 설정
       headers: {
         "Content-Type": "application/json", // 요청의 Content-Type을 JSON으로 설정
@@ -134,8 +134,6 @@ const CreateRoom = () => {
       .catch((error) => {
         console.error("POST 요청 실패:");
       });
-
-    // alert("방 생성 완료!");
   };
 
   return (
@@ -230,6 +228,7 @@ const CreateRoom = () => {
             <SubmitButton onPress={handleButtonPress} title="완료" />
           </ButtonContainer>
         </KeyboardAwareScrollView>
+
       </Container>
     </SafeAreaView>
   );

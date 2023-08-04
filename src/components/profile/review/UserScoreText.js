@@ -9,7 +9,7 @@ const PointText = styled.Text`
 `;
 
 const UserScoreText = ({ score, point }) => {
-  console.log(score);
+  // console.log(score);
   return (
     <Container>
       <ScoreText>{score}</ScoreText>

@@ -4,14 +4,15 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Auth from "./Auth";
 import Room from "./Room";
 import Profile from "./Profile";
-import Board from "./Board";
+import BoardList from "./BoardList";
 import Main from "./Main";
 
 const Navigation = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Room />
+      {/* <Stack.Navigator>
         <Stack.Screen
           name="Auth"
           component={Auth}
@@ -26,11 +27,10 @@ const Navigation = () => {
             headerShown: false,
           }}
         />
-      </Stack.Navigator>
+  </Stack.Navigator> */}
 
-      {/* <Room /> */}
       {/* <Profile /> */}
-      {/* <Board /> */}
+      {/* <BoardList /> */}
       {/* <Main /> */}
     </NavigationContainer>
   );

@@ -43,16 +43,15 @@ const Login = ({ navigation }) => {
     password: "",
   });
 
-  const user = useContext(UserContext);
-  const { setUserId, setTokens } = useContext(UserContext);
-  // const { accessTokenValue, refreshTokenValue } = useContext(UserContext);
-  // console.log(refreshTokenValue);
+  const { setUserIdAndNickname, setTokens } = useContext(UserContext);
+
   const _handleLoginButtonPress = () => {
     console.log(JSON.stringify(userInput));
     fetch(`${API_URL}/auth/login`, {
+      // fetch(`http://172.20.10.7:8080/auth/login`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json;",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(userInput),
     })
@@ -61,16 +60,16 @@ const Login = ({ navigation }) => {
       })
       .then((res) => {
         setTokens(res.data.accessToken, res.data.refreshToken);
-        setUserId(userInput.userId);
+        setUserIdAndNickname(userInput.userId, res.data.nickname);
 
         navigation.navigate("Main");
       })
       .catch((error) => {
         console.error("Error during login:", error);
-      })
-      .finally(() => {
-        setUserId(userInput.userId);
       });
+    // .finally(() => {
+    //   setUserId(userInput.userId);
+    // });
   };
 
   const _handleUserInputChange = (fieldName, value) => {

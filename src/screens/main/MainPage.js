@@ -57,15 +57,27 @@ const Main = ({ navigation }) => {
           }}
           style={{ width: 80, height: 50, resizeMode: "contain" }}
         />
-
-        <Button title="밥" onPress={() => {}} />
-        <Button title="간식" onPress={() => {}} />
-        <Button title="스터디" onPress={() => {}} />
-        <Button title="배달" onPress={() => {}} />
-        <Button title="택시" onPress={() => {}} />
-        <Button title="외국인" onPress={() => {}} />
-        <Button title="운동" onPress={() => {}} />
-        <Button title="기타" onPress={() => {}} />
+        <Button title="밥" onPress={() => navigation.navigate("MealSelect")} />
+        <Button
+          title="스터디"
+          onPress={() => navigation.navigate("StudySelect")}
+        />
+        <Button
+          title="배달"
+          onPress={() => navigation.navigate("DeliverySelect")}
+        />
+        <Button
+          title="택시"
+          onPress={() => navigation.navigate("TaxiSelect")}
+        />
+        <Button
+          title="외국인"
+          onPress={() => navigation.navigate("ForeignerSelect")}
+        />
+        <Button
+          title="운동"
+          onPress={() => navigation.navigate("ExcerciseSelect")}
+        />
       </Category>
 
       <ChatList>

@@ -3,7 +3,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { ThemeContext } from "styled-components/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
-import { Main, ChatList, BoardList } from "../screens/main";
+import { Main, ChatList } from "../screens/main";
+
+import BoardList from "./BoardList";
 import Profile from "./Profile";
 import Room from "./Room";
 

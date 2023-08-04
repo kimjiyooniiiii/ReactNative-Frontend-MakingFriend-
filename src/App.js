@@ -4,6 +4,7 @@ import styled, { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
 import { StatusBar, SafeAreaView } from "react-native";
 import Navigation from "./navigations";
+import { SelectProvider } from "./context/SelectContext";
 import { UserProvider } from "./contexts";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
