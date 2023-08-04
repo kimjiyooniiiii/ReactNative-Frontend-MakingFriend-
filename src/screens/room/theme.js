@@ -21,4 +21,8 @@ export const theme = {
 
   //RoomMain
   menuBackground: Colors.skyblue4,
+
+  //CheckBox
+  checkedColor: Colors.skyblue3,
+  uncheckedColor: Colors.skyblue1,
 };
