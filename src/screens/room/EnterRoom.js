@@ -10,22 +10,24 @@ import { API_URL } from "@env";
 const EnterRoom = ({ navigation }) => {
   const { user } = useContext(UserContext);
   const route = useRoute();
+  console.log("enterroom route ", route);
   const [totalPage, setTotalPage] = useState(null);
-  const [messages, setMessages] = useState([]);
+
   useEffect(() => {
     getTotalPage();
-    // getChatMessages(totalPage);
   }, []);
 
-  let data = { info: route.params?.data, chat: messages, totalPage: totalPage };
-
-  const roomName = data?.roomName;
-  const numbers = data?.maxParticipants;
-  const createdAt = data?.createdAt;
-  const introduce = data?.introduce;
+  let data = { info: route.params?.data, totalPage: totalPage };
+  console.log("enterroom data ", data);
+  const roomName = data?.info.roomName;
+  const numbers = data?.info.maxParticipants;
+  const createdAt = data?.info.createdAt;
+  const introduce = data?.info.introduce;
+  console.log(createdAt);
 
   const now = moment();
   const date = moment(createdAt);
+
   const formattedTime = now.isSame(date, "day")
     ? date.format("HH:mm")
     : date.format("YYYY년 MM월 DD일");
@@ -77,7 +79,7 @@ const EnterRoom = ({ navigation }) => {
           <Introduce>우리 방을 소개합니다</Introduce>
           <IntroduceContent>{introduce}</IntroduceContent>
           <Numbers>정원 : {numbers}명</Numbers>
-          <Date>시작일 : {formattedTime}</Date>
+          <Date>{{ formattedTime } ? `시작일 : ${formattedTime}` : ""}</Date>
         </IntroduceContainer>
         <ButtonContainer>
           <EnterButton

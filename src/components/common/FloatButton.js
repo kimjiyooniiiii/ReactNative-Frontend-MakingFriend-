@@ -10,8 +10,8 @@ const Float = styled.View`
   height: 70px;
   position: absolute;
   background-color: ${({ theme }) => theme.background};
-  border-radius: 100%;
   border: 1px solid ${({ theme }) => theme.button};
+  border-radius: 50px;
   bottom: 20px;
   right: 20px;
   align-items: center;
@@ -22,8 +22,8 @@ const IconWrapper = styled.View`
   position: absolute;
 `;
 const FloatButton = ({ route }) => {
-  theme = useContext(ThemeContext);
-  navigator = useNavigation();
+  const theme = useContext(ThemeContext);
+  const navigator = useNavigation();
   return (
     <Float>
       <IconWrapper>
@@ -37,7 +37,7 @@ const FloatButton = ({ route }) => {
         onPress={() => {
           navigator.navigate(route);
         }}
-        containerStyle={((border = "1px"), (backgroundColor = "#000000"))}
+        containerStyle={{ border: "1px" }}
         hitSlop={{ top: 70, bottom: 70, left: 70, right: 70 }}
       />
     </Float>

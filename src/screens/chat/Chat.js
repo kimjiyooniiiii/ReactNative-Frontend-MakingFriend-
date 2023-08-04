@@ -69,7 +69,7 @@ const Chat = ({ route }) => {
     ws.onopen = () => {
       console.log("WebSocket connected");
       // const connectMessage = `채팅창 입장`;
-      console.log(ws);
+      // console.log(ws);
     };
     ws.onerror = (error) => {
       console.error("WebSocket error", error);
@@ -118,7 +118,7 @@ const Chat = ({ route }) => {
       user: {
         _id: user.userId,
         name: name,
-        avatar: "https://facebook.github.io/react/img/logo_og.png",
+        avatar: `${LOGO}`,
       },
     };
     return newMessage;
@@ -178,8 +178,8 @@ const Chat = ({ route }) => {
         return response.json();
       })
       .then((data) => {
-        console.log("getChatMessages 요청 성공:");
-        console.log(data);
+        // console.log("getChatMessages 요청 성공:");
+        // console.log(data);
         addListMessage(data.data);
       })
       .catch((error) => {
