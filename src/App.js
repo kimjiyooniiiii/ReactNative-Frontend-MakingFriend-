@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Provider } from "react-redux";
 import "react-native-gesture-handler";
 import styled, { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
 import { StatusBar, SafeAreaView } from "react-native";
 import Navigation from "./navigations";
 import { UserProvider } from "./contexts";
-import { store } from "./redux/store";
+import store from "./redux/store";
+import { Provider } from "react-redux";
+
+
 const Container = styled.SafeAreaView`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
