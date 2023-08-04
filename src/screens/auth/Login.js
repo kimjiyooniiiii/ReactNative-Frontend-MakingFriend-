@@ -51,7 +51,7 @@ const Login = ({ navigation }) => {
       // fetch(`http://172.20.10.7:8080/auth/login`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json;",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(userInput),
     })

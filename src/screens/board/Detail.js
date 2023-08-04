@@ -18,14 +18,15 @@ const Detail = ({ navigation, route }) => {
   const [post, setPost] = useState({});
   const { user } = useContext(UserContext);
   const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState("");
+  const [commentInput, setCommentInput] = useState("");
 
   useEffect(() => {
+    console.log("USEEffect실행");
     fetchPostData();
   }, [postId]);
 
   const fetchPostData = () => {
-    fetch(`${API_URL}:8080/board?boardId=${postId}`, {
+    fetch(`${API_URL}/board?boardId=${postId}`, {
       // fetch(`http://172.20.10.7:8080/board?boardId=${postId}`, {
       method: "GET",
       headers: {
@@ -36,7 +37,7 @@ const Detail = ({ navigation, route }) => {
         return res.json();
       })
       .then((res) => {
-        // console.log(JSON.stringify(res.data));
+        console.log(JSON.stringify(res.data));
         // console.log(JSON.stringify(res.data.replyGroup));
         setPost(res.data);
         setComments(res.data.replyGroup);
@@ -44,6 +45,27 @@ const Detail = ({ navigation, route }) => {
       .catch((error) => {
         console.error("Error during fetchPostData:", error);
         setPost(null); // Set post to null in case of an error
+      });
+  };
+
+  const _handleWriteCommentButtonPress = () => {
+    console.log("으으음??");
+    fetch(`http://192.168.0.54:8080/board/${postId}/reply/parent`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(commentInput),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.error("Error during writePost:", error);
       });
   };
 
@@ -72,7 +94,7 @@ const Detail = ({ navigation, route }) => {
   };
 
   const _handleDeletePostButtonPress = () => {
-    fetch(`http://172.20.10.7:8080/board?boardId=${postId}`, {
+    fetch(`${API_URL}/board?boardId=${postId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
@@ -111,13 +133,13 @@ const Detail = ({ navigation, route }) => {
       />
       <TextInput
         placeholder="댓글을 입력하세요"
-        value={comment}
-        onChangeText={(text) => setComment(text)}
+        value={commentInput}
+        onChangeText={(value) => setCommentInput(value)}
         style={styles.input}
       />
       <Button
         title="댓글 저장"
-        onPress={() => alert(comment + "저장 api 연동")}
+        onPress={_handleWriteCommentButtonPress}
         style={styles.button}
       />
     </View>

@@ -122,7 +122,7 @@ const EditMypage = ({ navigation }) => {
     fetch(`${API_URL}/user/info/update/${user.userId}`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json;",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${user.accessToken}`,
       },
       body: JSON.stringify(userInput),
