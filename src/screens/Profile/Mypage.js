@@ -48,7 +48,7 @@ const Mypage = ({ navigation }) => {
   // console.log(user.userId);
   useEffect(() => {
     fetchUserInfo(); // 최초 렌더링 시 사용자 정보를 가져오는 함수 호출
-  }, [user.accessToken, isFocused]); // useEffect의 의존성 배열에 isFocused 추가
+  }, [user.accessToken, isFocused]);
 
   const fetchUserInfo = () => {
     fetch(`${API_URL}/user/info?userId=${user.userId}`, {
@@ -61,10 +61,7 @@ const Mypage = ({ navigation }) => {
         return res.json();
       })
       .then((res) => {
-        // console.log(JSON.stringify(res.data));
         setUserInfo(res.data);
-        // user1 = JSON.stringify(res.data);
-        // console.log(user1);
       });
   };
 
@@ -79,7 +76,6 @@ const Mypage = ({ navigation }) => {
         return res.json();
       })
       .then((res) => {
-        // setUserId(userInput.userId);-
         if (res) {
           navigation.navigate("Login");
         }
@@ -111,7 +107,7 @@ const Mypage = ({ navigation }) => {
           </ProfileSectionContainer>
           <UserInfoText label="아이디(학번)" value={userInfo.userId} />
           <UserInfoText label="학과" value={userInfo.major} />
-          <UserInfoText label="이메일" value={userInfo.email} />
+          <UserInfoText label="이메일" value={userInfo.userMail} />
           <UserInfoText label="생일" value={userInfo.birthday} />
           <UserInfoText label="성별" value={userInfo.gender} />
           <UserInfoText label="전화번호" value={userInfo.phoneNumber} />

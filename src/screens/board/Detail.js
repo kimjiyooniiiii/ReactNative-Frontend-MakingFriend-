@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -10,69 +10,59 @@ import {
   Alert,
   Image,
 } from "react-native";
+import { API_URL } from "@env";
+import { UserContext } from "../../contexts";
 
 const Detail = ({ navigation, route }) => {
+  const postId = route.params;
+  const [post, setPost] = useState({});
+  const { user } = useContext(UserContext);
+  const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
-  const { item } = route.params;
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      writer: "댓글작성자1",
-      content: "댓글 1",
-      date: "2022.01.01",
-      replies: [
-        {
-          id: 4,
-          writer: "대댓글자1",
-          content: "대댓글 1-1",
-          date: "2022.01.02",
-        },
-        {
-          id: 5,
-          writer: "대댓글자3",
-          content: "대댓글 1-2",
-          date: "2022.01.03",
-        },
-      ],
-    },
-    {
-      id: 2,
-      writer: "댓글작성자2",
-      content: "댓글 2",
-      date: "2022.01.04",
-      replies: [],
-    },
-    {
-      id: 3,
-      writer: "댓글작성자3",
-      content: "댓글 3",
-      date: "2022.01.05",
-      replies: [
-        {
-          id: 6,
-          writer: "대댓글자2",
-          content: "대댓글 3-1",
-          date: "2022.01.06",
-        },
-      ],
-    },
-  ]);
+
+  useEffect(() => {
+    fetchPostData();
+  }, [postId]);
+
+  const fetchPostData = () => {
+    fetch(`http://172.20.10.7:8080/board?boardId=${postId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        // console.log(JSON.stringify(res.data));
+        // console.log(JSON.stringify(res.data.replyGroup));
+        setPost(res.data);
+        setComments(res.data.replyGroup);
+      })
+      .catch((error) => {
+        console.error("Error during fetchPostData:", error);
+        setPost(null); // Set post to null in case of an error
+      });
+  };
 
   const renderCommentItem = ({ item }) => {
-    "";
+    // console.log(JSON.stringify(item));
     return (
       <View style={styles.commentItem}>
-        <Text style={styles.commentContent}>{item.writer}</Text>
         <Text style={styles.commentContent}>
-          {item.content + "  "}
+          댓글 닉네임: {item.parentNickname}
+        </Text>
+        <Text style={styles.commentContent}>
+          댓글 내용: {item.parentContent + "  "}
           {item.date}
         </Text>
 
-        {item.replies && item.replies.length > 0 && (
+        {item.children && item.children.length > 0 && (
           <FlatList
-            data={item.replies}
+            data={item.children}
             renderItem={renderCommentItem}
-            keyExtractor={(replyItem) => replyItem.id.toString()}
+            keyExtractor={(child) => child.replyId.toString()}
             style={styles.replyList}
           />
         )}
@@ -80,31 +70,24 @@ const Detail = ({ navigation, route }) => {
     );
   };
 
-  const deleteItem = () => {
-    Alert.alert(
-      "삭제",
-      "정말로 삭제하시겠습니까?",
-      [
-        {
-          text: "취소",
-          onPress: () => {
-            console.log("취소");
-          },
-          style: "cancel",
-        },
-        {
-          text: "삭제",
-          onPress: () => {
-            console.log("삭제 api 연동");
-          },
-          style: "destructive",
-        },
-      ],
-      {
-        cancelable: true,
-        onDismiss: () => {},
+  const _handleDeletePostButtonPress = () => {
+    fetch(`http://172.20.10.7:8080/board?boardId=${postId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
       },
-    );
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        if (res) {
+          navigation.navigate("MainGet");
+        }
+      })
+      .catch((error) => {
+        console.error("Error during deletePost:", error);
+      });
   };
 
   return (
@@ -113,17 +96,17 @@ const Detail = ({ navigation, route }) => {
         {/* <Image source={{ uri: "https://cdn-icons-png.flaticon.com/512/61/61022.png" }}
                             style={styles.image} /> */}
       </TouchableOpacity>
-      <TouchableOpacity onPress={deleteItem}>
+      <TouchableOpacity onPress={_handleDeletePostButtonPress}>
         <Text>삭제 버튼</Text>
       </TouchableOpacity>
 
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.content}>{item.content}</Text>
+      <Text style={styles.title}>{post.title}</Text>
+      <Text style={styles.content}>{post.content}</Text>
 
       <FlatList
         data={comments}
         renderItem={renderCommentItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(comments) => comments.replyId.toString()}
       />
       <TextInput
         placeholder="댓글을 입력하세요"

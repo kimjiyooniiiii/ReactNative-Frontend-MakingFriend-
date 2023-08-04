@@ -47,8 +47,8 @@ const Login = ({ navigation }) => {
 
   const _handleLoginButtonPress = () => {
     console.log(JSON.stringify(userInput));
-    fetch(`${API_URL}/auth/login`, {
-      // fetch(`http://172.20.10.7:8080/auth/login`, {
+    // fetch(`${API_URL}/auth/login`, {
+    fetch(`http://172.20.10.7:8080/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;",

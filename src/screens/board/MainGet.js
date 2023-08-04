@@ -12,26 +12,26 @@ import {
 } from "react-native";
 import { API_URL } from "@env";
 import { UserContext } from "../../contexts";
-import { useIsFocused } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 
-const MainGet = ({ navigation }) => {
+const MainGet = ({ navigation, route }) => {
   const [search, setSearch] = useState("");
   const [contents, setContents] = useState([]);
   const { user } = useContext(UserContext);
-  const isFocused = useIsFocused();
   const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchBoard();
-  }, []);
+  }, [contents]);
+
   const fetchBoard = () => {
     if (isLoading) return; // 이미 데이터를 불러오고 있는 중이라면 중복 요청 방지
 
     setIsLoading(true);
 
-    fetch(`${API_URL}/board/list?page=${page}`, {
-      // fetch(`http://172.20.10.7:8080/board/list?page=${page}`, {
+    // fetch(`${API_URL}/board/list?page=${page}`, {
+    fetch(`http://172.20.10.7:8080/board/list?page=${page}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
@@ -56,19 +56,23 @@ const MainGet = ({ navigation }) => {
         console.error(error);
       });
   };
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => navigation.navigate("Detail", { contents })}
-    >
-      <View style={styles.item}>
-        <Text>포스트아이디: {item.postId}</Text>
-        <Text>글쓴이: {item.writer}</Text>
-        <Text>생성날짜: {item.createdDt}</Text>
-        <Text>제목: {item.title}</Text>
-        <Text>내용: {item.content}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+
+  const renderItem = ({ item }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Detail", item.postId)}
+      >
+        <View style={styles.item}>
+          <Text>포스트아이디: {item.postId}</Text>
+          <Text>글쓴이: {item.writer}</Text>
+          <Text>생성날짜: {item.createdDt}</Text>
+          <Text>제목: {item.title}</Text>
+          <Text>내용: {item.content}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   const ItemSeparator = () => <View style={styles.separator} />;
   return (
     <View>
