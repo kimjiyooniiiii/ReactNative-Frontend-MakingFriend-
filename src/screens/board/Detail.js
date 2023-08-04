@@ -25,7 +25,8 @@ const Detail = ({ navigation, route }) => {
   }, [postId]);
 
   const fetchPostData = () => {
-    fetch(`http://172.20.10.7:8080/board?boardId=${postId}`, {
+    fetch(`${API_URL}:8080/board?boardId=${postId}`, {
+      // fetch(`http://172.20.10.7:8080/board?boardId=${postId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
