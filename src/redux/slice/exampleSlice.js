@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initalState = {
+const initialState = {
   value: 0,
   token: "",
 };
 
 export const exampleSlice = createSlice({
   name: "example",
-  initalState,
+  initialState,
   reducers: {
     increment: (state) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
