@@ -30,8 +30,8 @@ const MainGet = ({ navigation, route }) => {
 
     setIsLoading(true);
 
-    // fetch(`${API_URL}/board/list?page=${page}`, {
-    fetch(`http://172.20.10.7:8080/board/list?page=${page}`, {
+    fetch(`${API_URL}/board/list?page=${page}`, {
+      // fetch(`http://172.20.10.7:8080/board/list?page=${page}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
