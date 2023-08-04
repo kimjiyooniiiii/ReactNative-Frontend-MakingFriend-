@@ -63,8 +63,8 @@ const PostContent = styled.Text`
   padding-left: 8px;
 `;
 
-const StudyResult = () => {
-  const studyResultNavigation = useNavigation();
+const HobbyResult = () => {
+  const HobbyResultNavigation = useNavigation();
   const roomDetailsNavigation = useNavigation();
   const route = useRoute();
   const dataArray = route.params?.data;
@@ -108,7 +108,9 @@ const StudyResult = () => {
 
         dataArray.push(...Object.values(data));
         console.log(dataArray);
-        studyResultNavigation.navigate("StudyResult", { data: dataArray });
+        HobbyResultNavigation.navigate("HobbyResult", {
+          data: dataArray,
+        });
         console.log("성공");
       })
       .catch((error) => {
@@ -121,7 +123,7 @@ const StudyResult = () => {
       <KeyboardAwareScrollView style={{ backgroundColor: "white" }}>
         <Container>
           <TitleContainer>
-            <Title title="스터디 할 두리" />
+            <Title title="취미 같이 할 두리" />
           </TitleContainer>
           <InputBoxContainer>
             <InputBox onPress={searchAnotherRoom} />
@@ -149,4 +151,4 @@ const StudyResult = () => {
   );
 };
 
-export default StudyResult;
+export default HobbyResult;

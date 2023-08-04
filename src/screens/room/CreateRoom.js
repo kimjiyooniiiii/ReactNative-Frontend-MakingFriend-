@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { Image, View, Text, Button, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import MealSelect from "./MealSelect";
+import { API_URL } from "@env";
 
 const Container = styled.View`
   background-color: ${({ theme }) => theme.background};
@@ -86,8 +86,6 @@ const CreateRoom = () => {
 
   // 입력된 방 정보들 json 변환
   const postToBackend = () => {
-    const apiUrl = `http://172.30.1.7:8088/room/create`;
-
     // 입력값이 하나라도 없으면 알림
     if (!roomName || !membersSelect || !introduce || !categorySelect) {
       alert("전부 다 입력해주세요!");
@@ -95,15 +93,15 @@ const CreateRoom = () => {
     }
 
     const jsonObject = {
-      hostId: "201314335",
+      _id: "201314335",
       roomName: roomName,
-      numbers: membersSelect,
+      maxParticipants: membersSelect,
       introduce: introduce,
       category: categorySelect,
     };
 
     // fetch 함수를 사용하여 POST 요청 보내기
-    fetch(apiUrl, {
+    fetch(`${API_URL}/room/create`, {
       method: "POST", // 메서드를 POST로 설정
       headers: {
         "Content-Type": "application/json", // 요청의 Content-Type을 JSON으로 설정
@@ -126,9 +124,6 @@ const CreateRoom = () => {
   };
 
   const navigation = useNavigation();
-  const navi = () => {
-    navigation.navigate("MealSelect");
-  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -219,9 +214,6 @@ const CreateRoom = () => {
         <ButtonContainer>
           <SubmitButton onPress={handleButtonPress} title="완료" />
         </ButtonContainer>
-        <Button title="방 목록" onPress={navi}>
-          방 목록
-        </Button>
       </Container>
     </SafeAreaView>
   );

@@ -1,11 +1,12 @@
 import { InputBox, Title } from "../../components/room2";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
 import { useRoute } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
+import { API_URL } from "@env";
 
 const Container = styled.View`
   background-color: ${({ theme }) => theme.background};
@@ -67,6 +68,7 @@ const MealResult = () => {
   const roomDetailsNavigation = useNavigation();
   const route = useRoute();
   const dataArray = route.params?.data;
+  const sendData = [];
 
   // 방 내용 상세보기
   const roomDetails = (data) => {
@@ -75,25 +77,24 @@ const MealResult = () => {
 
   //다른 모임 방 다시 검색
   const searchAnotherRoom = (keyword) => {
-    const sendData = {};
-    const filterArray = [];
-
-    if (keyword != "") {
-      sendData["param1"] = keyword;
-      filterArray.push(keyword);
+    if (keyword !== "") {
+      sendData.push(keyword);
     }
-    const key = Object.keys(sendData)[0];
-    const queryString = `${encodeURIComponent(key)}=${encodeURIComponent(
-      sendData[key],
-    )}`;
 
-    // ---------------------------------------------------------------
-    // 백엔드랑 통신코드
-    //const url = `http://172.30.1.7:8088/room/searchMeal?${queryString}`;
-    const url = `http://121.187.22.37:8000/room/searchMeal?${queryString}`;
-    const dataArray = [];
+    const dataArray = []; // 백엔드에서 받은 결과들
+    let data = {
+      keywordList: sendData,
+    };
 
-    fetch(url)
+    const send = {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    fetch(`${API_URL}/room/searchRoom`, send)
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.status);
@@ -103,10 +104,12 @@ const MealResult = () => {
       })
       .then((data) => {
         // 성공
+        //console.log(JSON.stringify(data));
 
         dataArray.push(...Object.values(data));
-        // console.log(JSON.stringify(data));
+        console.log(dataArray);
         mealResultNavigation.navigate("MealResult", { data: dataArray });
+        console.log("성공");
       })
       .catch((error) => {
         console.error(error);
@@ -129,7 +132,7 @@ const MealResult = () => {
               <PreviewContainer>
                 <FirstLineContainer>
                   <PostTitle>{data.roomName}</PostTitle>
-                  <Date>{data.createdDt}</Date>
+                  <Date>{data.createdAt}</Date>
                 </FirstLineContainer>
 
                 <PostContent>
