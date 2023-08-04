@@ -25,7 +25,7 @@ const Stack = createStackNavigator();
 const Room = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {/* <Stack.Screen
         name="TaxiSearch"
         component={TaxiSearch}
         options={{ headerShown: false }}
@@ -61,7 +61,7 @@ const Room = () => {
         name="ExerciseSearch"
         component={ExerciseSearch}
         options={{ headerShown: false }}
-      />
+      /> */}
 
       <Stack.Screen
         name="ChatList"

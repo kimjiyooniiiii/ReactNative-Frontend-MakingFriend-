@@ -49,8 +49,8 @@ const Detail = ({ navigation, route }) => {
   };
 
   const _handleWriteCommentButtonPress = () => {
-    console.log("으으음??");
-    fetch(`http://192.168.0.54:8080/board/${postId}/reply/parent`, {
+    fetch(`${API_URL}/board/${postId}/reply/parent`, {
+      // fetch(`http://192.168.0.54:8080/board/${postId}/reply/parent`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
@@ -62,7 +62,7 @@ const Detail = ({ navigation, route }) => {
         return res.json();
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
       })
       .catch((error) => {
         console.error("Error during writePost:", error);
@@ -78,7 +78,7 @@ const Detail = ({ navigation, route }) => {
         </Text>
         <Text style={styles.commentContent}>
           댓글 내용: {item.parentContent + "  "}
-          {item.date}
+          {/* {item.createdDt} */}
         </Text>
 
         {item.children && item.children.length > 0 && (

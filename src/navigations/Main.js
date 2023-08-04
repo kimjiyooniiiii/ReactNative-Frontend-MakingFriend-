@@ -48,7 +48,7 @@ const Main = () => {
         options={{ headerShown: false }}
       />
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="MealSelect"
         component={MealSelect}
         options={{ headerShown: false }}
@@ -76,7 +76,7 @@ const Main = () => {
         name="MealResult"
         component={MealResult}
         options={{ headerShown: false }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };

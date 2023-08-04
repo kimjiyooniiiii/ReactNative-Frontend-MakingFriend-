@@ -11,8 +11,8 @@ const Navigation = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Room />
-      {/* <Stack.Navigator>
+      {/* <Room /> */}
+      <Stack.Navigator>
         <Stack.Screen
           name="Auth"
           component={Auth}
@@ -27,7 +27,7 @@ const Navigation = () => {
           //   headerShown: false,
           // }}
         />
-  </Stack.Navigator> */}
+      </Stack.Navigator>
 
       {/* <Profile /> */}
       {/* <BoardList /> */}
