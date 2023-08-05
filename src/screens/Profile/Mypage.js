@@ -11,6 +11,7 @@ import { UserContext } from "../../contexts";
 import { API_URL } from "@env";
 import { useIsFocused } from "@react-navigation/native";
 
+import { useSelector, useDispatch } from "react-redux";
 const Container = styled.View`
   flex: 1;
   justify-content: center;
@@ -45,6 +46,12 @@ const Mypage = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState({});
   const isFocused = useIsFocused();
 
+  const accessToken = useSelector((state) => state.user.security.accessToken);
+
+  const profile = useSelector((state) => state.user.profile);
+
+  console.log("accessToken: " + accessToken);
+  console.log("profile: " + profile);
   // console.log(user.userId);
   useEffect(() => {
     fetchUserInfo(); // 최초 렌더링 시 사용자 정보를 가져오는 함수 호출
@@ -90,7 +97,7 @@ const Mypage = ({ navigation }) => {
     <KeyboardAwareScrollView>
       <SafeAreaView>
         <Container>
-          <ProfileSectionContainer>
+          {/* <ProfileSectionContainer>
             <UserImage url={photo} />
             <UserInfoText value={userInfo.nickName} isNickname={true} />
             <UserInfoText value={userInfo.userName} isUsername={true} />
@@ -111,7 +118,7 @@ const Mypage = ({ navigation }) => {
           <UserInfoText label="이메일" value={userInfo.userMail} />
           <UserInfoText label="생일" value={userInfo.birthday} />
           <UserInfoText label="성별" value={userInfo.gender} />
-          <UserInfoText label="전화번호" value={userInfo.phoneNumber} />
+          <UserInfoText label="전화번호" value={userInfo.phoneNumber} /> */}
         </Container>
       </SafeAreaView>
     </KeyboardAwareScrollView>

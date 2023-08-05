@@ -48,7 +48,7 @@ export const Item = React.memo(
     item: { _id, roomName, introduce, createdAt, maxParticipants },
     onPress,
   }) => {
-    console.log(roomName);
+    // console.log(roomName);
     const now = moment();
     const date = moment(createdAt);
     const formattedTime = now.isSame(date, "day")

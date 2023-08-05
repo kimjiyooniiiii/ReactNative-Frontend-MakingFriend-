@@ -5,7 +5,11 @@ import { BigButton, SmallButton, Input } from "../../components/auth";
 import styled from "styled-components/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { API_URL } from "@env";
-import { UserContext } from "../../contexts";
+
+// import { UserContext } from "../../contexts";
+
+import { useSelector, useDispatch } from "react-redux";
+import { login } from "../../redux/slice/userSlice";
 
 const Container = styled.View`
   flex: 1;
@@ -42,34 +46,14 @@ const Login = ({ navigation }) => {
     userId: "",
     password: "",
   });
+  const dispatch = useDispatch();
+  // const { setUserIdAndNickname, setTokens } = useContext(UserContext);
+  const accessToken = useSelector((state) => state.user.security.accessToken);
 
-  const { setUserIdAndNickname, setTokens } = useContext(UserContext);
-
+  console.log("accessToken: " + accessToken);
   const _handleLoginButtonPress = () => {
-    console.log(JSON.stringify(userInput));
-    fetch(`${API_URL}/auth/login`, {
-      // fetch(`http://172.20.10.7:8080/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userInput),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        setTokens(res.data.accessToken, res.data.refreshToken);
-        setUserIdAndNickname(userInput.userId, res.data.nickname);
-
-        navigation.navigate("Main");
-      })
-      .catch((error) => {
-        console.error("Error during login:", error);
-      });
-    // .finally(() => {
-    //   setUserId(userInput.userId);
-    // });
+    dispatch(login({ userInput }));
+    navigation.navigate("Main");
   };
 
   const _handleUserInputChange = (fieldName, value) => {

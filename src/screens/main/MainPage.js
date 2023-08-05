@@ -5,7 +5,7 @@ import { FlatList } from "react-native";
 import { ThemeContext } from "styled-components/native";
 import { getItems, Item } from "../../components/common/ChatList";
 import { LOGO } from "@env";
-
+import { useSelector, useDispatch } from "react-redux";
 // 메인페이지
 const Container = styled.View`
   background: white;
@@ -48,7 +48,7 @@ const Main = ({ navigation }) => {
     };
     fetchItems();
   }, []);
-  console.log("item", list);
+  // console.log("item", list);
   return (
     <Container>
       <Category>

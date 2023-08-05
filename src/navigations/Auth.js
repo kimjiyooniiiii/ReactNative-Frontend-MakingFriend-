@@ -5,7 +5,6 @@ import { Login, Signup } from "../screens/auth/index";
 const Stack = createStackNavigator();
 
 const Auth = () => {
-  console.log("vbbbbbbbb");
   return (
     <Stack.Navigator>
       <Stack.Screen

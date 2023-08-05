@@ -16,7 +16,7 @@ const ChatList = ({ navigation }) => {
   const { user } = useContext(UserContext);
   const [list, setList] = useState([]);
   useEffect(() => {
-    console.log(user);
+    // console.log(user);
     //목록 불러오기
     const fetchItems = async () => {
       let response = await fetch(`${API_URL}/room/list/user`, {

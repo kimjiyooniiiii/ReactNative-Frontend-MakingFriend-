@@ -6,7 +6,12 @@ import styled from "styled-components/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { API_URL } from "@env";
-import { UserContext } from "../../contexts";
+// import { UserContext } from "../../contexts";
+
+//redux
+import { useDispatch } from "react-redux";
+import { register } from "../../redux/slice/userSlice";
+
 const Container = styled.View`
   flex: 1;
   justify-content: center;
@@ -62,7 +67,7 @@ const Signup = ({ navigation }) => {
   const [photo, setPhoto] = useState(DEFAULT_PHOTO);
   // const [photo, setPhoto] = useState(logo);
 
-  const [selectedGender, setSelectedGender] = useState("Male");
+  const [selectedGender, setSelectedGender] = useState("M");
 
   const handleGenderSelection = (gender) => {
     setSelectedGender(gender);
@@ -75,7 +80,7 @@ const Signup = ({ navigation }) => {
     password: "",
     email: "",
     birthday: "",
-    gender: "Male",
+    gender: "M",
     phoneNumber: "",
   });
 
@@ -88,28 +93,12 @@ const Signup = ({ navigation }) => {
   const refGender = useRef(null);
   const refPhoneNumber = useRef(null);
 
-  const { setUserIdAndNickname, setTokens } = useContext(UserContext);
+  // const { setUserIdAndNickname, setTokens } = useContext(UserContext);
+  const dispatch = useDispatch();
+
   const _handleSignupButtonPress = () => {
-    // console.log(JSON.stringify(userInput));
-    fetch(`${API_URL}/auth/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userInput),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        // setUserId(userInput.userId);-
-        setUserIdAndNickname(userInput.userId, userInput.nickname);
-        setTokens(res.accessToken, res.refreshToken);
-        navigation.navigate("Login");
-      })
-      .catch((error) => {
-        console.error("Error during signup:", error);
-      });
+    dispatch(register({ userInput }));
+    navigation.navigate("Login");
   };
 
   const _handleUserInputChange = (fieldName, value) => {
@@ -196,18 +185,18 @@ const Signup = ({ navigation }) => {
             <GenderContainer>
               <RadioButton
                 genderLabel="남"
-                isSelected={selectedGender === "Male"}
+                isSelected={selectedGender === "M"}
                 onPress={() => {
-                  handleGenderSelection("Male");
-                  _handleUserInputChange("gender", "Male");
+                  handleGenderSelection("M");
+                  _handleUserInputChange("gender", "M");
                 }}
               />
               <RadioButton
                 genderLabel="여"
-                isSelected={selectedGender === "Female"}
+                isSelected={selectedGender === "F"}
                 onPress={() => {
-                  handleGenderSelection("Female");
-                  _handleUserInputChange("gender", "Female");
+                  handleGenderSelection("F");
+                  _handleUserInputChange("gender", "F");
                 }}
               />
             </GenderContainer>
