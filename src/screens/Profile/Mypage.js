@@ -11,7 +11,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { API_URL } from "@env";
 
 import { useSelector, useDispatch } from "react-redux";
-import { logoutFulfilled } from "../../redux/slice/userSlice";
+import { logout } from "../../redux/slice/userSlice";
 const Container = styled.View`
   flex: 1;
   justify-content: center;
@@ -49,11 +49,12 @@ const Mypage = ({ navigation }) => {
   const dispatch = useDispatch();
   // console.log("======MyPage의 userInfo=====start======");
   // console.log(userInfo);
+  // console.log(userId);
   // console.log("======MyPage의 userInfo=====end======");
 
   const _handleLogoutButtonPress = () => {
     const logoutInput = { accessToken, userId };
-    dispatch(logoutFulfilled({ logoutInput }));
+    dispatch(logout({ logoutInput }));
 
     // const { setUserIdAndNickname, setTokens } = useContext(UserContext);
 

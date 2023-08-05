@@ -46,6 +46,13 @@ const Login = ({ navigation }) => {
     userId: "",
     password: "",
   });
+
+  const userInfo = useSelector((state) => state.user.profile);
+
+  // console.log("======MyPage의 userInfo=====start======");
+  // console.log(userInfo);
+  // console.log("======MyPage의 userInfo=====end======");
+
   const dispatch = useDispatch();
   // const { setUserIdAndNickname, setTokens } = useContext(UserContext);
   const accessToken = useSelector((state) => state.user.security.accessToken);

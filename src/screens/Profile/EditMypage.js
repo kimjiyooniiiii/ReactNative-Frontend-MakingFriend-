@@ -108,7 +108,7 @@ const EditMypage = ({ navigation }) => {
     // console.log(userInfo);
 
     setUserInput(() => ({
-      nickName: userInfo.nickname || "",
+      nickname: userInfo.nickname || "",
       userName: userInfo.userName || "",
       major: userInfo.major || "",
       email: userInfo.email || "",
@@ -184,9 +184,9 @@ const EditMypage = ({ navigation }) => {
             label="닉네임"
             placeholder="두리"
             onSubmitEditing={() => refUserId.current.focus()}
-            value={userInput.nickName}
+            value={userInput.nickname}
             returnKeyType="next"
-            onChangeText={(value) => _handleUserInputChange("nickName", value)}
+            onChangeText={(value) => _handleUserInputChange("nickname", value)}
           />
           <UserInfoTextInput
             ref={refMajor}
@@ -204,7 +204,7 @@ const EditMypage = ({ navigation }) => {
             onSubmitEditing={() => refBirthday.current.focus()}
             value={userInput.email}
             returnKeyType="next"
-            onChangeText={(value) => _handleUserInputChange("userMail", value)}
+            onChangeText={(value) => _handleUserInputChange("email", value)}
           />
 
           <UserInfoTextInput
