@@ -52,6 +52,7 @@ const Login = ({ navigation }) => {
 
   console.log("accessToken: " + accessToken);
   const _handleLoginButtonPress = () => {
+    // 변수 하나로 보내기
     dispatch(login({ userInput }));
     navigation.navigate("Main");
   };

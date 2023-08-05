@@ -74,6 +74,7 @@ const Signup = ({ navigation }) => {
   };
 
   const [userInput, setUserInput] = useState({
+    userName: "",
     nickname: "",
     userId: "",
     major: "",
