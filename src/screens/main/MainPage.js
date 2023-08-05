@@ -3,9 +3,10 @@ import styled from "styled-components/native";
 import { Button, FloatButton } from "../../components/common";
 import { FlatList, RefreshControl } from "react-native";
 import { ThemeContext } from "styled-components/native";
-import { getItems, Item } from "../../components/common/ChatList";
+import { Item } from "../../components/common/ChatList";
 import { LOGO } from "@env";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getListInfo, initRoomInfo } from "../../redux/slice/chatSlice";
 // 메인페이지
 const Container = styled.View`
   background: white;
@@ -33,31 +34,30 @@ const ChatList = styled.View`
 
 const Main = ({ navigation }) => {
   const theme = useContext(ThemeContext);
-  const [list, setList] = useState([]); //메인 페이지에 보일 리스트
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const dispatch = useDispatch();
+  const chatList = useSelector((state) => state.chat.chatList);
 
-  //목록 불러오기
-  const fetchItems = async () => {
-    try {
-      const items = await getItems(); // getItems 함수를 실행하여 아이템들을 가져옴
-
-      setList(items); // 가져온 아이템들을 list 배열 상태로 업데이트
-    } catch (e) {
-      console.log(e.message);
-    }
+  // //목록 불러오기
+  const fetchItems = () => {
+    dispatch(getListInfo()); // getListInfo 액션을 디스패치하여 채팅방 리스트 데이터 불러오기
   };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
   useEffect(() => {
     fetchItems();
     setIsRefreshing(false);
   }, []);
-  console.log("item", list);
 
   const handleRefresh = () => {
     setIsRefreshing(true); // 새로고침 시작 시 상태 변경
     fetchItems(); // 데이터 로드 함수 호출
     setIsRefreshing(false);
   };
+
   return (
     <Container>
       <Category>
@@ -98,13 +98,14 @@ const Main = ({ navigation }) => {
               onRefresh={handleRefresh}
             />
           }
-          data={list.data}
+          data={chatList}
           renderItem={({ item }) => (
             <Item
               item={item}
-              onPress={(params) =>
-                navigation.navigate("EnterRoom", { data: params })
-              }
+              onPress={(param) => {
+                navigation.navigate("EnterRoom");
+                dispatch(initRoomInfo(param));
+              }}
             />
           )}
         />

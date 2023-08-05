@@ -1,66 +1,21 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
-import { useRoute } from "@react-navigation/native";
 import { Image } from "react-native";
-import moment from "moment";
-import { UserContext } from "../../contexts";
-import { API_URL } from "@env";
+import { useDispatch, useSelector } from "react-redux";
+import { getPageInfo } from "../../redux/slice/chatSlice";
+import { UserContext } from "../../contexts/User";
 
 const EnterRoom = ({ navigation }) => {
+  const page = useSelector((state) => state.chat.totalPage);
+  const room = useSelector((state) => state.chat.roomInfo);
   const { user } = useContext(UserContext);
-  const route = useRoute();
-  console.log("enterroom route ", route);
-  const [totalPage, setTotalPage] = useState(null);
+  const token = user.accessToken;
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getTotalPage();
+    dispatch(getPageInfo({ room, token }));
   }, []);
-
-  let data = { info: route.params?.data, totalPage: totalPage };
-  console.log("enterroom data ", data);
-  const roomName = data?.info.roomName;
-  const numbers = data?.info.maxParticipants;
-  const createdAt = data?.info.createdAt;
-  const introduce = data?.info.introduce;
-  console.log(createdAt);
-
-  const now = moment();
-  const date = moment(createdAt);
-
-  const formattedTime = now.isSame(date, "day")
-    ? date.format("HH:mm")
-    : date.format("YYYY년 MM월 DD일");
-
-  // console.log({ data });
-  /**
-   * 페이지 값 가져오기
-   */
-
-  const getTotalPage = () => {
-    fetch(`${API_URL}/room/pages/${route.params.data._id}`, {
-      method: "GET", // 메서드를 POST로 설정
-      headers: {
-        "Content-Type": "application/json", // 요청의 Content-Type을 JSON으로 설정
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        return response.json();
-      })
-      .then((res) => {
-        console.log("POST 요청 성공:");
-        console.log(res);
-        setTotalPage(res);
-      })
-      .catch((error) => {
-        console.error("POST 요청 실패:");
-      });
-  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -72,19 +27,19 @@ const EnterRoom = ({ navigation }) => {
         />
         <TitleContainer>
           <Title></Title>
-          <TitleName>{roomName}</TitleName>
+          <TitleName>{room.roomName}</TitleName>
         </TitleContainer>
         <IntroduceContainer>
           <Introduce>우리 방을 소개합니다</Introduce>
-          <IntroduceContent>{introduce}</IntroduceContent>
-          <Numbers>정원 : {numbers}명</Numbers>
-          <Date>{{ formattedTime } ? `시작일 : ${formattedTime}` : ""}</Date>
+          <IntroduceContent>{room.introduce}</IntroduceContent>
+          <Numbers>정원 : {room.maxParticipants}명</Numbers>
+          <Date>{room.formattedTime}</Date>
         </IntroduceContainer>
         <ButtonContainer>
           <EnterButton
             title="입장"
             onPress={() => {
-              navigation.navigate("Chat", data);
+              navigation.navigate("Chat");
             }}
           >
             <ButtonText>입장</ButtonText>

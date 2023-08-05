@@ -3,9 +3,65 @@ import { View, Text } from "react-native";
 import styled from "styled-components/native";
 import { FlatList } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ThemeContext } from "styled-components/native";
-import { API_URL } from "@env";
+
 import moment from "moment";
+
+/**
+ * {"_id": "13bfc100-6ae1-463f-a87c-0f0a878aa892",
+ * "blockedMember": [],
+ * "createdAt": "2023-08-04T23:00:17.823",
+ * "full": false,
+ * "introduce": "test1",
+ * "maxParticipants": 2,
+ * "participants": ["201415555"],
+ * "roomName": "Test1"}
+ */
+// 목록 불러오기
+export const Item = React.memo(
+  ({
+    item: {
+      _id,
+      roomName,
+      introduce,
+      createdAt,
+      maxParticipants,
+      hostUser,
+      full,
+      blockedMember,
+      participants,
+    },
+    onPress,
+  }) => {
+    const now = moment();
+    const date = moment(createdAt);
+    const formattedTime = now.isSame(date, "day")
+      ? date.format("HH:mm")
+      : date.format("YYYY년 MM월 DD일");
+    return (
+      <ItemContainer
+        onPress={() =>
+          onPress({
+            _id,
+            roomName,
+            introduce,
+            createdAt,
+            maxParticipants,
+            full,
+            blockedMember,
+            participants,
+          })
+        }
+      >
+        <ItemTextContainer>
+          <ItemTitle>{roomName}</ItemTitle>
+          <ItemDesc>{introduce}</ItemDesc>
+        </ItemTextContainer>
+        <ItemTime>{formattedTime}</ItemTime>
+        <ItemIcon />
+      </ItemContainer>
+    );
+  },
+);
 
 const ItemContainer = styled.TouchableOpacity`
   flex-direction: row;
@@ -41,49 +97,3 @@ const ItemIcon = styled(MaterialIcons).attrs(({ theme }) => ({
   size: 24,
   color: theme.itemIcon,
 }))``;
-
-// 목록 불러오기
-export const Item = React.memo(
-  ({
-    item: { _id, roomName, introduce, createdAt, maxParticipants },
-    onPress,
-  }) => {
-    console.log(roomName);
-    const now = moment();
-    const date = moment(createdAt);
-    const formattedTime = now.isSame(date, "day")
-      ? date.format("HH:mm")
-      : date.format("YYYY년 MM월 DD일");
-    return (
-      <ItemContainer
-        onPress={() =>
-          onPress({ _id, roomName, introduce, formattedTime, maxParticipants })
-        }
-      >
-        <ItemTextContainer>
-          <ItemTitle>{roomName}</ItemTitle>
-          <ItemDesc>{introduce}</ItemDesc>
-        </ItemTextContainer>
-        <ItemTime>{formattedTime}</ItemTime>
-        <ItemIcon />
-      </ItemContainer>
-    );
-  },
-);
-
-export const getItems = async () => {
-  try {
-    let response = await fetch(`${API_URL}/room/list`, {
-      method: "GET",
-    });
-    let items = await response.json();
-    return items;
-  } catch (e) {
-    // console.log(e.message);
-  }
-};
-
-/**
- * {"status":"success",
- * "data":[{"_id":"64ca881765ac452b4f385d85","roomName":"천지관에서서","introduce":"밥먹어요","participants":["201234567"],"maxParticipants":5,"blockedMember":[],"createdAt":"2023-08-03T01:45:11.82","full":false},{"_id":"64ca887d65ac452b4f385d86","roomName":"치킨먹을사람","introduce":"여기모여라","participants":["201234567"],"maxParticipants":3,"blockedMember":[],"createdAt":"2023-08-03T01:46:53.815","full":false}],"message":"200"}
- */
