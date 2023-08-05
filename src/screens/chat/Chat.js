@@ -11,37 +11,10 @@ import {
   addMessage,
 } from "../../redux/slice/chatSlice";
 
+const ENTER = "EN";
 const SYSTEM = "SY";
 const TALK = "TA";
 const IMAGE = "IM";
-const Container = styled.View`
-  flex: 1;
-  width: 100%;
-  background-color: ${({ theme }) => theme.background};
-`;
-const SendIcon = styled(MaterialIcons).attrs(({ theme, text }) => ({
-  name: "send",
-  size: 24,
-  color: text ? theme.sendBtnActive : theme.sendBtnInactive,
-}))``;
-
-const SendButton = (props) => {
-  return (
-    <Send
-      {...props}
-      containerStyle={{
-        width: 44,
-        height: 44,
-        alignItems: "center",
-        justifyContent: "center",
-        marginHorizontal: 4,
-      }}
-      disabled={!props.text}
-    >
-      <SendIcon text={props.text} />
-    </Send>
-  );
-};
 
 //사용자 정보 불러오기?
 
@@ -70,6 +43,11 @@ const Chat = () => {
     },
   });
   useEffect(() => {
+    console.log(
+      "effect==================================================",
+      currentPage,
+      page,
+    );
     if (currentPage < page) {
       getChatMessages();
       dispatch(increasePage());
@@ -82,7 +60,7 @@ const Chat = () => {
       console.log("WebSocket connected");
       // const initialMessage = "hi";
       // ws.send(JSON.stringify(initialMessage));
-      createSystemMessage(`${user.userId} 님이 입장했습니다.`);
+      createSystemMessage(ENTER, `${user.userId} 님이 입장했습니다.`);
     };
     ws.onerror = (error) => {
       console.error("WebSocket error", error);
@@ -94,8 +72,15 @@ const Chat = () => {
 
       // 메시지 파싱
       const parsedMessage = JSON.parse(data);
+      console.log(
+        "before addMessage==============================",
+        parsedMessage,
+      );
       dispatch(addMessage(parsedMessage));
-      console.log(parsedMessage);
+      console.log(
+        "after addMessage==============================",
+        parsedMessage,
+      );
     };
 
     ws.onclose = () => {
@@ -109,6 +94,45 @@ const Chat = () => {
     };
   }, []);
 
+  /**
+   * 시스템 메시지 전달 생성,
+   */
+
+  const createSystemMessage = (command, text) => {
+    /**
+     * {
+         _id: 1,
+          text: 'This is a system message',
+          createdAt: new Date(Date.UTC(2016, 5, 11, 17, 20, 0)),
+          system: true,
+          // Any additional custom parameters are passed through
+        }
+     */
+    const newMessage = systemMessage(command, text);
+    const payload = {
+      type: SYSTEM,
+      message: newMessage,
+      roomId: roomId,
+    };
+    ws.send(JSON.stringify(payload));
+  };
+
+  const systemMessage = (command, text) => {
+    const newMessage = {
+      _id: `${Date.now()}`,
+      text: text,
+      createdAt: new Date(),
+      system: true,
+      user: {
+        _id: user.userId,
+        name: name,
+        avatar: `${LOGO}`,
+      },
+      command: command,
+    };
+    return newMessage;
+  };
+
   const createMessage = (text) => {
     const newMessage = {
       _id: `${Date.now()}`,
@@ -119,39 +143,6 @@ const Chat = () => {
         name: name,
         avatar: `${LOGO}`,
       },
-    };
-    return newMessage;
-  };
-
-  /**
-   * 시스템 메시지 전달 생성,
-   */
-
-  const createSystemMessage = (text) => {
-    /**
-     * {
-         _id: 1,
-          text: 'This is a system message',
-          createdAt: new Date(Date.UTC(2016, 5, 11, 17, 20, 0)),
-          system: true,
-          // Any additional custom parameters are passed through
-        }
-     */
-    const newMessage = systemMessage(text);
-    const payload = {
-      type: SYSTEM,
-      message: newMessage,
-      roomId: roomId,
-    };
-    ws.send(JSON.stringify(payload));
-  };
-
-  const systemMessage = (text) => {
-    const newMessage = {
-      _id: `${Date.now()}`,
-      text: text,
-      createdAt: new Date(),
-      system: true,
     };
     return newMessage;
   };
@@ -214,4 +205,32 @@ const Chat = () => {
   );
 };
 
+const Container = styled.View`
+  flex: 1;
+  width: 100%;
+  background-color: ${({ theme }) => theme.background};
+`;
+const SendIcon = styled(MaterialIcons).attrs(({ theme, text }) => ({
+  name: "send",
+  size: 24,
+  color: text ? theme.sendBtnActive : theme.sendBtnInactive,
+}))``;
+
+const SendButton = (props) => {
+  return (
+    <Send
+      {...props}
+      containerStyle={{
+        width: 44,
+        height: 44,
+        alignItems: "center",
+        justifyContent: "center",
+        marginHorizontal: 4,
+      }}
+      disabled={!props.text}
+    >
+      <SendIcon text={props.text} />
+    </Send>
+  );
+};
 export default Chat;

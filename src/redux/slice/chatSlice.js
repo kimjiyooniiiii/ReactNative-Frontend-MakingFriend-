@@ -16,6 +16,7 @@ const initialState = {
   messages: [],
   chatList: [],
   involvedList: [],
+  isInvite: "",
 };
 
 export const chatSlice = createSlice({
@@ -32,6 +33,12 @@ export const chatSlice = createSlice({
     addMessage: (state, action) => {
       console.log("addMessage------------------ ", action.payload);
       state.messages.unshift(action.payload);
+    },
+    flushMessage: (state) => {
+      state.messages = [];
+    },
+    setInvite: (state) => {
+      state.isInvite = state.payload;
     },
   },
 
@@ -65,7 +72,13 @@ export const chatSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { initRoomInfo, addMessage, increasePage } = chatSlice.actions;
+export const {
+  initRoomInfo,
+  addMessage,
+  increasePage,
+  flushMessage,
+  setInvite,
+} = chatSlice.actions;
 
 export default chatSlice.reducer;
 

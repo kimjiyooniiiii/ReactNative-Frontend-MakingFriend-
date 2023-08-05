@@ -3,7 +3,11 @@ import styled, { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
 import { Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { getPageInfo } from "../../redux/slice/chatSlice";
+import {
+  flushMessage,
+  getPageInfo,
+  setInvite,
+} from "../../redux/slice/chatSlice";
 import { UserContext } from "../../contexts/User";
 
 const EnterRoom = ({ navigation }) => {
@@ -14,7 +18,16 @@ const EnterRoom = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getPageInfo({ room, token }));
+    if (room.isInvite === "" || room.isInvite === room._id) {
+      console.log(room);
+      dispatch(getPageInfo({ room, token }));
+      dispatch(setInvite(room._id));
+    } else {
+      console.log("invited effect", room);
+      dispatch(getPageInfo({ room, token }));
+      dispatch(flushMessage());
+      dispatch(setInvite(room._id));
+    }
   }, []);
 
   return (

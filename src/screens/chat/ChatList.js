@@ -6,7 +6,7 @@ import { FloatButton } from "../../components/common";
 import { UserContext } from "../../contexts/User";
 import { API_URL } from "@env";
 import { useDispatch, useSelector } from "react-redux";
-import { getInvoledList } from "../../redux/slice/chatSlice";
+import { getInvoledList, initRoomInfo } from "../../redux/slice/chatSlice";
 //채팅방 이름 목록들
 const List = styled.View`
   flex: 1;
@@ -39,7 +39,13 @@ const ChatList = ({ navigation }) => {
           <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
         }
         renderItem={({ item }) => (
-          <Item item={item} onPress={() => navigation.navigate("EnterRoom")} />
+          <Item
+            item={item}
+            onPress={(param) => {
+              navigation.navigate("EnterRoom");
+              dispatch(initRoomInfo(param));
+            }}
+          />
         )}
       />
       <FloatButton route="CreateRoom" />
