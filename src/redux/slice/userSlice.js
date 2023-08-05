@@ -264,12 +264,15 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(register.fulfilled, (state, action) => {
-      state.security.accessToken = action.payload.data.accessToken;
-      state.security.refreshToken = action.payload.data.refreshToken;
+      // console.log("==========action=========start");
+      // console.log(action.payload.accessToken);
+      // console.log("==========action=========end");
+      state.security.accessToken = action.payload.accessToken;
+      state.security.refreshToken = action.payload.refreshToken;
     });
 
     builder.addCase(login.fulfilled, (state, action) => {
-      console.log(action);
+      // console.log(action);
       const { data } = action.payload.data;
 
       // console.log("===========action.payload=====start==========");
@@ -301,7 +304,11 @@ export const register = createAsyncThunk(
   "user/register",
   async ({ userInput }) => {
     try {
-      const response = await fetch(`http://172.30.1.18:8005/auth/register`, {
+      // console.log("===========시작========");
+      // console.log(userInput);
+      // console.log("===========끝========");
+      // const response = await fetch(`http://172.30.1.18:8020/auth/register`, {
+      const response = await fetch(`${API_URL}/auth/register`, {
         // fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: {

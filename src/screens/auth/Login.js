@@ -50,7 +50,7 @@ const Login = ({ navigation }) => {
   // const { setUserIdAndNickname, setTokens } = useContext(UserContext);
   const accessToken = useSelector((state) => state.user.security.accessToken);
 
-  console.log("accessToken: " + accessToken);
+  // console.log("accessToken: " + accessToken);
   const _handleLoginButtonPress = () => {
     // 변수 하나로 보내기
     dispatch(login({ userInput }));
