@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "@env";
 
 const initialState = {
   profile: {
@@ -113,7 +114,7 @@ export const register = createAsyncThunk(
   "user/register",
   async ({ userInput }) => {
     try {
-      const response = await fetch(`http://172.30.1.18:8005/auth/register`, {
+      const response = await fetch(`${API_URL}/auth/register`, {
         // fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: {
@@ -134,7 +135,7 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk("user/login", async ({ userInput }) => {
   try {
-    const response = await fetch(`http://172.30.1.18:8005/auth/login`, {
+    const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -156,7 +157,7 @@ export const logout = createAsyncThunk(
   async ({ logoutInput }) => {
     try {
       const response = await fetch(
-        `http://172.30.1.18:8005/user/logout/${logoutInput.userId}`,
+        `${API_URL}/user/logout/${logoutInput.userId}`,
         {
           method: "POST",
           headers: {
@@ -185,7 +186,7 @@ export const saveEditMypage = createAsyncThunk(
       // console.log("saveEditMypage.userInput: " + saveEditMypageInput.userInput);
       // console.log("==============saveEditMypageInput========end");
       const response = await fetch(
-        `http://121.187.22.37:8080/user/info/update/200000000`,
+        `${API_URL}/user/info/update/200000000`,
         // `http://172.30.1.18:8005/user/info/update/${saveEditMypageInput.userId}`,
         {
           method: "PATCH",
