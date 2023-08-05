@@ -27,16 +27,29 @@ const ItemContent = styled.Text`
   font-size: 12px;
 `;
 
-const Review = ({ review: { opponentNickname, content, opponentId } }) => {
+// mentionUserId
+const Review = ({
+  review: { mentionUserNickname, content, mentionUserId },
+}) => {
   return (
     <ItemContainer>
       <ItemTextContainer>
-        <ItemDesc>{opponentNickname}</ItemDesc>
-        <ItemDesc>(학번: {opponentId})</ItemDesc>
+        <ItemDesc>{mentionUserNickname}</ItemDesc>
+        <ItemDesc>(학번: {mentionUserId})</ItemDesc>
         <ItemContent>{content}</ItemContent>
       </ItemTextContainer>
     </ItemContainer>
   );
 };
-
+// const Review = ({ review: { opponentNickname, content, opponentId } }) => {
+//   return (
+//     <ItemContainer>
+//       <ItemTextContainer>
+//         <ItemDesc>{opponentNickname}</ItemDesc>
+//         <ItemDesc>(학번: {opponentId})</ItemDesc>
+//         <ItemContent>{content}</ItemContent>
+//       </ItemTextContainer>
+//     </ItemContainer>
+//   );
+// };
 export default Review;
