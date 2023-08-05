@@ -7,10 +7,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserImage, UserInfoText } from "../../components/profile";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import { UserContext } from "../../contexts";
+// import { UserContext } from "../../contexts";
 import { API_URL } from "@env";
-import { useIsFocused } from "@react-navigation/native";
 
+import { useSelector, useDispatch } from "react-redux";
+import { logoutFulfilled } from "../../redux/slice/userSlice";
 const Container = styled.View`
   flex: 1;
   justify-content: center;
@@ -39,60 +40,33 @@ const DEFAULT_PHOTO =
 
 const Mypage = ({ navigation }) => {
   const [photo, setPhoto] = useState(DEFAULT_PHOTO);
-  // let user1 = null;
-  const { user } = useContext(UserContext);
 
-  const [userInfo, setUserInfo] = useState({});
-  const isFocused = useIsFocused();
+  const accessToken = useSelector((state) => state.user.security.accessToken);
 
-  // console.log(user.userId);
-  useEffect(() => {
-    fetchUserInfo(); // 최초 렌더링 시 사용자 정보를 가져오는 함수 호출
-  }, [user.accessToken, isFocused]);
+  const userId = useSelector((state) => state.user.userId);
+  const userInfo = useSelector((state) => state.user.profile);
 
-  const fetchUserInfo = () => {
-    fetch(`${API_URL}/user/info?userId=${user.userId}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        // console.log(res.data);
-        setUserInfo(res.data);
-      });
-  };
+  const dispatch = useDispatch();
+  // console.log("======MyPage의 userInfo=====start======");
+  // console.log(userInfo);
+  // console.log("======MyPage의 userInfo=====end======");
 
   const _handleLogoutButtonPress = () => {
-    fetch(`${API_URL}/user/logout/${user.userId}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        if (res) {
-          navigation.navigate("Login");
-        }
-      })
-      .catch((error) => {
-        console.error("Error during logout:", error);
-      });
-  };
+    const logoutInput = { accessToken, userId };
+    dispatch(logoutFulfilled({ logoutInput }));
 
+    // const { setUserIdAndNickname, setTokens } = useContext(UserContext);
+
+    console.log("accessToken: " + accessToken);
+    navigation.navigate("Login");
+  };
   return (
     <KeyboardAwareScrollView>
       <SafeAreaView>
         <Container>
           <ProfileSectionContainer>
             <UserImage url={photo} />
-            <UserInfoText value={userInfo.nickName} isNickname={true} />
+            <UserInfoText value={userInfo.nickname} isNickname={true} />
             <UserInfoText value={userInfo.userName} isUsername={true} />
             <ElementContainer>
               <BigButton
@@ -106,9 +80,9 @@ const Mypage = ({ navigation }) => {
               <BigButton title="로그아웃" onPress={_handleLogoutButtonPress} />
             </ElementContainer>
           </ProfileSectionContainer>
-          <UserInfoText label="아이디(학번)" value={userInfo.userId} />
+          <UserInfoText label="아이디(학번)" value={userId} />
           <UserInfoText label="학과" value={userInfo.major} />
-          <UserInfoText label="이메일" value={userInfo.userMail} />
+          <UserInfoText label="이메일" value={userInfo.email} />
           <UserInfoText label="생일" value={userInfo.birthday} />
           <UserInfoText label="성별" value={userInfo.gender} />
           <UserInfoText label="전화번호" value={userInfo.phoneNumber} />

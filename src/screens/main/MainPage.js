@@ -5,8 +5,9 @@ import { FlatList, RefreshControl } from "react-native";
 import { ThemeContext } from "styled-components/native";
 import { Item } from "../../components/common/ChatList";
 import { LOGO } from "@env";
-import { useDispatch, useSelector } from "react-redux";
 import { getListInfo, initRoomInfo } from "../../redux/slice/chatSlice";
+import { useSelector, useDispatch } from "react-redux";
+
 // 메인페이지
 const Container = styled.View`
   background: white;

@@ -7,8 +7,11 @@ import styled from "styled-components/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 // import user1 from "./data/user1.json";
 import { API_URL } from "@env";
-import { UserContext } from "../../contexts";
-import { useIsFocused } from "@react-navigation/native";
+// import { UserContext } from "../../contexts";
+// import { useIsFocused } from "@react-navigation/native";
+
+import { useSelector, useDispatch } from "react-redux";
+import { saveEditMypage } from "../../redux/slice/userSlice";
 
 const Container = styled.View`
   flex: 1;
@@ -61,56 +64,58 @@ const DEFAULT_PHOTO =
 
 const EditMypage = ({ navigation }) => {
   const width = Dimensions.get("window").width;
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.user.profile);
+  const accessToken = useSelector((state) => state.user.security.accessToken);
+
+  const userId = useSelector((state) => state.user.userId);
+
   const [photo, setPhoto] = useState(DEFAULT_PHOTO);
   // const [photo, setPhoto] = useState(logo);
 
-  const [userInfo, setUserInfo] = useState({});
-  const { user, setNickname } = useContext(UserContext);
-
-  // const userGender =
-  //   userInfo.gender === "M" ? "male" : userInfo.gender === "F" ? "female" : "";
-  const isFocused = useIsFocused();
+  // const [userInfo, setUserInfo] = useState({});
+  // console.log("======editMyPage의 userInfo=====start======");
+  // console.log(userInfo);
+  // console.log("======editMyPage의 userInfo=====end======");
+  // const { user, setNickname } = useContext(UserContext);
+  // const isFocused = useIsFocused();
   const [userInput, setUserInput] = useState({});
 
-  useEffect(() => {
-    fetchUserInfo(); // 최초 렌더링 시 사용자 정보를 가져오는 함수 호출
-  }, [user.accessToken, isFocused]);
+  // useEffect(() => {
+  //   fetchUserInfo(); // 최초 렌더링 시 사용자 정보를 가져오는 함수 호출
+  // }, [user.accessToken, isFocused]);
 
-  const fetchUserInfo = () => {
-    fetch(`${API_URL}/user/info/update?userId=${user.userId}`, {
-      // fetch(`http://192.168.1.101:8080/user/info/update?userId=${user.userId}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        setUserInfo(res.data);
-        // user1 = JSON.stringify(res.data);
-        // console.log(user1);
-      });
-  };
+  // const fetchUserInfo = () => {
+  //   // fetch(`${API_URL}/user/info/update?userId=${user.userId}`, {
+  //   fetch(`http://172.30.1.18:8005/user/info/update?userId=${user.userId}`, {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `Bearer ${user.accessToken}`,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       return res.json();
+  //     })
+  //     .then((res) => {
+  //       setUserInfo(res.data);
+  //       // user1 = JSON.stringify(res.data);
+  //       // console.log(user1);
+  //     });
+  // };
 
-  const [selectedGender, setSelectedGender] = useState("M");
+  const [selectedGender, setSelectedGender] = useState(userInfo.gender);
   useEffect(() => {
     // console.log(userInfo);
 
-    setUserInput(
-      (prevUserInput) => ({
-        ...prevUserInput,
-        nickName: userInfo.nickName || "",
-        userName: userInfo.userName || "",
-        major: userInfo.major || "",
-        userMail: userInfo.userMail || "",
-        birthday: userInfo.birthday || "",
-        gender: userInfo.gender || "",
-        phoneNumber: userInfo.phoneNumber || "",
-      }),
-      setSelectedGender(userInfo.gender),
-    );
+    setUserInput(() => ({
+      nickName: userInfo.nickname || "",
+      userName: userInfo.userName || "",
+      major: userInfo.major || "",
+      email: userInfo.email || "",
+      birthday: userInfo.birthday || "",
+      gender: userInfo.gender || "",
+      phoneNumber: userInfo.phoneNumber || "",
+    }));
   }, [userInfo]);
 
   const handleGenderSelection = (gender) => {
@@ -118,30 +123,32 @@ const EditMypage = ({ navigation }) => {
   }; // console.log(user.userId);
 
   const _handleUpdateUserButtonPress = () => {
+    const saveEditMypageInput = { userId, accessToken, userInput };
+    dispatch(saveEditMypage({ saveEditMypageInput }));
+    navigation.navigate("Mypage");
     // fetch(`http://172.20.10.7:8080/user/info/update/${user.userId}`, {
-    fetch(`${API_URL}/user/info/update/${user.userId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-      body: JSON.stringify(userInput),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        // console.log(res);
-        setNickname(userInput.nickname);
-        navigation.navigate("Mypage");
-      })
-      .catch((error) => {
-        console.error("Error during signup:", error);
-      });
+    // fetch(`${API_URL}/user/info/update/${user.userId}`, {
+    //   method: "PATCH",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${user.accessToken}`,
+    //   },
+    //   body: JSON.stringify(userInput),
+    // })
+    //   .then((res) => {
+    //     return res.json();
+    //   })
+    //   .then((res) => {
+    //     // console.log(res);
+    //     setNickname(userInput.nickname);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error during signup:", error);
+    //   });
   };
 
   const _handleUserInputChange = (fieldName, value) => {
-    // console.log(fieldName + ": " + value);
+    console.log(fieldName + ": " + value);
     setUserInput({
       ...userInput,
       [fieldName]: value,
@@ -182,16 +189,6 @@ const EditMypage = ({ navigation }) => {
             onChangeText={(value) => _handleUserInputChange("nickName", value)}
           />
           <UserInfoTextInput
-            ref={refUserId}
-            label="아이디(학번)"
-            placeholder="202312345"
-            onSubmitEditing={() => refPassword.current.focus()}
-            returnKeyType="next"
-            value={userInfo.userId}
-            numericOnly={true}
-            maxLength={9}
-          />
-          <UserInfoTextInput
             ref={refMajor}
             label="학과"
             placeholder="컴퓨터공학과"
@@ -205,7 +202,7 @@ const EditMypage = ({ navigation }) => {
             label="이메일"
             placeholder="example@naver.com"
             onSubmitEditing={() => refBirthday.current.focus()}
-            value={userInput.userMail}
+            value={userInput.email}
             returnKeyType="next"
             onChangeText={(value) => _handleUserInputChange("userMail", value)}
           />

@@ -12,25 +12,20 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Room /> */}
         <Stack.Screen
           name="Auth"
           component={Auth}
-          options={{
-            headerShown: false,
-          }}
+          // options={{
+          //   headerShown: false,
+          // }}
         />
         <Stack.Screen
           name="Main"
           component={Main}
-          options={{
-            headerShown: false,
-          }}
+          // options={{
+          //   headerShown: false,
+          // }}
         />
-        {/* <Profile /> */}
-        {/* <BoardList /> */}
-        {/* <Main /> */}
-        {/* //{" "} */}
       </Stack.Navigator>
     </NavigationContainer>
   );

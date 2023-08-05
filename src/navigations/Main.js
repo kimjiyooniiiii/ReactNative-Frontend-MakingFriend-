@@ -49,31 +49,26 @@ const Main = () => {
         component={CreateRoom}
         options={{ headerShown: false }}
       />
-
       {/* <Stack.Screen
         name="RoomsMain"
         component={RoomsMain}
         options={{ headerShown: false }}
       /> */}
-
       <Stack.Screen
         name="MealResult"
         component={MealResult}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="StudyResult"
         component={StudyResult}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="DeliveryResult"
         component={DeliveryResult}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="ForeignerResult"
         component={ForeignerResult}
@@ -84,25 +79,21 @@ const Main = () => {
         component={HobbyResult}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="TaxiResult"
         component={TaxiResult}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="RoomsMain"
         component={RoomsMain}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="TaxiSearch"
         component={TaxiSearch}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="HobbySearch"
         component={HobbySearch}
@@ -128,7 +119,6 @@ const Main = () => {
         component={MealSearch}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="ExerciseSearch"
         component={ExerciseSearch}
