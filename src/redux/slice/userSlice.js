@@ -222,6 +222,7 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "@env";
 
 const initialState = {
   profile: {
@@ -268,8 +269,12 @@ export const userSlice = createSlice({
     });
 
     builder.addCase(login.fulfilled, (state, action) => {
+      console.log(action);
       const { data } = action.payload.data;
 
+      // console.log("===========action.payload=====start==========");
+      // console.log(action.payload.data.data);
+      // console.log("===========action.payload=====end==========");
       state.userId = action.payload.userId;
       state.profile.nickname = data.nickname; // 다름
       state.profile.userName = data.userName;
@@ -308,7 +313,7 @@ export const register = createAsyncThunk(
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log("data: " + data);
+      // console.log("data: " + data);
       return data; // 받아온 데이터를 반환합니다.
     } catch (error) {
       throw error; // 에러가 발생하면 에러를 던집니다.
@@ -318,6 +323,9 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk("user/login", async ({ userInput }) => {
   try {
+    // console.log("===========시작========");
+    // console.log(userInput);
+    // console.log("===========끝========");
     const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
       headers: {

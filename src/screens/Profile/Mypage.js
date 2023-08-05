@@ -47,9 +47,9 @@ const Mypage = ({ navigation }) => {
   const userInfo = useSelector((state) => state.user.profile);
 
   const dispatch = useDispatch();
-  console.log("======MyPage의 userInfo=====start======");
-  console.log(userInfo);
-  console.log("======MyPage의 userInfo=====end======");
+  // console.log("======MyPage의 userInfo=====start======");
+  // console.log(userInfo);
+  // console.log("======MyPage의 userInfo=====end======");
 
   const _handleLogoutButtonPress = () => {
     const logoutInput = { accessToken, userId };
