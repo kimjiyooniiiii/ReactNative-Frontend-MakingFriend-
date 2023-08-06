@@ -5,10 +5,6 @@ import { BigButton, RadioButton, Image } from "../../components/auth";
 import { UserInfoTextInput } from "../../components/profile";
 import styled from "styled-components/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-// import user1 from "./data/user1.json";
-import { API_URL } from "@env";
-// import { UserContext } from "../../contexts";
-// import { useIsFocused } from "@react-navigation/native";
 
 import { useSelector, useDispatch } from "react-redux";
 import { saveEditMypage } from "../../redux/slice/userSlice";
@@ -71,44 +67,15 @@ const EditMypage = ({ navigation }) => {
   const userId = useSelector((state) => state.user.userId);
 
   const [photo, setPhoto] = useState(DEFAULT_PHOTO);
-  // const [photo, setPhoto] = useState(logo);
 
-  // const [userInfo, setUserInfo] = useState({});
-  // console.log("======editMyPage의 userInfo=====start======");
-  // console.log(userInfo);
-  // console.log("======editMyPage의 userInfo=====end======");
-  // const { user, setNickname } = useContext(UserContext);
-  // const isFocused = useIsFocused();
   const [userInput, setUserInput] = useState({});
-
-  // useEffect(() => {
-  //   fetchUserInfo(); // 최초 렌더링 시 사용자 정보를 가져오는 함수 호출
-  // }, [user.accessToken, isFocused]);
-
-  // const fetchUserInfo = () => {
-  //   // fetch(`${API_URL}/user/info/update?userId=${user.userId}`, {
-  //   fetch(`http://172.30.1.18:8005/user/info/update?userId=${user.userId}`, {
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: `Bearer ${user.accessToken}`,
-  //     },
-  //   })
-  //     .then((res) => {
-  //       return res.json();
-  //     })
-  //     .then((res) => {
-  //       setUserInfo(res.data);
-  //       // user1 = JSON.stringify(res.data);
-  //       // console.log(user1);
-  //     });
-  // };
 
   const [selectedGender, setSelectedGender] = useState(userInfo.gender);
   useEffect(() => {
     // console.log(userInfo);
 
     setUserInput(() => ({
-      nickName: userInfo.nickname || "",
+      nickname: userInfo.nickname || "",
       userName: userInfo.userName || "",
       major: userInfo.major || "",
       email: userInfo.email || "",
@@ -126,29 +93,10 @@ const EditMypage = ({ navigation }) => {
     const saveEditMypageInput = { userId, accessToken, userInput };
     dispatch(saveEditMypage({ saveEditMypageInput }));
     navigation.navigate("Mypage");
-    // fetch(`http://172.20.10.7:8080/user/info/update/${user.userId}`, {
-    // fetch(`${API_URL}/user/info/update/${user.userId}`, {
-    //   method: "PATCH",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${user.accessToken}`,
-    //   },
-    //   body: JSON.stringify(userInput),
-    // })
-    //   .then((res) => {
-    //     return res.json();
-    //   })
-    //   .then((res) => {
-    //     // console.log(res);
-    //     setNickname(userInput.nickname);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error during signup:", error);
-    //   });
   };
 
   const _handleUserInputChange = (fieldName, value) => {
-    console.log(fieldName + ": " + value);
+    // console.log(fieldName + ": " + value);
     setUserInput({
       ...userInput,
       [fieldName]: value,
@@ -184,9 +132,9 @@ const EditMypage = ({ navigation }) => {
             label="닉네임"
             placeholder="두리"
             onSubmitEditing={() => refUserId.current.focus()}
-            value={userInput.nickName}
+            value={userInput.nickname}
             returnKeyType="next"
-            onChangeText={(value) => _handleUserInputChange("nickName", value)}
+            onChangeText={(value) => _handleUserInputChange("nickname", value)}
           />
           <UserInfoTextInput
             ref={refMajor}
@@ -204,7 +152,7 @@ const EditMypage = ({ navigation }) => {
             onSubmitEditing={() => refBirthday.current.focus()}
             value={userInput.email}
             returnKeyType="next"
-            onChangeText={(value) => _handleUserInputChange("userMail", value)}
+            onChangeText={(value) => _handleUserInputChange("email", value)}
           />
 
           <UserInfoTextInput

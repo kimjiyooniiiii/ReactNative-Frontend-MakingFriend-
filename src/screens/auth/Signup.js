@@ -5,9 +5,6 @@ import { BigButton, RadioButton, Input, Image } from "../../components/auth";
 import styled from "styled-components/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import { API_URL } from "@env";
-// import { UserContext } from "../../contexts";
-
 //redux
 import { useDispatch } from "react-redux";
 import { register } from "../../redux/slice/userSlice";
