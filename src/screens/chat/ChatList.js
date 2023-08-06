@@ -13,7 +13,8 @@ const List = styled.View`
 `;
 
 const ChatList = ({ navigation }) => {
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
+  const user = useSelector((state) => state.user.security);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const chatlist = useSelector((state) => state.chat.involvedList);
   const dispatch = useDispatch();

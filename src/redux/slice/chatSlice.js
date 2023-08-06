@@ -16,7 +16,10 @@ const initialState = {
   messages: [],
   chatList: [],
   involvedList: [],
-  isInvite: "",
+  status: {
+    isInvite: "",
+    isEntered: false,
+  },
 };
 
 export const chatSlice = createSlice({
@@ -26,6 +29,8 @@ export const chatSlice = createSlice({
     //방 입장시 정보 초기화
     initRoomInfo: (state, action) => {
       state.roomInfo = action.payload;
+      state.currentPage = 1;
+      state.status.isEntered = false;
     },
     increasePage: (state) => {
       state.currentPage = state.currentPage + 1;
@@ -38,7 +43,18 @@ export const chatSlice = createSlice({
       state.messages = [];
     },
     setInvite: (state) => {
-      state.isInvite = state.payload;
+      state.status.isInvite = state.payload;
+    },
+    setEnter: (state) => {
+      console.log(
+        "----------------------wggududuududdu---------------",
+        state.status,
+      );
+      state.status.isEntered = true;
+      console.log(state.status);
+    },
+    setExit: (state) => {
+      state.status.isEntered = false;
     },
   },
 
@@ -78,6 +94,8 @@ export const {
   increasePage,
   flushMessage,
   setInvite,
+  setEnter,
+  setExit,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
@@ -106,7 +124,7 @@ export const getPageInfo = createAsyncThunk(
   "chat/getPageInfo",
   async (info) => {
     try {
-      console.log("accessToken", info);
+      // console.log("accessToken", info);
 
       const response = await fetch(`${API_URL}/room/pages/${info.room._id}`, {
         method: "GET",
@@ -118,7 +136,7 @@ export const getPageInfo = createAsyncThunk(
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log("data", data);
+      // console.log("data", data);
       return data; // 받아온 데이터를 반환합니다.
     } catch (error) {
       throw error; // 에러가 발생하면 에러를 던집니다.

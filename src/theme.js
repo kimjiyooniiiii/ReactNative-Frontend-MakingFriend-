@@ -3,12 +3,14 @@ const Colors = {
   black: "#111111",
   skyblue: "#6B9FEA", //87ceeb
   grey: "#808080",
+  grey2: "#d5d5d5",
 };
 
 export const theme = {
   // background
   background: Colors.white,
   backgroundSkyblue: Colors.skyblue,
+  mainBackground: Colors.grey2,
 
   // text
   text: Colors.black,
@@ -37,6 +39,4 @@ export const theme = {
   //tab navigation
   tabBtnActive: Colors.skyblue,
   tabBtnInactive: Colors.grey,
-
-
 };

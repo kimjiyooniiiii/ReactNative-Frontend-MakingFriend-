@@ -1,35 +1,76 @@
 import React, { useContext, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
-import { Image } from "react-native";
+import { Alert, Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   flushMessage,
   getPageInfo,
   setInvite,
+  setExit,
 } from "../../redux/slice/chatSlice";
-import { UserContext } from "../../contexts/User";
+import { API_URL } from "@env";
 
 const EnterRoom = ({ navigation }) => {
   const page = useSelector((state) => state.chat.totalPage);
   const room = useSelector((state) => state.chat.roomInfo);
-  const { user } = useContext(UserContext);
+  const status = useSelector((state) => state.chat.status);
+  // const { user } = useContext(UserContext);
+  const user = useSelector((state) => state.user.security);
+  const userId = useSelector((state) => state.user.userId);
   const token = user.accessToken;
   const dispatch = useDispatch();
-
+  console.log(status);
   useEffect(() => {
-    if (room.isInvite === "" || room.isInvite === room._id) {
-      console.log(room);
+    if (status.isInvite === "" || status.isInvite === room._id) {
+      // console.log(room);
       dispatch(getPageInfo({ room, token }));
       dispatch(setInvite(room._id));
     } else {
-      console.log("invited effect", room);
+      // console.log("invited effect", room);
       dispatch(getPageInfo({ room, token }));
       dispatch(flushMessage());
       dispatch(setInvite(room._id));
     }
   }, []);
 
+  /**
+   * 방 입장 가능 여부 확인
+   * @returns true, false
+   */
+  const checkRoomInfo = async () => {
+    try {
+      const response = await fetch(`${API_URL}/room/valid/${room._id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }); // 서버의 API 엔드포인트를 입력합니다.
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log(data.data);
+      if (data.data == true) {
+        navigation.navigate("Chat");
+      } else {
+        Alert.alert("Fucked up");
+      }
+      return data.data; // 받아온 데이터를 반환합니다.
+    } catch (error) {
+      throw error; // 에러가 발생하면 에러를 던집니다.
+    }
+  };
+
+  const handleEnterRoom = () => {
+    if (room.participants.some((participant) => participant._id == userId)) {
+      navigation.navigate("Chat");
+    } else if (room.blockedMember.some((blocked) => blocked == userId)) {
+      Alert.alert("차단되어 들어갈 수 없습니다.");
+    } else {
+      checkRoomInfo();
+    }
+  };
   return (
     <ThemeProvider theme={theme}>
       <Container>
@@ -49,12 +90,7 @@ const EnterRoom = ({ navigation }) => {
           <Date>{room.formattedTime}</Date>
         </IntroduceContainer>
         <ButtonContainer>
-          <EnterButton
-            title="입장"
-            onPress={() => {
-              navigation.navigate("Chat");
-            }}
-          >
+          <EnterButton title="입장" onPress={handleEnterRoom}>
             <ButtonText>입장</ButtonText>
           </EnterButton>
         </ButtonContainer>

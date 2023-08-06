@@ -15,16 +15,16 @@ const Navigation = () => {
         <Stack.Screen
           name="Auth"
           component={Auth}
-          // options={{
-          //   headerShown: false,
-          // }}
+          options={{
+            headerShown: false,
+          }}
         />
         <Stack.Screen
           name="Main"
           component={Main}
-          // options={{
-          //   headerShown: false,
-          // }}
+          options={{
+            headerShown: false,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

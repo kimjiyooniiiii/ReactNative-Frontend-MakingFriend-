@@ -3,12 +3,12 @@ import { GiftedChat, Send } from "react-native-gifted-chat";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LOGO, SOCKET_URL, API_URL } from "@env";
 import styled from "styled-components/native";
-import { UserContext } from "../../contexts/User";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getMessages,
   increasePage,
   addMessage,
+  setEnter,
 } from "../../redux/slice/chatSlice";
 
 const ENTER = "EN";
@@ -24,33 +24,40 @@ const Chat = () => {
   const room = useSelector((state) => state.chat.roomInfo);
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.chat.messages);
-  const name = "John Doe";
+  const userId = useSelector((state) => state.user.userId);
+  const token = useSelector((state) => state.user.security.accessToken);
+  const name = useSelector((state) => state.user.profile.nickname);
   const roomId = room._id;
+  const status = useSelector((state) => state.chat.status);
 
   const photo = { LOGO };
-  const { user } = useContext(UserContext);
-  const token = user.accessToken;
+  // const { user } = useContext(UserContext);
 
-  console.log("roomId", roomId);
+  // const userinfo = useSelector((state) => state.user);
+  // const token = user.accessToken;
 
-  const messageArray = useRef([]);
+  // console.log("userinfo", userinfo);
+
+  // const messageArray = useRef([]);
 
   const webSocketURL = `${SOCKET_URL}`;
   const ws = new WebSocket(webSocketURL, null, {
     headers: {
       room: roomId,
-      user: user.userId,
+      user: userId,
     },
   });
   useEffect(() => {
+    console.log(status);
     console.log(
       "effect==================================================",
       currentPage,
       page,
     );
-    if (currentPage < page) {
+    if (!status.isEntered) {
       getChatMessages();
       dispatch(increasePage());
+      dispatch(setEnter());
     }
   }, []);
 
@@ -60,7 +67,7 @@ const Chat = () => {
       console.log("WebSocket connected");
       // const initialMessage = "hi";
       // ws.send(JSON.stringify(initialMessage));
-      createSystemMessage(ENTER, `${user.userId} 님이 입장했습니다.`);
+      createSystemMessage(ENTER, `${userId} 님이 입장했습니다.`);
     };
     ws.onerror = (error) => {
       console.error("WebSocket error", error);
@@ -90,6 +97,7 @@ const Chat = () => {
       // 컴포넌트가 언마운트 될 때 WebSocket 연결 해제
       if (ws) {
         ws.close();
+        dispatch(setExit());
       }
     };
   }, []);
@@ -97,9 +105,7 @@ const Chat = () => {
   /**
    * 시스템 메시지 전달 생성,
    */
-
-  const createSystemMessage = (command, text) => {
-    /**
+  /**
      * {
          _id: 1,
           text: 'This is a system message',
@@ -108,27 +114,29 @@ const Chat = () => {
           // Any additional custom parameters are passed through
         }
      */
-    const newMessage = systemMessage(command, text);
+  const createSystemMessage = (command, text) => {
+    const newMessage = systemMessage(text);
     const payload = {
       type: SYSTEM,
       message: newMessage,
       roomId: roomId,
+      command: command,
     };
+    console.log();
     ws.send(JSON.stringify(payload));
   };
 
-  const systemMessage = (command, text) => {
+  const systemMessage = (text) => {
     const newMessage = {
       _id: `${Date.now()}`,
       text: text,
       createdAt: new Date(),
       system: true,
       user: {
-        _id: user.userId,
+        _id: userId,
         name: name,
         avatar: `${LOGO}`,
       },
-      command: command,
     };
     return newMessage;
   };
@@ -139,7 +147,7 @@ const Chat = () => {
       text: text,
       createdAt: new Date(),
       user: {
-        _id: user.userId,
+        _id: userId,
         name: name,
         avatar: `${LOGO}`,
       },
@@ -191,7 +199,7 @@ const Chat = () => {
       <GiftedChat
         placeholder="Enter a message ..."
         messages={messages}
-        user={{ _id: user.userId, name, avatar: photo }}
+        user={{ _id: userId, name, avatar: photo }}
         onSend={handleMessage}
         renderSend={(props) => <SendButton {...props} />}
         scrollToBottom={true}

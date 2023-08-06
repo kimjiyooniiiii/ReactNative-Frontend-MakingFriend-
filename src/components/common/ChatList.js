@@ -66,14 +66,18 @@ export const Item = React.memo(
 const ItemContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  border-bottom-width: 1px;
+  border: 2px;
   border-color: ${({ theme }) => theme.border};
+  border-radius: 15px;
   padding: 15px 20px;
+  margin-bottom: 50px;
 `;
 
 const ItemTextContainer = styled.View`
   flex: 1;
+  /* border: 2px; */
   flex-direction: column;
+  /* border-radius: 10px; */
 `;
 
 const ItemTitle = styled.Text`

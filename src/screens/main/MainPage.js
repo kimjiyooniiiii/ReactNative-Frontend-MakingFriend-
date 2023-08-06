@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 // 메인페이지
 const Container = styled.View`
-  background: white;
+  background: ${({ theme }) => theme.mainBackground};
   flex: 1;
 `;
 
@@ -38,7 +38,83 @@ const Main = ({ navigation }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const dispatch = useDispatch();
   const chatList = useSelector((state) => state.chat.chatList);
+  const userId = useSelector((state) => state.user.userId);
 
+  //내가 작성한 게시물 안보이기
+  result = chatList.reduce((acc, cur) => {
+    if (cur.hostUser !== userId) acc.push(cur);
+    return acc;
+  }, []);
+
+  // console.log(result);
+  // result = [
+  //   {
+  //     _id: "b36f849d-532c-4835-8839-e8a1a6fdfd59",
+  //     blockedMember: [],
+  //     createdAt: "2023-08-06T11:11:16.602",
+  //     full: false,
+  //     hostUser: "200000000",
+  //     introduce: "testtttttt",
+  //     maxParticipants: 2,
+  //     participants: [[Object], [Object]],
+  //     roomName: "Test",
+  //   },
+  //   {
+  //     _id: "b36f849d-532c-4835-8839-e8a1a6fdfd59",
+  //     blockedMember: [],
+  //     createdAt: "2023-08-06T11:11:16.602",
+  //     full: false,
+  //     hostUser: "200000000",
+  //     introduce: "testtttttt",
+  //     maxParticipants: 2,
+  //     participants: [[Object], [Object]],
+  //     roomName: "Test",
+  //   },
+  //   {
+  //     _id: "b36f849d-532c-4835-8839-e8a1a6fdfd59",
+  //     blockedMember: [],
+  //     createdAt: "2023-08-06T11:11:16.602",
+  //     full: false,
+  //     hostUser: "200000000",
+  //     introduce: "testtttttt",
+  //     maxParticipants: 2,
+  //     participants: [[Object], [Object]],
+  //     roomName: "Test",
+  //   },
+  //   {
+  //     _id: "b36f849d-532c-4835-8839-e8a1a6fdfd59",
+  //     blockedMember: [],
+  //     createdAt: "2023-08-06T11:11:16.602",
+  //     full: false,
+  //     hostUser: "200000000",
+  //     introduce: "testtttttt",
+  //     maxParticipants: 2,
+  //     participants: [[Object], [Object]],
+  //     roomName: "Test",
+  //   },
+  //   {
+  //     _id: "b36f849d-532c-4835-8839-e8a1a6fdfd59",
+  //     blockedMember: [],
+  //     createdAt: "2023-08-06T11:11:16.602",
+  //     full: false,
+  //     hostUser: "200000000",
+  //     introduce: "testtttttt",
+  //     maxParticipants: 2,
+  //     participants: [[Object], [Object]],
+  //     roomName: "Test",
+  //   },
+  //   {
+  //     _id: "b36f849d-532c-4835-8839-e8a1a6fdfd59",
+  //     blockedMember: [],
+  //     createdAt: "2023-08-06T11:11:16.602",
+  //     full: false,
+  //     hostUser: "200000000",
+  //     introduce: "testtttttt",
+  //     maxParticipants: 2,
+  //     participants: [[Object], [Object]],
+  //     roomName: "Test",
+  //   },
+  // ];
   // //목록 불러오기
   const fetchItems = () => {
     dispatch(getListInfo()); // getListInfo 액션을 디스패치하여 채팅방 리스트 데이터 불러오기
@@ -99,7 +175,7 @@ const Main = ({ navigation }) => {
               onRefresh={handleRefresh}
             />
           }
-          data={chatList}
+          data={result}
           renderItem={({ item }) => (
             <Item
               item={item}

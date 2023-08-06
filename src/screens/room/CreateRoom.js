@@ -11,8 +11,8 @@ import { API_URL } from "@env";
 import { UserContext } from "../../contexts/User";
 import { Input } from "../../components/common";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { initRoomInfo } from "../../redux/slice/chatSlice";
 const Container = styled.View`
   background-color: ${({ theme }) => theme.background};
   flex: 1;
@@ -60,9 +60,10 @@ const ButtonContainer = styled.View`
 
 const CreateRoom = () => {
   const navigation = useNavigation();
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
+  const user = useSelector((state) => state.user);
   const [roomName, setRoomName] = useState("");
-
+  const dispatch = useDispatch();
   const handleRoomNameChange = (value) => {
     setRoomName(value);
   };
@@ -113,7 +114,7 @@ const CreateRoom = () => {
       method: "POST", // 메서드를 POST로 설정
       headers: {
         "Content-Type": "application/json", // 요청의 Content-Type을 JSON으로 설정
-        Authorization: `Bearer ${user.accessToken}`,
+        Authorization: `Bearer ${user.security.accessToken}`,
       },
       body: JSON.stringify(jsonObject), // 데이터 객체를 JSON 문자열로 변환하여 body에 설정
     })
@@ -129,7 +130,9 @@ const CreateRoom = () => {
       .then((res) => {
         console.log("resonse ", res);
         console.log("resonse ", res.data);
-        navigation.navigate("EnterRoom", { data: res.data });
+
+        dispatch(initRoomInfo(res.data));
+        navigation.navigate("EnterRoom");
       })
       .catch((error) => {
         console.error("POST 요청 실패:");
@@ -228,7 +231,6 @@ const CreateRoom = () => {
             <SubmitButton onPress={handleButtonPress} title="완료" />
           </ButtonContainer>
         </KeyboardAwareScrollView>
-
       </Container>
     </SafeAreaView>
   );
