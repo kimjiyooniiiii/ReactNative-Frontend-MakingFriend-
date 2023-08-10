@@ -6,12 +6,20 @@ import Room from "./Room";
 import Profile from "./Profile";
 import BoardList from "./BoardList";
 import Main from "./Main";
+import ChatDraw from "./ChatDraw";
 
 const Navigation = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        {/* <Stack.Screen
+          name="Chat"
+          component={ChatDraw}
+          options={{
+            headerShown: false,
+          }}
+        /> */}
         <Stack.Screen
           name="Auth"
           component={Auth}

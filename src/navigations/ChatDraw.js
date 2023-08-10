@@ -1,89 +1,222 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Chat, Side } from "../screens/chat";
+// import React, { useState, useRef, useEffect, useContext } from "react";
+// import { Chat, Side } from "../screens/chat";
+// import styled, { ThemeContext } from "styled-components/native";
+// import { Text } from "react-native";
+// import { useDispatch, useSelector } from "react-redux";
+// import { LOGO } from "@env";
+// import { Button } from "../components/common";
+// import { PanGestureHandler } from "react-native-gesture-handler";
+// import Animated, {
+//   useAnimatedGestureHandler,
+//   useSharedValue,
+//   useAnimatedStyle,
+//   withTiming,
+// } from "react-native-reanimated";
+// import { setBlockUsers } from "../redux/slice/chatSlice";
+// import BouncyCheckbox from "react-native-bouncy-checkbox";
 
-import styled from "styled-components/native";
-import { Text, Animated } from "react-native";
+// const ChatDraw = () => {
+//   const dispatch = useDispatch();
+//   const theme = useContext(ThemeContext);
+//   const roomInfo = useSelector((state) => state.chat.roomInfo);
+//   const user = useSelector((state) => state.user);
+//   const isDrawerOpen = useSharedValue(false); // useSharedValue로 상태 관리
+//   const drawerAnimation = useSharedValue(1);
+//   const [blockState, setBlockState] = useState(false);
+//   const [blockList, setBlockList] = useState([]);
 
-const Container = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  background-color: #000;
-`;
+//   console.log(
+//     "==================roomInfo from chatDraw====================",
+//     roomInfo,
+//     user.userId,
+//   );
+//   useEffect(() => {
+//     if (blockList.length == 0) {
+//       setBlockState(true);
+//     }
+//   }, [blockList]);
 
-const Drawer = styled(Animated.View)`
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 200px;
-  height: 100%;
-  background-color: #f0f0f0;
-  padding: 20px;
-`;
+//   const handleCheckboxToggle = (item, isChecked) => {
+//     if (isChecked) {
+//       setBlockList([...blockList, item]);
+//       setBlockState(false);
+//     } else {
+//       setBlockList(
+//         blockList.filter((i) => {
+//           return i !== item;
+//         }),
+//       );
+//     }
+//   };
 
-const DrawerItem = styled.TouchableOpacity`
-  margin-bottom: 10px;
-`;
+//   const blockUserHandler = () => {
+//     dispatch(setBlockUsers(blockList));
+//   };
+//   const gestureHandler = useAnimatedGestureHandler({
+//     onStart: (_, ctx) => {
+//       ctx.startX = drawerAnimation.value;
+//     },
+//     onActive: (event, ctx) => {
+//       const newValue = ctx.startX + event.translationX / 250;
+//       drawerAnimation.value = newValue < 0 ? 0 : newValue > 1 ? 1 : newValue;
+//     },
+//     onEnd: (event) => {
+//       if (event.translationX < -10) {
+//         drawerAnimation.value = withTiming(0, { duration: 300 });
+//         isDrawerOpen.value = false;
+//       } else if (event.translationX > 10) {
+//         drawerAnimation.value = withTiming(1, { duration: 300 });
+//         isDrawerOpen.value = true;
+//       }
+//     },
+//   });
 
-const DrawerButton = styled.TouchableOpacity`
-  position: absolute;
-  /* bottom: 20px; */
-  top: 10px;
-  right: 20px;
-  padding: 10px;
-  background-color: #f0f0f0;
-  border-radius: 5px;
-`;
+//   const drawerAnimatedStyle = useAnimatedStyle(() => {
+//     return {
+//       transform: [{ translateX: drawerAnimation.value * 250 }], // Drawer가 닫혀있는 상태(0)에서 열린 상태(1)로 이동하면서 오른쪽으로 이동
+//     };
+//   });
 
-const ChatDraw = ({ route }) => {
-  useEffect(() => {});
-  console.log("chatdraw : ", route);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Drawer가 처음에 닫혀있도록 상태 설정
-  const drawerAnimation = useRef(new Animated.Value(0)).current; // 초기값도 0으로 설정
+//   return (
+//     <Container>
+//       <Chat />
+//       <PanGestureHandler
+//         onGestureEvent={gestureHandler}
+//         minPointers={1}
+//         maxPointers={1}
+//         hitSlop={{ left: -50, bottom: -80 }}
+//       >
+//         <Animated.View
+//           style={[
+//             drawerAnimatedStyle,
+//             {
+//               position: "absolute", // 위치를 고정하기 위해 position: absolute 사용
+//               top: 0, // 오른쪽 상단으로 고정
+//               right: 0, // 오른쪽 상단으로 고정
+//               bottom: 80, // 다른 컴포넌트를 덮도록 하기 위해 bottom 값은 0으로 설정
+//               left: 80, // 다른 컴포넌트를 덮도록 하기 위해 left 값은 0으로 설정
+//               // flex: 1,
+//               zIndex: 2,
+//             },
+//           ]}
+//         >
+//           <Drawer>
+//             <DrawerItem style={{ marginBottom: 30 }} onPress={() => {}}>
+//               <Image
+//                 source={{
+//                   uri: `${LOGO}`,
+//                 }}
+//                 style={{ width: 80, height: 50 }}
+//               />
+//               <Title>염병 좆같은 시발</Title>
+//               {/* <Title>{roomInfo.roomName}</Title> */}
+//             </DrawerItem>
+//             {roomInfo.participants.map((item) => (
+//               <DrawerItem key={item._id}>
+//                 <Image
+//                   source={{
+//                     uri: item.avatar == null ? `${LOGO}` : `${item.avatar}`,
+//                   }}
+//                   // style={{ width: 80, height: 50, resizeMode: "contain" }}
+//                 />
+//                 <Text>{item.name}</Text>
+//                 {user.userId == roomInfo.hostUser ? (
+//                   <BouncyCheckbox
+//                     style={{ margin: 10 }}
+//                     size={25}
+//                     fillColor="#FF0000"
+//                     unfillColor="#FFFFFF"
+//                     iconStyle={{ borderColor: "#FF0000" }}
+//                     onPress={(isCheck) => {
+//                       handleCheckboxToggle(item._id, isCheck);
+//                     }}
+//                   />
+//                 ) : null}
+//               </DrawerItem>
+//             ))}
+//             <ButtonContainer>
+//               <Button title={"exit"} />
+//               {blockState ? null : (
+//                 <Button title={"block"} onPress={blockUserHandler} />
+//               )}
+//             </ButtonContainer>
+//           </Drawer>
+//         </Animated.View>
+//       </PanGestureHandler>
+//     </Container>
+//   );
+// };
 
-  const toggleDrawer = () => {
-    if (isDrawerOpen) {
-      // Drawer가 열려있는 상태에서 닫기 버튼 클릭 시
-      Animated.timing(drawerAnimation, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-      }).start(() => setIsDrawerOpen(false)); // 애니메이션이 끝나면 Drawer 상태를 닫힌 상태로 업데이트
-    } else {
-      // Drawer가 닫혀있는 상태에서 열기 버튼 클릭 시
-      setIsDrawerOpen(true); // Drawer 상태를 열린 상태로 업데이트
-      Animated.timing(drawerAnimation, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
-    }
-  };
+// const Title = styled.Text`
+//   height: 40px;
+//   font-size: 13px;
+//   font-weight: bold;
+//   /* border: 1px; */
+//   /* margin-left: 2px; */
+//   padding: 10px;
+// `;
+// const Image = styled.Image`
+//   /* border: 1px; */
+//   width: 50px;
+//   height: 50px;
+//   /* border-radius: 50px; */
+//   /* resize: "contain"; */
+// `;
+// const Container = styled.View`
+//   flex: 1;
+//   justify-content: center;
+//   align-items: center;
+//   background-color: #000;
+// `;
 
-  const drawerTranslateX = drawerAnimation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [200, 0], // Drawer가 닫혀있는 상태(0)에서 열린 상태(1)로 이동하면서 오른쪽으로 이동
-  });
+// const Drawer = styled(Animated.View)`
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   width: 250px;
+//   height: 100%;
+//   background-color: ${({ theme }) => theme.background};
+//   padding: 20px;
+//   z-index: 2;
+//   border: 1px;
+//   border-top-left-radius: 15px;
+//   border-bottom-left-radius: 15px;
+// `;
 
-  return (
-    <Container>
-      <Chat route={route} />
-      <Drawer style={{ transform: [{ translateX: drawerTranslateX }] }}>
-        <DrawerItem onPress={toggleDrawer}>
-          <Text>메뉴 항목 1</Text>
-        </DrawerItem>
-        <DrawerItem onPress={toggleDrawer}>
-          <Text>메뉴 항목 2</Text>
-        </DrawerItem>
-        <DrawerItem onPress={toggleDrawer}>
-          <Text>메뉴 항목 3</Text>
-        </DrawerItem>
-      </Drawer>
-      <DrawerButton onPress={toggleDrawer}>
-        <Text>{isDrawerOpen ? "닫기" : "열기"}</Text>
-      </DrawerButton>
-    </Container>
-  );
-};
+// const DrawerItem = styled.View`
+//   margin-bottom: 10px;
+//   flex-direction: row;
+//   padding: 5px;
+// `;
 
-export default ChatDraw;
+// const ButtonContainer = styled.View`
+//   flex-direction: row;
+//   position: absolute;
+//   left: 10px;
+//   bottom: 1;
+// `;
+// const DrawerButton = styled.TouchableOpacity`
+//   position: absolute;
+//   bottom: 20px;
+//   /* top: 50px; */
+//   right: 20px;
+//   padding: 10px;
+//   background-color: #f0f0f0;
+//   border-radius: 5px;
+// `;
+// const CheckboxContainer = styled.View`
+//   width: 24px;
+//   height: 24px;
+//   border-width: 2px;
+//   border-color: #333;
+//   border-radius: 4px;
+//   margin-left: auto;
+// `;
+// const Checkbox = styled.View`
+//   width: 100%;
+//   height: 100%;
+//   background-color: ${({ checked }) => (checked ? "#333" : "transparent")};
+//   border-radius: 2px;
+// `;
+
+// export default ChatDraw;

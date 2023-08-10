@@ -22,6 +22,7 @@ const EnterRoom = ({ navigation }) => {
   const dispatch = useDispatch();
   console.log(status);
   useEffect(() => {
+    console.log("rooooooooooooooooooooooooooooooooooom", room);
     if (status.isInvite === "" || status.isInvite === room._id) {
       // console.log(room);
       dispatch(getPageInfo({ room, token }));
@@ -38,7 +39,7 @@ const EnterRoom = ({ navigation }) => {
    * 방 입장 가능 여부 확인
    * @returns true, false
    */
-  const checkRoomInfo = async () => {
+  const handleEnterRoom = async () => {
     try {
       const response = await fetch(`${API_URL}/room/valid/${room._id}`, {
         method: "GET",
@@ -51,10 +52,12 @@ const EnterRoom = ({ navigation }) => {
       }
       const data = await response.json();
       console.log(data.data);
-      if (data.data == true) {
+      if (data.data == "enter") {
         navigation.navigate("Chat");
-      } else {
-        Alert.alert("Fucked up");
+      } else if (data.data == "blocked") {
+        Alert.alert("차단되어 들어갈 수 없습니다.");
+      } else if (data.data == "false") {
+        Alert.alert("들어갈 수 없는 방입니다.");
       }
       return data.data; // 받아온 데이터를 반환합니다.
     } catch (error) {
@@ -62,15 +65,14 @@ const EnterRoom = ({ navigation }) => {
     }
   };
 
-  const handleEnterRoom = () => {
-    if (room.participants.some((participant) => participant._id == userId)) {
-      navigation.navigate("Chat");
-    } else if (room.blockedMember.some((blocked) => blocked == userId)) {
-      Alert.alert("차단되어 들어갈 수 없습니다.");
-    } else {
-      checkRoomInfo();
-    }
-  };
+  // const handleEnterRoom = () => {
+  //   console.log(room);
+  //   if (room.blockedMember.some((blocked) => blocked == userId)) {
+  //     Alert.alert("차단되어 들어갈 수 없습니다.");
+  //   } else {
+  //     checkRoomInfo();
+  //   }
+  // };
   return (
     <ThemeProvider theme={theme}>
       <Container>

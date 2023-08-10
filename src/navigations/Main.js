@@ -21,6 +21,7 @@ import {
   DeliverySearch,
   DeliveryResult,
 } from "../screens/room";
+import { ChatList, Chat } from "../screens/chat";
 import ChatDraw from "./ChatDraw";
 
 const Stack = createStackNavigator();
@@ -41,7 +42,7 @@ const Main = () => {
       <Stack.Screen name="EnterRoom" component={EnterRoom} />
       <Stack.Screen
         name="Chat"
-        component={ChatDraw}
+        component={Chat}
         options={{ headerShown: false }}
       />
       <Stack.Screen

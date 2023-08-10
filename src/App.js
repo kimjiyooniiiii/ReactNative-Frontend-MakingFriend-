@@ -28,7 +28,10 @@ const App = () => {
           }}
         >
           <UserProvider>
-            <StatusBar />
+            <StatusBar
+              backgroundColor={theme.background}
+              barStyle="dark-content"
+            />
             <Navigation />
           </UserProvider>
         </SafeAreaView>

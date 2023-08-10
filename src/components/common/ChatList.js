@@ -47,6 +47,7 @@ export const Item = React.memo(
             createdAt,
             maxParticipants,
             full,
+            hostUser,
             blockedMember,
             participants,
           })

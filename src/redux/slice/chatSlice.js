@@ -2,14 +2,15 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { API_URL } from "@env";
 const initialState = {
   roomInfo: {
-    // _id: "",
-    // blockedMember: [],
-    // createdAt: "",
-    // isfull: false,
-    // introduce: "",
-    // maxParticipants: 2,
-    // participants: [],
-    // roomName: "",
+    _id: "",
+    blockedMember: [],
+    createdAt: "",
+    hostUser: "",
+    isfull: false,
+    introduce: "",
+    maxParticipants: 2,
+    participants: [],
+    roomName: "",
   },
   totalPage: 0,
   currentPage: 1,
@@ -19,6 +20,7 @@ const initialState = {
   status: {
     isInvite: "",
     isEntered: false,
+    isPanGestureActive: false,
   },
 };
 
@@ -28,6 +30,7 @@ export const chatSlice = createSlice({
   reducers: {
     //방 입장시 정보 초기화
     initRoomInfo: (state, action) => {
+      console.log("initRoomInfo-------------------------------------", action);
       state.roomInfo = action.payload;
       state.currentPage = 1;
       state.status.isEntered = false;
@@ -37,7 +40,21 @@ export const chatSlice = createSlice({
     },
     addMessage: (state, action) => {
       console.log("addMessage------------------ ", action.payload);
-      state.messages.unshift(action.payload);
+      // let list = state.messages;
+      // list.unshift(action.payload);
+
+      // state.messages.unshift(action.payload);
+      // 새로운 메시지 추가
+      const updatedMessages = [action.payload, ...state.messages];
+
+      // 중복 메시지 제거 (메시지 ID를 기준으로 중복 제거)
+      const uniqueMessages = updatedMessages.reduce((uniqueList, message) => {
+        if (!uniqueList.some((item) => item._id === message._id)) {
+          uniqueList.push(message);
+        }
+        return uniqueList;
+      }, []);
+      state.messages = uniqueMessages;
     },
     flushMessage: (state) => {
       state.messages = [];
@@ -55,6 +72,28 @@ export const chatSlice = createSlice({
     },
     setExit: (state) => {
       state.status.isEntered = false;
+    },
+    setIsPanGestureActive: (state, action) => {
+      state.isPanGestureActive = action.payload;
+    },
+    setBlockUsers: (state, action) => {
+      state.roomInfo.blockedMember = action.payload;
+    },
+    updateParticipants: (state, action) => {
+      console.log("updateParticipants==========================", action);
+
+      state.roomInfo.participants = action.payload;
+    },
+    removeParticipants: (state, action) => {
+      console.log("removeParticipants==========================", state);
+      // state.roomInfo.participants.filter(
+      //   (user) => !action.payload.includes(user),
+      // );
+      const updatedParticipants = state.roomInfo.participants.filter(
+        (user) => !action.payload.includes(user._id),
+      );
+      state.roomInfo.participants = updatedParticipants;
+      console.log("after removeParticipants==========================", state);
     },
   },
 
@@ -96,6 +135,10 @@ export const {
   setInvite,
   setEnter,
   setExit,
+  setIsPanGestureActive,
+  setBlockUsers,
+  removeParticipants,
+  updateParticipants,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
