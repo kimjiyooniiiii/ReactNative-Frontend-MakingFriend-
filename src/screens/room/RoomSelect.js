@@ -260,7 +260,7 @@ const RoomSelect = ({ route, navigation }) => {
   const [two, setTwo] = useState("");
   const [three, setThree] = useState("");
   const [title, setTitle] = useState("");
-
+  const [category, setCategory] = useState("");
   // 검색할 키워드 저장 자료구조
   const [sendData, setSendData] = useState(new Set());
 
@@ -270,18 +270,25 @@ const RoomSelect = ({ route, navigation }) => {
     let selectedCategories = {};
     if (keyword === "delivery") {
       selectedCategories = delivery;
+      setCategory("배달");
     } else if (keyword === "exercise") {
       selectedCategories = exercise;
+      setCategory("운동");
     } else if (keyword === "foreigner") {
       selectedCategories = foreigner;
+      setCategory("외국인");
     } else if (keyword === "hobby") {
       selectedCategories = hobby;
+      setCategory("취미");
     } else if (keyword === "meal") {
       selectedCategories = meal;
+      setCategory("밥");
     } else if (keyword === "study") {
       selectedCategories = study;
+      setCategory("공부");
     } else if (keyword === "taxi") {
       selectedCategories = taxi;
+      setCategory("택시");
     }
     const data = selectedCategories.data;
     if (data && data.length === 3) {
@@ -361,6 +368,7 @@ const RoomSelect = ({ route, navigation }) => {
     const array = Array.from(sendData);
     const dataArray = []; // 방 리스트 보여주는 스크린으로 보내는 데이터
     let data = {
+      category: category,
       keywordList: array,
     };
 

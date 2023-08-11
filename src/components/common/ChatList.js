@@ -27,6 +27,7 @@ export const Item = React.memo(
       full,
       blockedMember,
       participants,
+      category,
     },
     onPress,
   }) => {
@@ -48,6 +49,7 @@ export const Item = React.memo(
             hostUser,
             blockedMember,
             participants,
+            category,
           })
         }
       >

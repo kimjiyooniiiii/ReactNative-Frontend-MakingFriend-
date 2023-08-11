@@ -75,7 +75,7 @@ const CreateRoom = () => {
     setMembersSelect(option);
   };
 
-  const categorys = ["공부", "밥", "운동", "택시"];
+  const categorys = ["공부", "밥", "운동", "택시", "배달", "외국인", "취미"];
   const [categorySelect, setCategorySelect] = useState("");
 
   const handleCategorySelect = (option) => {
