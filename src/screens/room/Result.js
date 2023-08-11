@@ -5,25 +5,26 @@ import { Item } from "../../components/common/ChatList";
 import { FloatButton } from "../../components/common";
 import { useDispatch, useSelector } from "react-redux";
 import { getInvoledList, initRoomInfo } from "../../redux/slice/chatSlice";
+
 //채팅방 이름 목록들
 const List = styled.View`
   flex: 1;
 `;
 
-const ChatList = ({ navigation }) => {
-  // const { user } = useContext(UserContext);
+const Result = ({ navigation, route }) => {
+  console.log(route.params.data[1]);
   const user = useSelector((state) => state.user.security);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const chatlist = useSelector((state) => state.chat.involvedList);
+  //   const chatlist = useSelector((state) => state.chat.involvedList);
   const dispatch = useDispatch();
-
+  const chatList = route.params.data[1];
   useEffect(() => {
     //목록 불러오기
     dispatch(getInvoledList(user.accessToken));
     setIsRefreshing(false);
   }, []);
   // useMemo를 사용하여 list를 메모이제이션
-  const memoizedList = useMemo(() => chatlist, [chatlist]);
+  const memoizedList = useMemo(() => chatList, [chatList]);
 
   const handleRefresh = () => {
     setIsRefreshing(true); // 새로고침 시작 시 상태 변경
@@ -33,7 +34,7 @@ const ChatList = ({ navigation }) => {
   return (
     <List>
       <FlatList
-        data={chatlist}
+        data={chatList}
         refreshControl={
           <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
         }
@@ -52,4 +53,4 @@ const ChatList = ({ navigation }) => {
   );
 };
 
-export default ChatList;
+export default Result;

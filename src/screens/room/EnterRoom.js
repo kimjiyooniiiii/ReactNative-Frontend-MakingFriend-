@@ -9,7 +9,7 @@ import {
   setInvite,
   setExit,
 } from "../../redux/slice/chatSlice";
-import { API_URL } from "@env";
+import { API_URL, INFO_DOORI } from "@env";
 
 const EnterRoom = ({ navigation }) => {
   const page = useSelector((state) => state.chat.totalPage);
@@ -78,7 +78,7 @@ const EnterRoom = ({ navigation }) => {
       <Container>
         <ImageComponent
           source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/rudoori.appspot.com/o/gom%2Fgom.png?alt=media",
+            uri: `${INFO_DOORI}`,
           }}
         />
         <TitleContainer>
@@ -108,7 +108,7 @@ const Container = styled.View`
 
 const ImageComponent = styled(Image)`
   width: 70px;
-  height: 70px;
+  height: 100px;
   position: absolute;
   right: 10px;
   top: 170px;

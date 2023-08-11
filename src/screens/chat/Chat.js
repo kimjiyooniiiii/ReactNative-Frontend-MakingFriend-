@@ -349,7 +349,7 @@ const Chat = ({ navigation }) => {
                 }}
                 style={{ width: 80, height: 50 }}
               />
-              <Title>염병 좆같은 시발</Title>
+              <Title>{roomInfo.roomName}</Title>
               {/* <Title>{roomInfo.roomName}</Title> */}
             </DrawerItem>
             {roomInfo.participants.map((item) => (

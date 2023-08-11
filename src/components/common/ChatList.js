@@ -1,7 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text } from "react-native";
 import styled from "styled-components/native";
-import { FlatList } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import moment from "moment";

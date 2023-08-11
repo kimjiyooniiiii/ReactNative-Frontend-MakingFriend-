@@ -144,26 +144,37 @@ const Main = ({ navigation }) => {
           }}
           style={{ width: 80, height: 50, resizeMode: "contain" }}
         />
-        <Button title="밥" onPress={() => navigation.navigate("MealSearch")} />
+        <Button
+          title="밥"
+          onPress={() => navigation.navigate("RoomSelect", { keyword: "meal" })}
+        />
         <Button
           title="스터디"
-          onPress={() => navigation.navigate("StudySearch")}
+          onPress={() =>
+            navigation.navigate("RoomSelect", { keyword: "study" })
+          }
         />
         <Button
           title="배달"
-          onPress={() => navigation.navigate("DeliverySearch")}
+          onPress={() =>
+            navigation.navigate("RoomSelect", { keyword: "delivery" })
+          }
         />
         <Button
           title="택시"
-          onPress={() => navigation.navigate("TaxiSearch")}
+          onPress={() => navigation.navigate("RoomSelect", { keyword: "taxi" })}
         />
         <Button
           title="외국인"
-          onPress={() => navigation.navigate("ForeignerSearch")}
+          onPress={() =>
+            navigation.navigate("RoomSelect", { keyword: "foreigner" })
+          }
         />
         <Button
           title="운동"
-          onPress={() => navigation.navigate("ExerciseSearch")}
+          onPress={() =>
+            navigation.navigate("RoomSelect", { keyword: "exercise" })
+          }
         />
       </Category>
 
