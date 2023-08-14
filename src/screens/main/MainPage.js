@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components/native";
 import { Button, FloatButton } from "../../components/common";
-import { FlatList, RefreshControl } from "react-native";
+import { FlatList, RefreshControl, Text } from "react-native";
 import { ThemeContext } from "styled-components/native";
 import { Item } from "../../components/common/ChatList";
 import { LOGO } from "@env";
@@ -19,13 +19,44 @@ const Logo = styled.Image`
   height: 100%;
 `;
 
-//채팅방 태그
-const Category = styled.View`
+const ProfileImage = styled.Image`
+  height: 5%;
+  border-radius: 100px;
+  border: 1px;
+  margin-left: 14px;
+  width: 40px;
+  height: 40px;
+`;
+const Profile = styled.View`
+  background: ${({ theme }) => theme.backgroundSkyblue};
+  height: 8%;
   align-items: center;
   flex-direction: row;
+`;
+const ProfileName = styled.Text`
+  margin: 10px;
+  margin-top: 20px;
+  color: ${({ theme }) => theme.whiteText};
+`;
+const CategoryContainer = styled.View`
+  /* align-items: center; */
+  /* flex-direction: row; */
   flex-wrap: wrap;
   width: 100%;
-  height: 20%;
+  height: 9%;
+  /* border: 1px; */
+  background: ${({ theme }) => theme.backgroundSkyblue};
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+`;
+//채팅방 태그
+const Category = styled.ScrollView`
+  /* align-items: center; */
+  /* flex-direction: row; */
+  /* flex-wrap: wrap; */
+  width: 100%;
+
+  /* border: 1px; */
 `;
 
 //채팅방 이름 목록들
@@ -39,83 +70,13 @@ const Main = ({ navigation }) => {
   const dispatch = useDispatch();
   const chatList = useSelector((state) => state.chat.chatList);
   const userId = useSelector((state) => state.user.userId);
+  const nickName = useSelector((state) => state.user.profile.nickname);
 
   //내가 작성한 게시물 안보이기
   result = chatList.reduce((acc, cur) => {
-    if (cur.hostUser !== userId) acc.push(cur);
+    if (cur.hostUser._id !== userId) acc.push(cur);
     return acc;
   }, []);
-
-  // console.log(result);
-  // result = [
-  //   {
-  //     _id: "b36f849d-532c-4835-8839-e8a1a6fdfd59",
-  //     blockedMember: [],
-  //     createdAt: "2023-08-06T11:11:16.602",
-  //     full: false,
-  //     hostUser: "200000000",
-  //     introduce: "testtttttt",
-  //     maxParticipants: 2,
-  //     participants: [[Object], [Object]],
-  //     roomName: "Test",
-  //   },
-  //   {
-  //     _id: "b36f849d-532c-4835-8839-e8a1a6fdfd59",
-  //     blockedMember: [],
-  //     createdAt: "2023-08-06T11:11:16.602",
-  //     full: false,
-  //     hostUser: "200000000",
-  //     introduce: "testtttttt",
-  //     maxParticipants: 2,
-  //     participants: [[Object], [Object]],
-  //     roomName: "Test",
-  //   },
-  //   {
-  //     _id: "b36f849d-532c-4835-8839-e8a1a6fdfd59",
-  //     blockedMember: [],
-  //     createdAt: "2023-08-06T11:11:16.602",
-  //     full: false,
-  //     hostUser: "200000000",
-  //     introduce: "testtttttt",
-  //     maxParticipants: 2,
-  //     participants: [[Object], [Object]],
-  //     roomName: "Test",
-  //   },
-  //   {
-  //     _id: "b36f849d-532c-4835-8839-e8a1a6fdfd59",
-  //     blockedMember: [],
-  //     createdAt: "2023-08-06T11:11:16.602",
-  //     full: false,
-  //     hostUser: "200000000",
-  //     introduce: "testtttttt",
-  //     maxParticipants: 2,
-  //     participants: [[Object], [Object]],
-  //     roomName: "Test",
-  //   },
-  //   {
-  //     _id: "b36f849d-532c-4835-8839-e8a1a6fdfd59",
-  //     blockedMember: [],
-  //     createdAt: "2023-08-06T11:11:16.602",
-  //     full: false,
-  //     hostUser: "200000000",
-  //     introduce: "testtttttt",
-  //     maxParticipants: 2,
-  //     participants: [[Object], [Object]],
-  //     roomName: "Test",
-  //   },
-  //   {
-  //     _id: "b36f849d-532c-4835-8839-e8a1a6fdfd59",
-  //     blockedMember: [],
-  //     createdAt: "2023-08-06T11:11:16.602",
-  //     full: false,
-  //     hostUser: "200000000",
-  //     introduce: "testtttttt",
-  //     maxParticipants: 2,
-  //     participants: [[Object], [Object]],
-  //     roomName: "Test",
-  //   },
-  // ];
-  // //목록 불러오기
   const fetchItems = () => {
     dispatch(getListInfo()); // getListInfo 액션을 디스패치하여 채팅방 리스트 데이터 불러오기
   };
@@ -135,49 +96,64 @@ const Main = ({ navigation }) => {
     setIsRefreshing(false);
   };
 
+  const buttonStyle = { fontSize: 17, color: "white", marginLeft: 15 };
   return (
     <Container>
-      <Category>
-        <Logo
+      <Profile>
+        <ProfileImage
           source={{
             uri: `${LOGO}`,
           }}
-          style={{ width: 80, height: 50, resizeMode: "contain" }}
+          style={{ resizeMode: "contain" }}
         />
-        <Button
-          title="밥"
-          onPress={() => navigation.navigate("RoomSelect", { keyword: "meal" })}
-        />
-        <Button
-          title="스터디"
-          onPress={() =>
-            navigation.navigate("RoomSelect", { keyword: "study" })
-          }
-        />
-        <Button
-          title="배달"
-          onPress={() =>
-            navigation.navigate("RoomSelect", { keyword: "delivery" })
-          }
-        />
-        <Button
-          title="택시"
-          onPress={() => navigation.navigate("RoomSelect", { keyword: "taxi" })}
-        />
-        <Button
-          title="외국인"
-          onPress={() =>
-            navigation.navigate("RoomSelect", { keyword: "foreigner" })
-          }
-        />
-        <Button
-          title="운동"
-          onPress={() =>
-            navigation.navigate("RoomSelect", { keyword: "exercise" })
-          }
-        />
-      </Category>
-
+        <ProfileName>{nickName} 님</ProfileName>
+      </Profile>
+      <CategoryContainer>
+        <Category horizontal={true} showsHorizontalScrollIndicator={false}>
+          <Button
+            title="밥"
+            onPress={() =>
+              navigation.navigate("RoomSelect", { keyword: "meal" })
+            }
+            textStyle={buttonStyle}
+          />
+          <Button
+            title="스터디"
+            onPress={() =>
+              navigation.navigate("RoomSelect", { keyword: "study" })
+            }
+            textStyle={buttonStyle}
+          />
+          <Button
+            title="배달"
+            onPress={() =>
+              navigation.navigate("RoomSelect", { keyword: "delivery" })
+            }
+            textStyle={buttonStyle}
+          />
+          <Button
+            title="택시"
+            onPress={() =>
+              navigation.navigate("RoomSelect", { keyword: "taxi" })
+            }
+            textStyle={buttonStyle}
+          />
+          <Button
+            title="외국인"
+            onPress={() =>
+              navigation.navigate("RoomSelect", { keyword: "foreigner" })
+            }
+            textStyle={buttonStyle}
+          />
+          <Button
+            title="운동"
+            onPress={() =>
+              navigation.navigate("RoomSelect", { keyword: "exercise" })
+            }
+            textStyle={buttonStyle}
+          />
+        </Category>
+      </CategoryContainer>
       <ChatList>
         <FlatList
           refreshControl={

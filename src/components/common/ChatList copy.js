@@ -53,19 +53,22 @@ export const Item = React.memo(
           })
         }
       >
-        <ItemImage
-          source={{
-            uri: `${LOGO}`,
-          }}
-          style={{ resizeMode: "contain" }}
-        />
+        <ItemTextContainer>
+          <ItemTitle>{roomName}</ItemTitle>
+          <ItemDesc>{introduce}</ItemDesc>
+        </ItemTextContainer>
 
-        <ItemTitle>{roomName}</ItemTitle>
-        <ItemDesc>{introduce}</ItemDesc>
-
-        <ItemHost>{hostUser.name} 님의 채팅방</ItemHost>
-        <ItemCategory>{category}</ItemCategory>
-        <ItemTime>{formattedTime}</ItemTime>
+        <ItemHostContainer>
+          <ItemImage
+            source={{
+              uri: `${LOGO}`,
+            }}
+            style={{ resizeMode: "contain" }}
+          />
+          <ItemHost>{hostUser.name} 님의 채팅방</ItemHost>
+          <ItemCategory>{category}</ItemCategory>
+          <ItemTime>{formattedTime}</ItemTime>
+        </ItemHostContainer>
       </ItemContainer>
     );
   },
@@ -74,39 +77,31 @@ export const Item = React.memo(
 const ItemContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  /* border: 2px; */
-  /* border-color: ${({ theme }) => theme.border}; */
+  border: 2px;
+  border-color: ${({ theme }) => theme.border};
   border-radius: 15px;
   padding: 15px 20px;
   /* margin-bottom: 50px; */
-  margin-top: 40px;
+  margin-top: 10px;
   background-color: white;
   height: 150px;
 `;
 
 const ItemTextContainer = styled.View`
   flex: 1;
-  position: absolute;
-  /* bottom: 50px; */
-  /* border: 1px; */
-  /* flex-direction: row; */
+  /* border: 2px; */
+  flex-direction: column;
   /* border-radius: 10px; */
 `;
 
 const ItemTitle = styled.Text`
-  position: absolute;
-  top: 55px;
-  left: 10px;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 600;
   color: ${({ theme }) => theme.text};
 `;
 
 const ItemDesc = styled.Text`
-  position: absolute;
-  top: 80px;
-  left: 10px;
-  font-size: 14px;
+  font-size: 16px;
   margin-top: 5px;
   color: ${({ theme }) => theme.text};
 `;
@@ -117,29 +112,35 @@ const ItemCategory = styled.Text`
   bottom: 10px;
   font-size: 15px;
 `;
-
+const ItemHostContainer = styled.View`
+  position: absolute;
+  border: 1px;
+  /* background-color: black; */
+  width: 45%;
+  height: 100%;
+  right: 5px;
+`;
 const ItemHost = styled.Text`
   position: absolute;
   top: 15px;
-  right: 8px;
-  font-size: 12px;
+  right: 5px;
+  font-size: 15px;
   color: ${({ theme }) => theme.text};
   font-weight: bold;
 `;
 const ItemImage = styled.Image`
-  position: absolute;
+  /* position: absolute; */
   /* top: 1px; */
-  right: 45%;
-  bottom: 100px;
-  height: 80px;
-  width: 80px;
+  right: 5px;
+  height: 40px;
+  width: 40px;
   border-radius: 40px;
   border: 1px;
 `;
 const ItemTime = styled.Text`
   position: absolute;
   font-size: 12px;
-  right: 8px;
+  right: 5px;
   top: 0.5;
   color: ${({ theme }) => theme.text};
 `;

@@ -1,0 +1,221 @@
+import React, { useState, useEffect, useContext } from "react";
+import { TouchableOpacity } from "react-native";
+import { API_URL } from "@env";
+import { UserContext } from "../../contexts";
+import styled from "styled-components/native";
+import { FloatButton } from "../../components/common";
+
+const MainGet = ({ navigation, route }) => {
+  const [search, setSearch] = useState("");
+  const [contents, setContents] = useState([]);
+  const { user } = useContext(UserContext);
+  const [page, setPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    fetchBoard();
+  }, [contents]);
+
+  const fetchBoard = () => {
+    if (isLoading) return;
+
+    setIsLoading(true);
+
+    fetch(`${API_URL}/board/list?page=${page}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.data.length > 0) {
+          setPage((prevPage) => prevPage + 1);
+          setContents((prevContents) => [...prevContents, ...res.data]);
+        }
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        console.error(error);
+      });
+  };
+
+  const renderItem = ({ item }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Detail", item.postId)}
+      >
+        <Item>
+          <ItemId>포스트아이디: {item.postId}</ItemId>
+          <ItemHost>글쓴이: {item.writer}</ItemHost>
+          <ItemTime>생성날짜: {item.createdDt}</ItemTime>
+          <ItemTitle>제목: {item.title}</ItemTitle>
+          <ItemDesc>내용: {item.content}</ItemDesc>
+        </Item>
+      </TouchableOpacity>
+    );
+  };
+
+  return (
+    <Container>
+      <SearchContainer>
+        <SearchRow>
+          <SearchInput
+            placeholder="검색"
+            value={search}
+            onChangeText={(text) => setSearch(text)}
+          />
+          <SearchButton onPress={() => alert("검색 api 동작")}>
+            <SearchImage
+              source={{
+                uri: "https://play-lh.googleusercontent.com/WL9oSrJxfO6XDrSnuERVcjFXN--XztDibPGtAxIJsJBfm2ZAv4WvkR5yFuOcFKKR0_A=w240-h480-rw",
+              }}
+            />
+          </SearchButton>
+        </SearchRow>
+      </SearchContainer>
+
+      {/* <TextContainer> */}
+      {/* <WriteButton onPress={() => navigation.navigate("Write")}>
+          <WriteText>글쓰기</WriteText>
+        </WriteButton> */}
+      {/* </TextContainer> */}
+      <StyledFlatList
+        data={contents}
+        renderItem={renderItem}
+        keyExtractor={(contents) => contents["postId"]}
+        onEndReached={fetchBoard}
+        onEndReachedThreshold={0.8}
+      />
+      <FloatButton route="Write" />
+    </Container>
+  );
+};
+
+const Container = styled.View`
+  flex: 1;
+`;
+
+// const SearchContainer = styled.View`
+//   padding: 10px;
+//   border-width: 1px;
+//   border-radius: 5px;
+//   background-color: #ddd;
+// `;
+
+const SearchRow = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-horizontal: 20px;
+`;
+
+const SearchInput = styled.TextInput`
+  margin-top: 15px;
+  width: 170px;
+  height: 40px;
+  border-color: gray;
+  padding-horizontal: 10px;
+`;
+
+const SearchButton = styled.TouchableOpacity``;
+
+const SearchImage = styled.Image`
+  width: 50px;
+  height: 50px;
+  resize-mode: contain;
+`;
+
+const Item = styled.View`
+  padding: 20px;
+  margin-vertical: 8px;
+  margin-horizontal: 10px;
+  flex-direction: row;
+  align-items: center;
+  /* border: 2px; */
+  /* border-color: ${({ theme }) => theme.border}; */
+  border-radius: 15px;
+  padding: 15px 20px;
+  /* margin-bottom: 50px; */
+  /* margin-top: 40px; */
+  background-color: white;
+  height: 150px;
+  width: 95%;
+`;
+const ItemHost = styled.Text`
+  position: absolute;
+  bottom: 1px;
+  right: 8px;
+  font-size: 12px;
+  color: ${({ theme }) => theme.text};
+  font-weight: bold;
+`;
+
+const ItemId = styled.Text`
+  position: absolute;
+  top: 1px;
+  right: 8px;
+  font-size: 12px;
+  color: ${({ theme }) => theme.text};
+  font-weight: bold;
+`;
+const ItemText = styled.Text``;
+
+const ItemTitle = styled.Text`
+  position: absolute;
+  top: 1px;
+  left: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.text};
+`;
+
+const ItemTime = styled.Text`
+  position: absolute;
+  font-size: 12px;
+  right: 8px;
+  bottom: 12px;
+  color: ${({ theme }) => theme.text};
+`;
+const ItemDesc = styled.Text`
+  position: absolute;
+  top: 80px;
+  left: 10px;
+  font-size: 12px;
+  margin-top: 5px;
+  color: ${({ theme }) => theme.text};
+`;
+
+const TextContainer = styled.View`
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  margin: 20px;
+  border-color: gray;
+  background-color: white;
+`;
+
+const SearchContainer = styled.View`
+  /* align-items: center; */
+  /* flex-direction: row; */
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100px;
+  /* border: 1px; */
+  background: ${({ theme }) => theme.backgroundSkyblue};
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+`;
+const WriteButton = styled.TouchableOpacity``;
+
+const WriteText = styled.Text``;
+
+const StyledFlatList = styled.FlatList``;
+
+const ItemSeparator = styled.View`
+  height: 1px;
+  background-color: black;
+`;
+
+export default MainGet;

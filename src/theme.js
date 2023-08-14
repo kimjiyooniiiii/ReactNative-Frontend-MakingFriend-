@@ -14,6 +14,7 @@ export const theme = {
 
   // text
   text: Colors.black,
+  whiteText: Colors.white,
 
   // label
   label: Colors.black,

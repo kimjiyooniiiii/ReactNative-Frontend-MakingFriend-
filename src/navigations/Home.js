@@ -18,33 +18,45 @@ const Home = ({ navigation, route }) => {
       screenOptions={{
         headerShown: false,
       }}
+      tabBarOptions={{
+        activeTintColor: theme.selectedIconColor,
+        inactiveTintColor: theme.unselectedIconColor,
+      }}
     >
       <Tab.Screen
         name="메인"
         component={Main}
         options={{
-          tabBarIcon: () => <MaterialIcons name="home" size={26} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="home" size={26} color={color} />
+          ),
         }}
       />
       <Tab.Screen
         name="채팅"
         component={Room}
         options={{
-          tabBarIcon: () => <MaterialIcons name="chat-bubble" size={26} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="chat-bubble" size={26} color={color} />
+          ),
         }}
       />
       <Tab.Screen
         name="게시판"
         component={BoardList}
         options={{
-          tabBarIcon: () => <MaterialIcons name="dashboard" size={26} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="dashboard" size={26} color={color} />
+          ),
         }}
       />
       <Tab.Screen
         name="내정보"
         component={Profile}
         options={{
-          tabBarIcon: () => <MaterialIcons name="person" size={26} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="person" size={26} color={color} />
+          ),
         }}
       />
     </Tab.Navigator>

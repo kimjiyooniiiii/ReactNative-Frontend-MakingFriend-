@@ -9,7 +9,7 @@ import {
   setInvite,
   setExit,
 } from "../../redux/slice/chatSlice";
-import { API_URL, INFO_DOORI } from "@env";
+import { API_URL, INFO_DOORI, LOGO } from "@env";
 
 const EnterRoom = ({ navigation }) => {
   const page = useSelector((state) => state.chat.totalPage);
@@ -18,6 +18,7 @@ const EnterRoom = ({ navigation }) => {
   // const { user } = useContext(UserContext);
   const user = useSelector((state) => state.user.security);
   const userId = useSelector((state) => state.user.userId);
+  const nickName = useSelector((state) => state.user.profile.nickname);
   const token = user.accessToken;
   const dispatch = useDispatch();
   console.log(status);
@@ -65,30 +66,38 @@ const EnterRoom = ({ navigation }) => {
     }
   };
 
-  // const handleEnterRoom = () => {
-  //   console.log(room);
-  //   if (room.blockedMember.some((blocked) => blocked == userId)) {
-  //     Alert.alert("차단되어 들어갈 수 없습니다.");
-  //   } else {
-  //     checkRoomInfo();
-  //   }
-  // };
   return (
     <ThemeProvider theme={theme}>
       <Container>
+        <TopContainer>
+          <Profile>
+            <ProfileImage
+              source={{
+                uri: `${LOGO}`,
+              }}
+              style={{ resizeMode: "contain" }}
+            />
+            <ProfileName>{nickName} 님</ProfileName>
+          </Profile>
+          <Title>채팅방 입장</Title>
+        </TopContainer>
         <ImageComponent
           source={{
             uri: `${INFO_DOORI}`,
           }}
         />
-        <TitleContainer>
-          <Title></Title>
-          <TitleName>{room.roomName}</TitleName>
-        </TitleContainer>
         <IntroduceContainer>
-          <Introduce>우리 방을 소개합니다</Introduce>
-          <IntroduceContent>{room.introduce}</IntroduceContent>
+          <NameContainer>
+            <RoomName>{room.roomName}</RoomName>
+          </NameContainer>
+          <IntroContainer>
+            <IntroduceContent>{room.introduce}</IntroduceContent>
+          </IntroContainer>
           <Numbers>정원 : {room.maxParticipants}명</Numbers>
+          <Members>
+            참가자 : {room.participants.map((member) => member.name).join(", ")}
+            님
+          </Members>
           <Date>{room.formattedTime}</Date>
         </IntroduceContainer>
         <ButtonContainer>
@@ -105,32 +114,94 @@ const Container = styled.View`
   background-color: ${({ theme }) => theme.background};
   flex: 1;
 `;
+const TopContainer = styled.View`
+  /* background-color: ${({ theme }) => theme.background}; */
+  /* align-items: center; */
+  flex-direction: column;
+  /* flex: 1; */
+  flex-wrap: wrap;
+  width: 100%;
+  border: 1px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.whiteText};
+  font-size: 17px;
+  background: ${({ theme }) => theme.backgroundSkyblue};
+
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  height: 17%;
+  border: 1px;
+`;
+const ProfileImage = styled.Image`
+  height: 5%;
+  border-radius: 100px;
+  border: 1px;
+  margin-left: 14px;
+  width: 40px;
+  height: 40px;
+`;
+const Profile = styled.View`
+  background: ${({ theme }) => theme.backgroundSkyblue};
+  height: 50%;
+  align-items: center;
+  flex-direction: row;
+`;
+const ProfileName = styled.Text`
+  margin: 10px;
+  margin-top: 20px;
+  color: ${({ theme }) => theme.whiteText};
+`;
+
+const NameContainer = styled.View`
+  position: absolute;
+  top: 25px;
+  /* border: 1px; */
+  width: 100%;
+  /* height: 15%; */
+`;
+const RoomName = styled.Text`
+  font-weight: bold;
+  color: ${({ theme }) => theme.text};
+  font-size: 23px;
+  margin-left: 5px;
+  margin-right: 5px;
+`;
+const IntroContainer = styled.View`
+  position: absolute;
+  top: 100px;
+  width: 100%;
+  height: 40%;
+  margin-top: 1px;
+  /* border: 1px; */
+`;
+const IntroduceContent = styled.Text`
+  /* font-weight: bold; */
+  /* left: 20px; */
+
+  color: ${({ theme }) => theme.text};
+  font-size: 17px;
+  padding: 0 0 0 0;
+  margin-left: 5px;
+  margin-right: 5px;
+  /* border: 1px; */
+`;
 
 const ImageComponent = styled(Image)`
   width: 70px;
   height: 100px;
   position: absolute;
   right: 10px;
-  top: 170px;
-`;
-
-const TitleContainer = styled.View`
-  width: 200px;
-  height: 200px;
-  border-radius: 100px;
-  background-color: ${({ theme }) => theme.titleBackground};
-  padding: 15px 15px 15px 15px;
-  margin: 15px 15px 15px 30px;
-  justify-content: center;
-  align-items: center;
+  top: 150px;
 `;
 
 const Title = styled.Text`
   font-weight: bold;
-  color: ${({ theme }) => theme.grey};
-  font-size: 17px;
   position: absolute;
-  top: 20px;
+  left: 20px;
+  bottom: 8px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.whiteText};
+  font-size: 35px;
 `;
 
 const TitleName = styled.Text`
@@ -140,15 +211,21 @@ const TitleName = styled.Text`
 `;
 
 const IntroduceContainer = styled.View`
+  position: relative;
+  top: 40px;
+  /* left: 5px; */
   justify-content: center;
   align-items: center;
-  margin: 20px 20px 20px 20px;
-  background-color: ${({ theme }) => theme.introduceBackground};
-  width: 350px;
-  height: 330px;
-  border-radius: 20px;
+  margin: 20px 5px 20px 20px;
+  flex-direction: column;
+  /* background-color: ${({ theme }) => theme.introduceBackground}; */
+  width: 75%;
+  height: 60%;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
   border-width: 2px;
-  border-color: black;
+  /* border-color: black; */
 `;
 
 const Introduce = styled.Text`
@@ -157,45 +234,43 @@ const Introduce = styled.Text`
   position: absolute;
   top: 20px;
   left: 20px;
-`;
-
-const IntroduceContent = styled.Text`
-  font-weight: bold;
-  color: ${({ theme }) => theme.text};
-  font-size: 20px;
-  padding: 0 0 0 0;
+  border: 1px;
 `;
 
 const Numbers = styled.Text`
   color: ${({ theme }) => theme.grey};
-  font-size: 20px;
+  font-size: 14px;
   position: absolute;
   bottom: 20px;
   right: 20px;
 `;
-
-const ButtonContainer = styled.View`
-  flex-direction: row;
-  justify-content: center;
-  margin: 30px 0 0 0;
+const Members = styled.Text`
+  color: ${({ theme }) => theme.grey};
+  font-size: 12px;
+  position: absolute;
+  bottom: 50px;
+  right: 20px;
 `;
 
-const BackButton = styled.TouchableOpacity`
-  width: 100px;
-  height: 50px;
-  background-color: ${({ theme }) => theme.buttonBackground};
-  border-radius: 5px;
-  margin-right: 30px;
-  border-width: 1px;
-  border-color: black;
-  align-items: center;
+const ButtonContainer = styled.View`
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  flex-direction: row;
   justify-content: center;
+  width: 80px;
+  height: 80px;
+  /* margin: 0 0 0 0; */
+  /* border: 1px; */
 `;
 
 const EnterButton = styled.TouchableOpacity`
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
   width: 100px;
   height: 50px;
-  background-color: ${({ theme }) => theme.buttonBackground};
+  background: ${({ theme }) => theme.backgroundSkyblue};
   border-radius: 5px;
   margin-left: 30px;
   border-width: 1px;
@@ -207,7 +282,7 @@ const EnterButton = styled.TouchableOpacity`
 `;
 
 const ButtonText = styled.Text`
-  color: black;
+  color: ${({ theme }) => theme.whiteText};
   font-size: 15px;
 `;
 
